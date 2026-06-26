@@ -24,18 +24,19 @@
   }
 
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; height: 100%; }
+  html, body { margin: 0; padding: 0; min-height: 100%; }
   body {
     background:
       radial-gradient(1200px 800px at 20% -10%, rgba(34, 228, 255, 0.12), transparent 60%),
       radial-gradient(900px 700px at 110% 10%, rgba(255, 60, 240, 0.10), transparent 55%),
       linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    background-attachment: fixed;
     color: var(--text);
     font-family: 'Segoe UI', Inter, system-ui, -apple-system, sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
     user-select: none;
   }
-  main { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  main { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
   main > section { display: none; width: 100%; max-width: 1100px; }
   main[data-screen="start"] #start,
   main[data-screen="race"] #race { display: block; }
