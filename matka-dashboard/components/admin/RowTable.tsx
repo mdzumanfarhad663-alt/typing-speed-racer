@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { Row, Section } from "@/lib/types";
 import { RowForm } from "./RowForm";
 
-function SortableRow({ row, onEdit, onDelete }: { row: Row; onEdit: () => void; onDelete: () => void }) {
+function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Section; onEdit: () => void; onDelete: () => void }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: row.id });
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
@@ -23,7 +24,10 @@ function SortableRow({ row, onEdit, onDelete }: { row: Row; onEdit: () => void; 
       <td className="px-2 py-2">
         <span className="inline-block w-4 h-4 rounded border border-gray-300 align-middle" style={{ background: row.color }} />
       </td>
-      <td className="px-2 py-2 text-right">
+      <td className="px-2 py-2 text-right whitespace-nowrap">
+        {section === "live_result" && (
+          <Link href={`/admin/panel/${row.id}`} className="text-purple-700 underline text-sm mr-3">Panel chart</Link>
+        )}
         <button onClick={onEdit} className="text-blue-700 underline text-sm mr-3">Edit</button>
         <button onClick={onDelete} className="text-red-700 underline text-sm">Delete</button>
       </td>
@@ -114,7 +118,7 @@ export function RowTable({ section }: { section: Section }) {
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
               <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
                 {items.map((row) => (
-                  <SortableRow key={row.id} row={row} onEdit={() => setEditing(row)} onDelete={() => onDelete(row.id)} />
+                  <SortableRow key={row.id} row={row} section={section} onEdit={() => setEditing(row)} onDelete={() => onDelete(row.id)} />
                 ))}
               </SortableContext>
             </DndContext>
