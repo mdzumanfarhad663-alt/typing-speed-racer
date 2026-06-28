@@ -3,20 +3,19 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { HeroHeader } from "@/components/public/HeroHeader";
 import { LuckyBand } from "@/components/public/LuckyBand";
+import { LiveUpdateBand } from "@/components/public/LiveUpdateBand";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { FreeZoneBlock } from "@/components/public/FreeZoneBlock";
 import { Footer } from "@/components/public/Footer";
 import { RefreshIndicator } from "@/components/public/RefreshIndicator";
-import { LiveUpdateBand } from "@/components/public/LiveUpdateBand";
 import type { PublicSectionsResponse } from "@/lib/types";
 
-const EMPTY: PublicSectionsResponse = { lucky: [], live_result: [], free_zone: [] };
-
-type Menu2Game = { gameTitle: string; resultValue: string; sourceKey: string };
+const EMPTY: PublicSectionsResponse = { lucky: [], live_result: [], free_zone: [], live_update: [] };
+type AnkData = { ank: string; finalAnk: string } | null;
 
 export default function Home() {
   const [data, setData] = useState<PublicSectionsResponse>(EMPTY);
-  const [menu2, setMenu2] = useState<Menu2Game[]>([]);
+  const [ankData, setAnkData] = useState<AnkData>(null);
   const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [error, setError] = useState<string | null>(null);
 
@@ -25,15 +24,15 @@ export default function Home() {
 
     async function load() {
       try {
-        const [sectionsRes, menu2Res] = await Promise.all([
-          fetch("/api/public/sections", { cache: "no-store" }),
-          fetch("/api/public/menu2", { cache: "no-store" }),
-        ]);
-        const json = (await sectionsRes.json()) as PublicSectionsResponse & { error?: string };
-        const menu2Json = await menu2Res.json().catch(() => ({ games: [] }));
+        const res = await fetch("/api/public/sections", { cache: "no-store" });
+        const json = (await res.json()) as PublicSectionsResponse & { error?: string };
         if (!alive) return;
-        setData({ lucky: json.lucky || [], live_result: json.live_result || [], free_zone: json.free_zone || [] });
-        setMenu2(menu2Json.games || []);
+        setData({
+          lucky: json.lucky || [],
+          live_result: json.live_result || [],
+          free_zone: json.free_zone || [],
+          live_update: json.live_update || [],
+        });
         setLastUpdated(Date.now());
         setError(json.error ?? null);
       } catch {
@@ -41,9 +40,19 @@ export default function Home() {
       }
     }
 
+    async function loadAnk() {
+      try {
+        const res = await fetch("/api/public/ank", { cache: "no-store" });
+        const json = await res.json();
+        if (alive && (json.ank || json.finalAnk)) setAnkData(json);
+      } catch { /* silent */ }
+    }
+
     load();
+    loadAnk();
     const t = setInterval(load, 3000);
-    return () => { alive = false; clearInterval(t); };
+    const ankTimer = setInterval(loadAnk, 120_000); // refresh ank every 2 min
+    return () => { alive = false; clearInterval(t); clearInterval(ankTimer); };
   }, []);
 
   return (
@@ -54,12 +63,12 @@ export default function Home() {
       </header>
       {error && (
         <div className="bg-yellow-100 border-y border-yellow-400 text-center py-2 text-sm">
-          {error === "db_unavailable" ? "Database not configured yet — admin will need to set POSTGRES_URL." : "Network error"}
+          {error === "db_unavailable" ? "Database not configured yet." : "Network error"}
         </div>
       )}
       <HeroHeader />
-      <LuckyBand items={data.lucky} />
-      <LiveUpdateBand games={menu2} />
+      <LuckyBand items={data.lucky} ankData={ankData} />
+      <LiveUpdateBand items={data.live_update} />
       <LiveResultList items={data.live_result} />
       <FreeZoneBlock items={data.free_zone} />
       <Footer />

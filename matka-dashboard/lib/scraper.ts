@@ -18,6 +18,7 @@ export type ScrapedMenu2Game = {
 
 export type ScrapedJodiRow = { label: string; values: string[] };
 export type ScrapedJodiTable = { gameName: string; rows: ScrapedJodiRow[] };
+export type ScrapedAnkData = { ank: string; finalAnk: string };
 
 const SOURCE_URL = "https://sattamatkadpboss.mobi/";
 const FETCH_HEADERS = {
@@ -124,6 +125,28 @@ export async function scrapeMenu2Games(): Promise<ScrapedMenu2Game[]> {
   });
 
   return games;
+}
+
+export async function scrapeAnkData(): Promise<ScrapedAnkData | null> {
+  const html = await fetchHtml();
+  if (!html) return null;
+
+  const $ = cheerio.load(html);
+  let ank = "";
+  let finalAnk = "";
+
+  // Source site: div.menu3 > table > tr:nth-child(2) has ank and finalAnk values
+  $("div.menu3 table tr").each((i, tr) => {
+    if (i === 0) return; // skip header row
+    const cells = $(tr).find("td");
+    if (cells.length >= 2) {
+      ank = $(cells[0]).text().trim();
+      finalAnk = $(cells[1]).text().trim();
+    }
+  });
+
+  if (!ank && !finalAnk) return null;
+  return { ank, finalAnk };
 }
 
 export async function scrapeJodiTable(jodiPageUrl: string): Promise<ScrapedJodiTable | null> {

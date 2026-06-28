@@ -1,6 +1,6 @@
 import { pgTable, uuid, text, integer, boolean, timestamp, pgEnum, date, jsonb } from "drizzle-orm/pg-core";
 
-export const sectionEnum = pgEnum("section_type", ["lucky", "live_result", "free_zone"]);
+export const sectionEnum = pgEnum("section_type", ["lucky", "live_result", "free_zone", "live_update"]);
 
 export const rows = pgTable("rows", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -30,7 +30,7 @@ export const admins = pgTable("admins", {
 
 export type Row = typeof rows.$inferSelect;
 export type NewRow = typeof rows.$inferInsert;
-export type Section = "lucky" | "live_result" | "free_zone";
+export type Section = "lucky" | "live_result" | "free_zone" | "live_update";
 
 export type PanelDay = { open: string; jodi: string; close: string; color?: string };
 
