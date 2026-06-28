@@ -14,11 +14,13 @@ function TagSide({ text, href }: { text: string; href?: string }) {
 
 export function ResultCard({ row }: { row: Row }) {
   const panelHref = `/panel/${row.id}`;
+  const jodiHref = `/jodi/${row.id}`;
   const rightIsPanel = row.rightTag?.trim().toLowerCase() === "panel";
+  const leftIsJodi = row.leftTag?.trim().toLowerCase() === "jodi";
   return (
     <div className={`flex items-center justify-between px-4 py-3 border-t border-gray-300 ${row.highlight ? "kalyan-row" : ""}`}>
       <div className="w-20">
-        {row.leftTag && <TagSide text={row.leftTag} />}
+        {row.leftTag && <TagSide text={row.leftTag} href={leftIsJodi ? jodiHref : undefined} />}
       </div>
       <div className="flex-1 text-center">
         <div className="italic font-bold text-xl" style={{ color: row.color, textShadow: "1px 1px 0 rgba(0,0,0,0.15)" }}>

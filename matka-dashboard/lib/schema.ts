@@ -45,3 +45,19 @@ export const panelEntries = pgTable("panel_entries", {
 
 export type PanelEntry = typeof panelEntries.$inferSelect;
 export type NewPanelEntry = typeof panelEntries.$inferInsert;
+
+export type JodiDay = { value: string; color: string };
+
+export const jodiEntries = pgTable("jodi_entries", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  rowId: uuid("row_id").notNull().references(() => rows.id, { onDelete: "cascade" }),
+  weekStart: date("week_start").notNull(),
+  weekEnd: date("week_end").notNull(),
+  days: jsonb("days").$type<JodiDay[]>().notNull(),
+  position: integer("position").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type JodiEntry = typeof jodiEntries.$inferSelect;
+export type NewJodiEntry = typeof jodiEntries.$inferInsert;

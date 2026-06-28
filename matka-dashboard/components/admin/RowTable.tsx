@@ -26,7 +26,10 @@ function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Se
       </td>
       <td className="px-2 py-2 text-right whitespace-nowrap">
         {section === "live_result" && (
-          <Link href={`/admin/panel/${row.id}`} className="text-purple-700 underline text-sm mr-3">Panel chart</Link>
+          <>
+            <Link href={`/admin/jodi/${row.id}`} className="text-red-700 underline text-sm mr-3">Jodi chart</Link>
+            <Link href={`/admin/panel/${row.id}`} className="text-purple-700 underline text-sm mr-3">Panel chart</Link>
+          </>
         )}
         <button onClick={onEdit} className="text-blue-700 underline text-sm mr-3">Edit</button>
         <button onClick={onDelete} className="text-red-700 underline text-sm">Delete</button>
