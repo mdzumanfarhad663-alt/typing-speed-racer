@@ -1,4 +1,5 @@
 import * as cheerio from "cheerio";
+import type { AnyNode } from "domhandler";
 
 export type ScrapedResult = {
   gameTitle: string;
@@ -6,7 +7,7 @@ export type ScrapedResult = {
   timeRange: string;
   jodiUrl: string;
   panelUrl: string;
-  sourceKey: string; // slug used for upsert
+  sourceKey: string;
 };
 
 export type ScrapedJodiRow = { label: string; values: string[] };
@@ -28,6 +29,42 @@ function toSourceKey(title: string): string {
   return title.trim().toUpperCase().replace(/\s+/g, "_");
 }
 
+function parseGameBlock($: cheerio.CheerioAPI, el: AnyNode): ScrapedResult | null {
+  const spans = $(el).find("span");
+  let gameTitle = "";
+  let resultValue = "";
+  let timeRange = "";
+
+  spans.each((_j, span) => {
+    const style = $(span).attr("style") ?? "";
+    const text = $(span).text().trim();
+
+    if (style.includes("color:black")) {
+      resultValue = text;
+    } else if (style.includes("font-size:small") && style.includes("color:red")) {
+      timeRange = text;
+    } else if (style.includes("color:") && !style.includes("color:white")) {
+      // Any colored span that isn't white is a title candidate
+      // (white is used on Jodi/Panel link text)
+      if (!gameTitle && text.length > 1) gameTitle = text;
+    }
+  });
+
+  const jodiUrl = $(el).find("div.jodichartleft a").attr("href") ?? "";
+  const panelUrl = $(el).find("div.panelchartright a").attr("href") ?? "";
+
+  if (!gameTitle || !resultValue) return null;
+
+  return {
+    gameTitle: gameTitle.trim(),
+    resultValue: resultValue.trim(),
+    timeRange: timeRange.trim(),
+    jodiUrl,
+    panelUrl,
+    sourceKey: toSourceKey(gameTitle),
+  };
+}
+
 export async function scrapeMainResults(): Promise<ScrapedResult[]> {
   let html: string;
   try {
@@ -40,36 +77,16 @@ export async function scrapeMainResults(): Promise<ScrapedResult[]> {
 
   const $ = cheerio.load(html);
   const results: ScrapedResult[] = [];
+  const seen = new Set<string>();
 
-  // Each game is inside a div.news2
-  $("div.news2").each((_i, el) => {
-    const spans = $(el).find("span");
-    // span[color=blue] = title, span[color=black] = result, span[color=red] = time
-    let gameTitle = "";
-    let resultValue = "";
-    let timeRange = "";
-
-    spans.each((_j, span) => {
-      const color = $(span).attr("style") ?? "";
-      const text = $(span).text().trim();
-      if (color.includes("color:blue")) gameTitle = text;
-      else if (color.includes("color:black")) resultValue = text;
-      else if (color.includes("color:red")) timeRange = text;
-    });
-
-    const jodiUrl = $(el).find("div.jodichartleft a").attr("href") ?? "";
-    const panelUrl = $(el).find("div.panelchartright a").attr("href") ?? "";
-
-    if (!gameTitle || !resultValue) return;
-
-    results.push({
-      gameTitle,
-      resultValue,
-      timeRange,
-      jodiUrl,
-      panelUrl,
-      sourceKey: toSourceKey(gameTitle),
-    });
+  // Source site uses two container classes: div.news2 and div.fix
+  $("div.news2, div.fix").each((_i, el) => {
+    const parsed = parseGameBlock($, el);
+    if (!parsed) return;
+    // Deduplicate by sourceKey
+    if (seen.has(parsed.sourceKey)) return;
+    seen.add(parsed.sourceKey);
+    results.push(parsed);
   });
 
   return results;
@@ -89,7 +106,6 @@ export async function scrapeJodiTable(jodiPageUrl: string): Promise<ScrapedJodiT
   const gameName = $("title").text().split("|")[0].trim();
   const rows: ScrapedJodiRow[] = [];
 
-  // Jodi chart pages typically have a table with rows of date + values
   $("table tr").each((_i, tr) => {
     const cells = $(tr).find("td");
     if (cells.length < 2) return;

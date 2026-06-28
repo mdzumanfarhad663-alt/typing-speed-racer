@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { eq, and } from "drizzle-orm";
+import { eq, and, or, ilike } from "drizzle-orm";
 import { requireAdmin } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { scrapeMainResults } from "@/lib/scraper";
@@ -24,27 +24,35 @@ export async function POST() {
 
   for (const r of results) {
     try {
+      // Match by sourceKey (scraped rows) OR by title (manual rows) — avoids duplicates
       const existing = await db
-        .select({ id: schema.rows.id })
+        .select({ id: schema.rows.id, source: schema.rows.source })
         .from(schema.rows)
         .where(
-          and(
-            eq(schema.rows.source, "scraped"),
-            eq(schema.rows.sourceKey, r.sourceKey)
+          or(
+            and(
+              eq(schema.rows.source, "scraped"),
+              eq(schema.rows.sourceKey, r.sourceKey)
+            ),
+            ilike(schema.rows.title, r.gameTitle.trim())
           )
         )
         .limit(1);
 
       if (existing.length > 0) {
+        // Update result value and time on whichever row was found
         await db
           .update(schema.rows)
           .set({
             resultValue: r.resultValue,
             timeRange: r.timeRange,
+            source: "scraped",
+            sourceKey: r.sourceKey,
             updatedAt: now,
           })
           .where(eq(schema.rows.id, existing[0].id));
       } else {
+        // New game — insert it
         const allRows = await db
           .select({ position: schema.rows.position })
           .from(schema.rows)
@@ -77,7 +85,7 @@ export async function POST() {
     }
   }
 
-  // Cache for public API
+  // Cache scraped results for public API
   try {
     await db
       .insert(schema.scrapedCache)
