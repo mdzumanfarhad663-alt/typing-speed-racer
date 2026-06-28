@@ -5,6 +5,7 @@ import { HeroHeader } from "@/components/public/HeroHeader";
 import { LuckyBand } from "@/components/public/LuckyBand";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { FreeZoneBlock } from "@/components/public/FreeZoneBlock";
+import { Footer } from "@/components/public/Footer";
 import { RefreshIndicator } from "@/components/public/RefreshIndicator";
 import type { PublicSectionsResponse } from "@/lib/types";
 
@@ -49,6 +50,7 @@ export default function Home() {
       <LuckyBand items={data.lucky} />
       <LiveResultList items={data.live_result} />
       <FreeZoneBlock items={data.free_zone} />
+      <Footer />
       <RefreshIndicator lastUpdated={lastUpdated} />
     </main>
   );
