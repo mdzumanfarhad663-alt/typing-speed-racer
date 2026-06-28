@@ -3,7 +3,7 @@ import { ResultCard } from "./ResultCard";
 
 export function LiveResultList({ items }: { items: Row[] }) {
   return (
-    <section className="section-frame max-w-5xl mx-auto my-4">
+    <section className="section-frame my-4">
       <div className="gradient-band text-center py-3">
         <h2 className="text-2xl font-bold italic">
           <span className="mx-2">{"«««"}</span>

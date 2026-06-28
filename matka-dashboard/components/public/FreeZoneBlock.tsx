@@ -3,7 +3,7 @@ import type { Row } from "@/lib/types";
 export function FreeZoneBlock({ items }: { items: Row[] }) {
   const dateLabel = items.find((i) => i.dateLabel)?.dateLabel || null;
   return (
-    <section className="section-frame max-w-5xl mx-auto my-4" style={{ outlineColor: "#aa0000" }}>
+    <section className="section-frame my-4" style={{ outlineColor: "#aa0000" }}>
       <div className="py-2 px-4" style={{ background: "#6c1d8b", color: "#fff200" }}>
         <h2 className="font-bold italic text-lg">⇛ OPEN TO CLOSE FREE GAME ZONE</h2>
       </div>

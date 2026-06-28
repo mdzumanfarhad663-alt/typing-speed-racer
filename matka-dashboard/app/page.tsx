@@ -47,7 +47,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gray-100 pb-12">
+    <main className="min-h-screen bg-gray-100 pb-12 px-2 sm:px-4">
       <header className="bg-black text-white text-center py-2 text-xs flex justify-between px-4">
         <span>Matka Production System</span>
         <Link href="/admin" className="underline">Admin</Link>

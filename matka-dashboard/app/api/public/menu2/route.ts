@@ -1,19 +1,16 @@
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
-import { db, schema } from "@/lib/db";
+import { scrapeMenu2Games } from "@/lib/scraper";
 
-export const dynamic = "force-dynamic";
+// Revalidate every 60 seconds — live scrape, no DB needed
+export const revalidate = 60;
 
 export async function GET() {
   try {
-    const rows = await db
-      .select()
-      .from(schema.scrapedCache)
-      .where(eq(schema.scrapedCache.key, "menu2"))
-      .limit(1);
-
-    if (rows.length === 0) return NextResponse.json({ games: [], scrapedAt: null });
-    return NextResponse.json({ games: rows[0].data, scrapedAt: rows[0].scrapedAt });
+    const games = await scrapeMenu2Games();
+    return NextResponse.json(
+      { games, scrapedAt: new Date().toISOString() },
+      { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=30" } }
+    );
   } catch {
     return NextResponse.json({ games: [], scrapedAt: null });
   }

@@ -12,7 +12,7 @@ export function Footer() {
   return (
     <>
       {/* 1. Contact */}
-      <section className="section-frame max-w-5xl mx-auto my-4">
+      <section className="section-frame my-4">
         <div className="text-center py-4 sm:py-6 px-4">
           <h2 className="text-xl sm:text-2xl font-bold italic text-red-600 mb-2">
             Contact For Any Support And Queries
@@ -27,7 +27,7 @@ export function Footer() {
       </section>
 
       {/* 2. Welcome / About */}
-      <section className="section-frame max-w-5xl mx-auto my-4">
+      <section className="section-frame my-4">
         <div className="text-center py-4 sm:py-5 px-4 sm:px-6 text-xs sm:text-sm italic leading-relaxed">
           <div className="mb-2">
             Welcome to <strong>SattaMatkaDpboss.Mobi</strong> — your one-stop destination for live Kalyan Matka,
@@ -42,7 +42,7 @@ export function Footer() {
       </section>
 
       {/* 3. Member Resources */}
-      <section className="section-frame max-w-5xl mx-auto my-4">
+      <section className="section-frame my-4">
         <div className="py-4 sm:py-5 px-4 sm:px-6">
           <h3 className="text-lg sm:text-xl font-bold italic text-center text-red-600 mb-3">
             Member Resources
@@ -58,7 +58,7 @@ export function Footer() {
       </section>
 
       {/* 4. Disclaimer */}
-      <section className="section-frame max-w-5xl mx-auto my-4">
+      <section className="section-frame my-4">
         <div className="py-4 sm:py-5 px-4 sm:px-6 text-xs sm:text-sm italic leading-relaxed text-center">
           <h3 className="text-base sm:text-lg font-bold not-italic text-red-700 mb-2">DISCLAIMER</h3>
           <p>
@@ -72,7 +72,7 @@ export function Footer() {
       </section>
 
       {/* 5. Rating */}
-      <section className="section-frame max-w-5xl mx-auto my-4">
+      <section className="section-frame my-4">
         <div className="text-center py-4 sm:py-5 px-4">
           <div className="text-2xl sm:text-3xl text-yellow-500 tracking-widest">★ ★ ★ ★ ★</div>
           <p className="mt-2 text-sm sm:text-base italic font-semibold">
@@ -83,7 +83,7 @@ export function Footer() {
       </section>
 
       {/* 6. Footer bar */}
-      <footer className="max-w-5xl mx-auto my-4 px-4">
+      <footer className="my-4 px-4">
         <div className="bg-black text-white py-4 px-4 rounded">
           <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm italic">
             {FOOTER_LINKS.map((l, i) => (

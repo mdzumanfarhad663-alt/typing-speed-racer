@@ -2,7 +2,7 @@ import type { Row } from "@/lib/types";
 
 export function LuckyBand({ items }: { items: Row[] }) {
   return (
-    <section className="section-frame max-w-5xl mx-auto my-4">
+    <section className="section-frame my-4">
       <div className="bg-pink-100 border-y-2 border-pink-300 text-center py-2">
         <h2 className="text-xl font-bold italic">Today Satta Matka Lucky Number</h2>
       </div>

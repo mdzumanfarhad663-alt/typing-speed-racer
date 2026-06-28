@@ -1,7 +1,7 @@
 export function HeroHeader() {
   return (
     <>
-      <section className="section-frame max-w-5xl mx-auto my-4">
+      <section className="section-frame my-4">
         <div className="text-center py-4 px-4">
           <div className="text-base sm:text-lg italic">विश्व की पहली</div>
           <div className="text-base sm:text-lg italic">भरोसेमन्द वेबसाइट</div>
@@ -10,7 +10,7 @@ export function HeroHeader() {
         </div>
       </section>
 
-      <section className="section-frame max-w-5xl mx-auto my-4">
+      <section className="section-frame my-4">
         <div className="py-4 px-4 sm:px-6 text-center text-xs sm:text-sm italic leading-relaxed">
           <strong>SattaMatkaDpboss.Mobi</strong> is India&apos;s fastest and most trusted platform for{" "}
           <strong>DPBoss Satta Matka</strong> result — Kalyan Matka, Milan Day Night, Rajdhani Day Night, Main Bazar,
