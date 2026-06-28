@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { HeroHeader } from "@/components/public/HeroHeader";
 import { LuckyBand } from "@/components/public/LuckyBand";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { FreeZoneBlock } from "@/components/public/FreeZoneBlock";
@@ -44,6 +45,7 @@ export default function Home() {
           {error === "db_unavailable" ? "Database not configured yet — admin will need to set POSTGRES_URL." : "Network error"}
         </div>
       )}
+      <HeroHeader />
       <LuckyBand items={data.lucky} />
       <LiveResultList items={data.live_result} />
       <FreeZoneBlock items={data.free_zone} />
