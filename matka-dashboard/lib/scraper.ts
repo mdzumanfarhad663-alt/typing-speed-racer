@@ -10,12 +10,14 @@ export type ScrapedResult = {
   sourceKey: string;
 };
 
-export type ScrapedJodiRow = { label: string; values: string[] };
-
-export type ScrapedJodiTable = {
-  gameName: string;
-  rows: ScrapedJodiRow[];
+export type ScrapedMenu2Game = {
+  gameTitle: string;
+  resultValue: string;
+  sourceKey: string;
 };
+
+export type ScrapedJodiRow = { label: string; values: string[] };
+export type ScrapedJodiTable = { gameName: string; rows: ScrapedJodiRow[] };
 
 const SOURCE_URL = "https://sattamatkadpboss.mobi/";
 const FETCH_HEADERS = {
@@ -38,14 +40,11 @@ function parseGameBlock($: cheerio.CheerioAPI, el: AnyNode): ScrapedResult | nul
   spans.each((_j, span) => {
     const style = $(span).attr("style") ?? "";
     const text = $(span).text().trim();
-
     if (style.includes("color:black")) {
       resultValue = text;
     } else if (style.includes("font-size:small") && style.includes("color:red")) {
       timeRange = text;
     } else if (style.includes("color:") && !style.includes("color:white")) {
-      // Any colored span that isn't white is a title candidate
-      // (white is used on Jodi/Panel link text)
       if (!gameTitle && text.length > 1) gameTitle = text;
     }
   });
@@ -65,25 +64,27 @@ function parseGameBlock($: cheerio.CheerioAPI, el: AnyNode): ScrapedResult | nul
   };
 }
 
-export async function scrapeMainResults(): Promise<ScrapedResult[]> {
-  let html: string;
+async function fetchHtml(): Promise<string | null> {
   try {
     const res = await fetch(SOURCE_URL, { headers: FETCH_HEADERS, cache: "no-store" });
-    if (!res.ok) return [];
-    html = await res.text();
+    if (!res.ok) return null;
+    return await res.text();
   } catch {
-    return [];
+    return null;
   }
+}
+
+export async function scrapeMainResults(): Promise<ScrapedResult[]> {
+  const html = await fetchHtml();
+  if (!html) return [];
 
   const $ = cheerio.load(html);
   const results: ScrapedResult[] = [];
   const seen = new Set<string>();
 
-  // Source site uses two container classes: div.news2 and div.fix
   $("div.news2, div.fix").each((_i, el) => {
     const parsed = parseGameBlock($, el);
     if (!parsed) return;
-    // Deduplicate by sourceKey
     if (seen.has(parsed.sourceKey)) return;
     seen.add(parsed.sourceKey);
     results.push(parsed);
@@ -92,31 +93,60 @@ export async function scrapeMainResults(): Promise<ScrapedResult[]> {
   return results;
 }
 
+export async function scrapeMenu2Games(): Promise<ScrapedMenu2Game[]> {
+  const html = await fetchHtml();
+  if (!html) return [];
+
+  const $ = cheerio.load(html);
+  const games: ScrapedMenu2Game[] = [];
+
+  $("div.menu2").each((_i, el) => {
+    // Each game is a pair of red-title + blue-result spans inside the menu2 div
+    const spans = $(el).find("span");
+    let currentTitle = "";
+
+    spans.each((_j, span) => {
+      const style = $(span).attr("style") ?? "";
+      const text = $(span).text().trim();
+      if (!text) return;
+
+      if (style.includes("color:red")) {
+        currentTitle = text;
+      } else if (style.includes("color:blue") && currentTitle) {
+        games.push({
+          gameTitle: currentTitle,
+          resultValue: text,
+          sourceKey: toSourceKey(currentTitle),
+        });
+        currentTitle = "";
+      }
+    });
+  });
+
+  return games;
+}
+
 export async function scrapeJodiTable(jodiPageUrl: string): Promise<ScrapedJodiTable | null> {
-  let html: string;
   try {
     const res = await fetch(jodiPageUrl, { headers: FETCH_HEADERS, cache: "no-store" });
     if (!res.ok) return null;
-    html = await res.text();
+    const html = await res.text();
+    const $ = cheerio.load(html);
+    const gameName = $("title").text().split("|")[0].trim();
+    const rows: ScrapedJodiRow[] = [];
+
+    $("table tr").each((_i, tr) => {
+      const cells = $(tr).find("td");
+      if (cells.length < 2) return;
+      const label = $(cells[0]).text().trim();
+      const values: string[] = [];
+      cells.each((_j, td) => { if (_j > 0) values.push($(td).text().trim()); });
+      if (label) rows.push({ label, values });
+    });
+
+    if (rows.length === 0) return null;
+    return { gameName, rows };
   } catch {
     return null;
   }
-
-  const $ = cheerio.load(html);
-  const gameName = $("title").text().split("|")[0].trim();
-  const rows: ScrapedJodiRow[] = [];
-
-  $("table tr").each((_i, tr) => {
-    const cells = $(tr).find("td");
-    if (cells.length < 2) return;
-    const label = $(cells[0]).text().trim();
-    const values: string[] = [];
-    cells.each((_j, td) => {
-      if (_j > 0) values.push($(td).text().trim());
-    });
-    if (label) rows.push({ label, values });
-  });
-
-  if (rows.length === 0) return null;
-  return { gameName, rows };
 }

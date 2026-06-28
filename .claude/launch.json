@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".claude/static-server.js"],
+      "port": 4321
+    },
+    {
+      "name": "matka-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "matka-dashboard", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}

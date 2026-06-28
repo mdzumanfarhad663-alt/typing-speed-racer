@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq, and, or, ilike } from "drizzle-orm";
 import { requireAdmin } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
-import { scrapeMainResults } from "@/lib/scraper";
+import { scrapeMainResults, scrapeMenu2Games } from "@/lib/scraper";
 
 export const maxDuration = 30;
 
@@ -13,7 +13,7 @@ export async function POST() {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  const results = await scrapeMainResults();
+  const [results, menu2] = await Promise.all([scrapeMainResults(), scrapeMenu2Games()]);
 
   if (results.length === 0) {
     return NextResponse.json({ error: "scrape_failed", upserted: 0 }, { status: 502 });
@@ -24,35 +24,37 @@ export async function POST() {
 
   for (const r of results) {
     try {
-      // Match by sourceKey (scraped rows) OR by title (manual rows) — avoids duplicates
       const existing = await db
-        .select({ id: schema.rows.id, source: schema.rows.source })
+        .select({ id: schema.rows.id })
         .from(schema.rows)
         .where(
           or(
-            and(
-              eq(schema.rows.source, "scraped"),
-              eq(schema.rows.sourceKey, r.sourceKey)
-            ),
+            and(eq(schema.rows.source, "scraped"), eq(schema.rows.sourceKey, r.sourceKey)),
             ilike(schema.rows.title, r.gameTitle.trim())
           )
         )
         .limit(1);
 
+      const extraLines = [
+        ...(r.jodiUrl ? [`jodi_url:${r.jodiUrl}`] : []),
+        ...(r.panelUrl ? [`panel_url:${r.panelUrl}`] : []),
+      ];
+
       if (existing.length > 0) {
-        // Update result value and time on whichever row was found
         await db
           .update(schema.rows)
           .set({
             resultValue: r.resultValue,
             timeRange: r.timeRange,
+            leftTag: r.jodiUrl ? "Jodi" : null,
+            rightTag: r.panelUrl ? "Panel" : null,
+            extraLines,
             source: "scraped",
             sourceKey: r.sourceKey,
             updatedAt: now,
           })
           .where(eq(schema.rows.id, existing[0].id));
       } else {
-        // New game — insert it
         const allRows = await db
           .select({ position: schema.rows.position })
           .from(schema.rows)
@@ -68,10 +70,7 @@ export async function POST() {
           timeRange: r.timeRange,
           leftTag: r.jodiUrl ? "Jodi" : null,
           rightTag: r.panelUrl ? "Panel" : null,
-          extraLines: [
-            ...(r.jodiUrl ? [`jodi_url:${r.jodiUrl}`] : []),
-            ...(r.panelUrl ? [`panel_url:${r.panelUrl}`] : []),
-          ],
+          extraLines,
           color: "#0000ff",
           source: "scraped",
           sourceKey: r.sourceKey,
@@ -85,25 +84,28 @@ export async function POST() {
     }
   }
 
-  // Cache scraped results for public API
+  // Cache both result sets
   try {
     await db
       .insert(schema.scrapedCache)
-      .values({
-        key: "last_scrape",
-        data: results as unknown as Record<string, unknown>[],
-        scrapedAt: now,
-      })
+      .values({ key: "last_scrape", data: results as unknown as Record<string, unknown>[], scrapedAt: now })
       .onConflictDoUpdate({
         target: schema.scrapedCache.key,
-        set: {
-          data: results as unknown as Record<string, unknown>[],
-          scrapedAt: now,
-        },
+        set: { data: results as unknown as Record<string, unknown>[], scrapedAt: now },
       });
+
+    if (menu2.length > 0) {
+      await db
+        .insert(schema.scrapedCache)
+        .values({ key: "menu2", data: menu2 as unknown as Record<string, unknown>[], scrapedAt: now })
+        .onConflictDoUpdate({
+          target: schema.scrapedCache.key,
+          set: { data: menu2 as unknown as Record<string, unknown>[], scrapedAt: now },
+        });
+    }
   } catch (err) {
     console.error("cache update error", err);
   }
 
-  return NextResponse.json({ ok: true, upserted, total: results.length, timestamp: now.toISOString() });
+  return NextResponse.json({ ok: true, upserted, total: results.length, menu2Count: menu2.length, timestamp: now.toISOString() });
 }
