@@ -16,10 +16,12 @@ function normalizeDays(raw: unknown): PanelDay[] {
   const arr: PanelDay[] = [];
   for (let i = 0; i < 7; i++) {
     const d = raw[i] || {};
+    const c = (d as PanelDay).color;
     arr.push({
       open: String((d as PanelDay).open || "").slice(0, 6),
       jodi: String((d as PanelDay).jodi || "").slice(0, 4),
       close: String((d as PanelDay).close || "").slice(0, 6),
+      color: typeof c === "string" && c.startsWith("#") ? c : "#000000",
     });
   }
   return arr;

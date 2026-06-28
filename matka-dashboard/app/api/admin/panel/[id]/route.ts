@@ -16,6 +16,7 @@ function normalizeDays(raw: unknown): PanelDay[] {
       open: String(d.open || "").slice(0, 6),
       jodi: String(d.jodi || "").slice(0, 4),
       close: String(d.close || "").slice(0, 6),
+      color: typeof d.color === "string" && d.color.startsWith("#") ? d.color : "#000000",
     });
   }
   return arr;

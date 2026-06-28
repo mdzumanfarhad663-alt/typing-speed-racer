@@ -5,7 +5,7 @@ import type { PanelDay, PanelEntry } from "@/lib/schema";
 const DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 function emptyDays(): PanelDay[] {
-  return Array.from({ length: 7 }, () => ({ open: "", jodi: "", close: "" }));
+  return Array.from({ length: 7 }, () => ({ open: "", jodi: "", close: "", color: "#000000" }));
 }
 
 export function PanelEntryForm({
@@ -21,7 +21,9 @@ export function PanelEntryForm({
 }) {
   const [weekStart, setWeekStart] = useState(initial?.weekStart ?? "");
   const [weekEnd, setWeekEnd] = useState(initial?.weekEnd ?? "");
-  const [days, setDays] = useState<PanelDay[]>(initial?.days ?? emptyDays());
+  const [days, setDays] = useState<PanelDay[]>(
+    initial?.days?.map((d) => ({ open: d.open, jodi: d.jodi, close: d.close, color: d.color || "#000000" })) ?? emptyDays()
+  );
   const [busy, setBusy] = useState(false);
 
   function update(i: number, k: keyof PanelDay, v: string) {
@@ -60,7 +62,7 @@ export function PanelEntryForm({
   return (
     <div className="border border-gray-300 rounded p-4 bg-white">
       <h3 className="font-bold mb-3">{initial ? "Edit week" : "Add week"}</h3>
-      <div className="flex gap-3 mb-4">
+      <div className="flex gap-3 mb-4 flex-wrap">
         <label className="text-sm">
           Week start
           <input type="date" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} className="block border px-2 py-1 rounded" />
@@ -78,6 +80,7 @@ export function PanelEntryForm({
               <th className="border px-2 py-1 bg-gray-100">Open Pana</th>
               <th className="border px-2 py-1 bg-gray-100">Jodi</th>
               <th className="border px-2 py-1 bg-gray-100">Close Pana</th>
+              <th className="border px-2 py-1 bg-gray-100">Jodi color</th>
             </tr>
           </thead>
           <tbody>
@@ -85,8 +88,15 @@ export function PanelEntryForm({
               <tr key={i}>
                 <td className="border px-2 py-1 font-bold">{DAY_LABELS[i]}</td>
                 <td className="border px-2 py-1"><input value={d.open} onChange={(e) => update(i, "open", e.target.value)} className="w-20 border rounded px-1" placeholder="128" maxLength={6} /></td>
-                <td className="border px-2 py-1"><input value={d.jodi} onChange={(e) => update(i, "jodi", e.target.value)} className="w-16 border rounded px-1" placeholder="91" maxLength={4} /></td>
+                <td className="border px-2 py-1">
+                  <input value={d.jodi} onChange={(e) => update(i, "jodi", e.target.value)} className="w-16 border rounded px-1 font-bold" placeholder="91" maxLength={4} style={{ color: d.color || "#000" }} />
+                </td>
                 <td className="border px-2 py-1"><input value={d.close} onChange={(e) => update(i, "close", e.target.value)} className="w-20 border rounded px-1" placeholder="690" maxLength={6} /></td>
+                <td className="border px-2 py-1 whitespace-nowrap">
+                  <input type="color" value={d.color || "#000000"} onChange={(e) => update(i, "color", e.target.value)} className="w-10 h-7 align-middle" />
+                  <button type="button" onClick={() => update(i, "color", "#000000")} className="text-xs underline ml-1">black</button>
+                  <button type="button" onClick={() => update(i, "color", "#d00000")} className="text-xs underline ml-1 text-red-600">red</button>
+                </td>
               </tr>
             ))}
           </tbody>

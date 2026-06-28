@@ -30,7 +30,7 @@ export type Row = typeof rows.$inferSelect;
 export type NewRow = typeof rows.$inferInsert;
 export type Section = "lucky" | "live_result" | "free_zone";
 
-export type PanelDay = { open: string; jodi: string; close: string };
+export type PanelDay = { open: string; jodi: string; close: string; color?: string };
 
 export const panelEntries = pgTable("panel_entries", {
   id: uuid("id").primaryKey().defaultRandom(),
