@@ -17,7 +17,12 @@ function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Se
   return (
     <tr ref={setNodeRef} style={style} className="border-b border-gray-200">
       <td className="px-2 py-2 cursor-grab text-gray-400 select-none" {...attributes} {...listeners}>⋮⋮</td>
-      <td className="px-2 py-2 font-semibold" style={{ color: row.color }}>{row.title}</td>
+      <td className="px-2 py-2 font-semibold" style={{ color: row.color }}>
+        {row.title}
+        {row.source === "scraped" && (
+          <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-normal align-middle">auto</span>
+        )}
+      </td>
       <td className="px-2 py-2">{row.resultValue}</td>
       <td className="px-2 py-2 text-sm text-gray-600">{row.timeRange}</td>
       <td className="px-2 py-2 text-sm">{row.leftTag} / {row.rightTag}</td>

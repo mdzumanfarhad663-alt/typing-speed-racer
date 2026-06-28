@@ -15,6 +15,8 @@ export const rows = pgTable("rows", {
   dateLabel: text("date_label"),
   highlight: boolean("highlight").notNull().default(false),
   position: integer("position").notNull().default(0),
+  source: text("source").notNull().default("manual"), // "manual" | "scraped"
+  sourceKey: text("source_key"), // stable slug for upsert, e.g. "KALYAN_MORNING"
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
@@ -61,3 +63,9 @@ export const jodiEntries = pgTable("jodi_entries", {
 
 export type JodiEntry = typeof jodiEntries.$inferSelect;
 export type NewJodiEntry = typeof jodiEntries.$inferInsert;
+
+export const scrapedCache = pgTable("scraped_cache", {
+  key: text("key").primaryKey(),
+  data: jsonb("data").notNull(),
+  scrapedAt: timestamp("scraped_at", { withTimezone: true }).notNull(),
+});

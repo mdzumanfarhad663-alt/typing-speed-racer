@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AdminNav } from "@/components/admin/AdminNav";
+import { ScrapeButton } from "@/components/admin/ScrapeButton";
 
 const sections = [
   { href: "/admin/lucky", title: "Lucky Number Band", desc: "Ank / Final Ank cards at top." },
@@ -12,7 +13,17 @@ export default function AdminHome() {
     <main className="min-h-screen bg-gray-100">
       <AdminNav />
       <div className="max-w-5xl mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
+
+        {/* Auto-sync from source site */}
+        <div className="bg-white border border-blue-200 rounded p-5 mb-8">
+          <h2 className="font-bold text-lg mb-1">Auto-Sync Results</h2>
+          <p className="text-sm text-gray-600 mb-3">
+            Click to pull the latest game results from the source site and update Live Results automatically.
+          </p>
+          <ScrapeButton />
+        </div>
+
         <div className="grid md:grid-cols-3 gap-4">
           {sections.map((s) => (
             <Link key={s.href} href={s.href} className="bg-white border border-gray-300 rounded p-6 hover:shadow-md hover:border-black transition">
