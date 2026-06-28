@@ -7,7 +7,7 @@ import { getSession } from "@/lib/auth";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const VALID_SECTIONS: Section[] = ["lucky", "live_result", "free_zone"];
+const VALID_SECTIONS: Section[] = ["lucky", "live_result", "free_zone", "live_update"];
 
 async function guard() {
   const s = await getSession();
