@@ -30,7 +30,7 @@ function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Se
         <span className="inline-block w-4 h-4 rounded border border-gray-300 align-middle" style={{ background: row.color }} />
       </td>
       <td className="px-2 py-2 text-right whitespace-nowrap">
-        {section === "live_result" && (
+        {(section === "live_result" || section === "live_update") && (
           <>
             <Link href={`/admin/jodi/${row.id}`} className="text-red-700 underline text-sm mr-3">Jodi chart</Link>
             <Link href={`/admin/panel/${row.id}`} className="text-purple-700 underline text-sm mr-3">Panel chart</Link>
