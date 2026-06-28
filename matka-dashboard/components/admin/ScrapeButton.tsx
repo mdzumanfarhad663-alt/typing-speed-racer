@@ -1,11 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+
+const AUTO_INTERVAL_MS = 3 * 60 * 1000; // 3 minutes
 
 export function ScrapeButton() {
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [countdown, setCountdown] = useState(AUTO_INTERVAL_MS / 1000);
+  const statusRef = useRef(status);
+  statusRef.current = status;
 
-  async function handleScrape() {
+  const handleScrape = useCallback(async () => {
+    if (statusRef.current === "loading") return;
     setStatus("loading");
     setMessage("");
     try {
@@ -23,7 +29,27 @@ export function ScrapeButton() {
       setMessage("Network error");
     }
     setTimeout(() => { setStatus("idle"); setMessage(""); }, 6000);
-  }
+  }, []);
+
+  // Auto-refresh every 3 minutes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleScrape();
+      setCountdown(AUTO_INTERVAL_MS / 1000);
+    }, AUTO_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [handleScrape]);
+
+  // Countdown timer
+  useEffect(() => {
+    const tick = setInterval(() => {
+      setCountdown((c) => (c <= 1 ? AUTO_INTERVAL_MS / 1000 : c - 1));
+    }, 1000);
+    return () => clearInterval(tick);
+  }, []);
+
+  const mins = Math.floor(countdown / 60);
+  const secs = String(countdown % 60).padStart(2, "0");
 
   return (
     <div className="flex items-center gap-3 flex-wrap">
@@ -44,6 +70,9 @@ export function ScrapeButton() {
           "↻ Refresh from Source"
         )}
       </button>
+      <span className="text-xs text-gray-500">
+        Auto-refresh in {mins}:{secs}
+      </span>
       {message && (
         <span className={`text-sm font-medium ${status === "error" ? "text-red-600" : "text-green-700"}`}>
           {message}
