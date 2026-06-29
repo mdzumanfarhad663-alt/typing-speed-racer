@@ -5,6 +5,7 @@ import { HeroHeader } from "@/components/public/HeroHeader";
 import { LuckyBand } from "@/components/public/LuckyBand";
 import { LiveUpdateBand } from "@/components/public/LiveUpdateBand";
 import { PromoBlock } from "@/components/public/PromoBlock";
+import { ContactForumSection } from "@/components/public/ContactForumSection";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { FreeZoneBlock } from "@/components/public/FreeZoneBlock";
 import { Footer } from "@/components/public/Footer";
@@ -72,6 +73,7 @@ export default function Home() {
       <LiveUpdateBand items={data.live_update} />
       <PromoBlock />
       <LiveResultList items={data.live_result} />
+      <ContactForumSection />
       <FreeZoneBlock items={data.free_zone} />
       <Footer />
       <RefreshIndicator lastUpdated={lastUpdated} />
