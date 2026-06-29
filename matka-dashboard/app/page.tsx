@@ -9,6 +9,7 @@ import { ContactForumSection } from "@/components/public/ContactForumSection";
 import { WeeklyCharts } from "@/components/public/WeeklyCharts";
 import { TopGuessers } from "@/components/public/TopGuessers";
 import { ChartRecords } from "@/components/public/ChartRecords";
+import { SattaMatkaInfo } from "@/components/public/SattaMatkaInfo";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { FreeZoneBlock } from "@/components/public/FreeZoneBlock";
 import { Footer } from "@/components/public/Footer";
@@ -80,6 +81,7 @@ export default function Home() {
       <WeeklyCharts />
       <TopGuessers />
       <ChartRecords />
+      <SattaMatkaInfo />
       <FreeZoneBlock items={data.free_zone} />
       <Footer />
       <RefreshIndicator lastUpdated={lastUpdated} />
