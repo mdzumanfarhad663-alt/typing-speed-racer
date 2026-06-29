@@ -8,6 +8,7 @@ import { PromoBlock } from "@/components/public/PromoBlock";
 import { ContactForumSection } from "@/components/public/ContactForumSection";
 import { WeeklyCharts } from "@/components/public/WeeklyCharts";
 import { TopGuessers } from "@/components/public/TopGuessers";
+import { ChartRecords } from "@/components/public/ChartRecords";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { FreeZoneBlock } from "@/components/public/FreeZoneBlock";
 import { Footer } from "@/components/public/Footer";
@@ -78,6 +79,7 @@ export default function Home() {
       <ContactForumSection />
       <WeeklyCharts />
       <TopGuessers />
+      <ChartRecords />
       <FreeZoneBlock items={data.free_zone} />
       <Footer />
       <RefreshIndicator lastUpdated={lastUpdated} />
