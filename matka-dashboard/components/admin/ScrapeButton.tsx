@@ -1,17 +1,18 @@
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
-const AUTO_INTERVAL_MS = 3 * 60 * 1000; // 3 minutes
+const INTERVAL_SECS = 2 * 60; // 2 minutes
 
 export function ScrapeButton() {
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
-  const [countdown, setCountdown] = useState(AUTO_INTERVAL_MS / 1000);
-  const statusRef = useRef(status);
-  statusRef.current = status;
+  const [countdown, setCountdown] = useState(INTERVAL_SECS);
+
+  // Keep a stable ref so the interval closure always calls the latest version
+  const scrapeRef = useRef<() => Promise<void>>(async () => {});
 
   const handleScrape = useCallback(async () => {
-    if (statusRef.current === "loading") return;
+    if (status === "loading") return;
     setStatus("loading");
     setMessage("");
     try {
@@ -22,31 +23,39 @@ export function ScrapeButton() {
         setMessage(`✓ Updated ${data.upserted} of ${data.total} games`);
       } else {
         setStatus("error");
-        setMessage(data.error ?? "Scrape failed — check server logs");
+        setMessage(data.error ?? "Scrape failed");
       }
     } catch {
       setStatus("error");
       setMessage("Network error");
     }
-    setTimeout(() => { setStatus("idle"); setMessage(""); }, 6000);
-  }, []);
+    setTimeout(() => {
+      setStatus("idle");
+      setMessage("");
+    }, 6000);
+  }, [status]);
 
-  // Auto-refresh every 3 minutes
+  // Keep ref in sync with latest handleScrape
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleScrape();
-      setCountdown(AUTO_INTERVAL_MS / 1000);
-    }, AUTO_INTERVAL_MS);
-    return () => clearInterval(interval);
+    scrapeRef.current = handleScrape;
   }, [handleScrape]);
 
-  // Countdown timer
+  // Single interval: ticks every second, fires scrape when countdown hits 0
   useEffect(() => {
+    let secs = INTERVAL_SECS;
+    setCountdown(secs);
+
     const tick = setInterval(() => {
-      setCountdown((c) => (c <= 1 ? AUTO_INTERVAL_MS / 1000 : c - 1));
+      secs -= 1;
+      if (secs <= 0) {
+        secs = INTERVAL_SECS;
+        scrapeRef.current();
+      }
+      setCountdown(secs);
     }, 1000);
+
     return () => clearInterval(tick);
-  }, []);
+  }, []); // runs once on mount — interval is driven by scrapeRef not handleScrape
 
   const mins = Math.floor(countdown / 60);
   const secs = String(countdown % 60).padStart(2, "0");
