@@ -83,6 +83,20 @@ export async function POST() {
     } catch (err) { console.error("upsert error for", r.sourceKey, err); }
   }
 
+  // Sync positions to match source site order.
+  // Scraped rows use positions 10000+ (index-based), manual rows stay below 10000
+  // so they always appear first in the list.
+  for (let idx = 0; idx < results.length; idx++) {
+    try {
+      await db.update(schema.rows)
+        .set({ position: 10000 + idx })
+        .where(and(
+          eq(schema.rows.source, "scraped"),
+          eq(schema.rows.sourceKey, results[idx].sourceKey)
+        ));
+    } catch (err) { console.error("position sync error", results[idx].sourceKey, err); }
+  }
+
   // Upsert live_update games (menu2) — only scraped ones, manual ones are untouched
   for (const g of menu2Games) {
     try { await upsertLiveUpdateGame(g, now); } catch (err) { console.error("live_update upsert error", err); }

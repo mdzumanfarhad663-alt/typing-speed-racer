@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { asc, eq, max } from "drizzle-orm";
+import { and, asc, eq, max } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rows, type Section } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
@@ -38,11 +38,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Title required" }, { status: 400 });
   }
 
-  const [{ value: nextPos }] = await db
+  // Manual rows use positions 0–9999 so they always appear above scraped rows (10000+)
+  const [{ value: maxManualPos }] = await db
     .select({ value: max(rows.position) })
     .from(rows)
-    .where(eq(rows.section, body.section));
-  const position = (nextPos ?? -1) + 1;
+    .where(and(eq(rows.section, body.section), eq(rows.source, "manual")));
+  const position = Math.min((maxManualPos ?? -1) + 1, 9999);
 
   const [inserted] = await db
     .insert(rows)
