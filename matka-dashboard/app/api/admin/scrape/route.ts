@@ -67,7 +67,7 @@ export async function POST() {
         await db.update(schema.rows).set({
           resultValue: r.resultValue, timeRange: r.timeRange,
           leftTag: r.jodiUrl ? "Jodi" : null, rightTag: r.panelUrl ? "Panel" : null,
-          extraLines, source: "scraped", sourceKey: r.sourceKey, updatedAt: now,
+          extraLines, source: "scraped", sourceKey: r.sourceKey, highlight: r.isHighlighted, updatedAt: now,
         }).where(eq(schema.rows.id, existing[0].id));
       } else {
         const allRows = await db.select({ position: schema.rows.position }).from(schema.rows)
@@ -76,7 +76,7 @@ export async function POST() {
         await db.insert(schema.rows).values({
           section: "live_result", title: r.gameTitle, resultValue: r.resultValue,
           timeRange: r.timeRange, leftTag: r.jodiUrl ? "Jodi" : null, rightTag: r.panelUrl ? "Panel" : null,
-          extraLines, color: "#0000ff", source: "scraped", sourceKey: r.sourceKey, position: nextPos, highlight: false,
+          extraLines, color: "#0000ff", source: "scraped", sourceKey: r.sourceKey, position: nextPos, highlight: r.isHighlighted,
         });
       }
       upserted++;

@@ -8,6 +8,7 @@ export type ScrapedResult = {
   jodiUrl: string;
   panelUrl: string;
   sourceKey: string;
+  isHighlighted: boolean; // true for div.news2 / div.newslast (gold background)
 };
 
 export type ScrapedMenu2Game = {
@@ -62,6 +63,7 @@ function parseGameBlock($: cheerio.CheerioAPI, el: AnyNode): ScrapedResult | nul
     jodiUrl,
     panelUrl,
     sourceKey: toSourceKey(gameTitle),
+    isHighlighted: false, // caller overrides this based on container class
   };
 }
 
@@ -83,11 +85,13 @@ export async function scrapeMainResults(): Promise<ScrapedResult[]> {
   const results: ScrapedResult[] = [];
   const seen = new Set<string>();
 
-  $("div.news2, div.fix").each((_i, el) => {
+  $("div.news2, div.newslast, div.fix").each((_i, el) => {
     const parsed = parseGameBlock($, el);
     if (!parsed) return;
     if (seen.has(parsed.sourceKey)) return;
     seen.add(parsed.sourceKey);
+    // news2 and newslast have gold background on the source site
+    parsed.isHighlighted = $(el).hasClass("news2") || $(el).hasClass("newslast");
     results.push(parsed);
   });
 

@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       if (existing.length > 0) {
         await db
           .update(schema.rows)
-          .set({ resultValue: r.resultValue, timeRange: r.timeRange, leftTag: r.jodiUrl ? "Jodi" : null, rightTag: r.panelUrl ? "Panel" : null, extraLines, source: "scraped", sourceKey: r.sourceKey, updatedAt: now })
+          .set({ resultValue: r.resultValue, timeRange: r.timeRange, leftTag: r.jodiUrl ? "Jodi" : null, rightTag: r.panelUrl ? "Panel" : null, extraLines, highlight: r.isHighlighted, source: "scraped", sourceKey: r.sourceKey, updatedAt: now })
           .where(eq(schema.rows.id, existing[0].id));
       } else {
         const allRows = await db.select({ position: schema.rows.position }).from(schema.rows).where(eq(schema.rows.section, "live_result")).orderBy(schema.rows.position);
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
         await db.insert(schema.rows).values({
           section: "live_result", title: r.gameTitle, resultValue: r.resultValue, timeRange: r.timeRange,
           leftTag: r.jodiUrl ? "Jodi" : null, rightTag: r.panelUrl ? "Panel" : null, extraLines,
-          color: "#0000ff", source: "scraped", sourceKey: r.sourceKey, position: nextPos, highlight: false,
+          color: "#0000ff", source: "scraped", sourceKey: r.sourceKey, position: nextPos, highlight: r.isHighlighted,
         });
       }
       upserted++;
