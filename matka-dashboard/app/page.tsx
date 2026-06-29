@@ -4,6 +4,7 @@ import Link from "next/link";
 import { HeroHeader } from "@/components/public/HeroHeader";
 import { LuckyBand } from "@/components/public/LuckyBand";
 import { LiveUpdateBand } from "@/components/public/LiveUpdateBand";
+import { PromoBlock } from "@/components/public/PromoBlock";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { FreeZoneBlock } from "@/components/public/FreeZoneBlock";
 import { Footer } from "@/components/public/Footer";
@@ -69,6 +70,7 @@ export default function Home() {
       <HeroHeader />
       <LuckyBand items={data.lucky} ankData={ankData} />
       <LiveUpdateBand items={data.live_update} />
+      <PromoBlock />
       <LiveResultList items={data.live_result} />
       <FreeZoneBlock items={data.free_zone} />
       <Footer />
