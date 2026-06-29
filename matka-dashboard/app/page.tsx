@@ -13,8 +13,6 @@ import { SattaMatkaInfo } from "@/components/public/SattaMatkaInfo";
 import { FaqSection } from "@/components/public/FaqSection";
 import { MainFooter } from "@/components/public/MainFooter";
 import { LiveResultList } from "@/components/public/LiveResultList";
-import { FreeZoneBlock } from "@/components/public/FreeZoneBlock";
-import { Footer } from "@/components/public/Footer";
 import { RefreshIndicator } from "@/components/public/RefreshIndicator";
 import type { PublicSectionsResponse } from "@/lib/types";
 
@@ -85,9 +83,7 @@ export default function Home() {
       <ChartRecords />
       <SattaMatkaInfo />
       <FaqSection />
-      <FreeZoneBlock items={data.free_zone} />
       <MainFooter />
-      <Footer />
       <RefreshIndicator lastUpdated={lastUpdated} />
     </main>
   );

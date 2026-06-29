@@ -98,6 +98,43 @@ export function MainFooter() {
         </div>
       </div>
 
+      {/* Contact card */}
+      <div
+        className="max-w-sm mx-auto mb-6 text-center py-6 px-6"
+        style={{
+          background: "#fff",
+          borderRadius: 12,
+          borderTop: "4px solid #d32f2f",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.5)",
+        }}
+      >
+        <div
+          className="font-bold italic text-xl sm:text-2xl mb-1"
+          style={{ color: "#d32f2f" }}
+        >
+          SattaMatkaDpboss.Mobi
+        </div>
+        <div
+          className="text-xs sm:text-sm font-bold tracking-wide mb-4"
+          style={{ color: "#333" }}
+        >
+          ALL RIGHTS RESERVED (2012-2026)
+        </div>
+        <div className="text-xs font-semibold mb-1" style={{ color: "#555" }}>
+          SITE OWNER:-
+        </div>
+        <div className="font-bold text-base sm:text-lg mb-3" style={{ color: "#00008b" }}>
+          PRO. BIG BOSS SIR
+        </div>
+        <a
+          href="tel:08829959562"
+          className="font-bold text-2xl sm:text-3xl"
+          style={{ color: "#0000cd", textDecoration: "none" }}
+        >
+          08829959562
+        </a>
+      </div>
+
       {/* Ratings box */}
       <div
         className="max-w-lg mx-auto text-center py-6 px-6"
