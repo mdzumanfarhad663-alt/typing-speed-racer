@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
+import { eq, max } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rows } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
@@ -35,6 +35,25 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
   const denied = await guard();
   if (denied) return denied;
+
+  const [existing] = await db.select().from(rows).where(eq(rows.id, params.id)).limit(1);
+  if (!existing) return NextResponse.json({ ok: true });
+
+  // Manual live_update games: move to live_result instead of deleting
+  // so the game stays in the full game list — only removed from the Live Update band
+  if (existing.section === "live_update" && existing.source !== "scraped") {
+    const [{ value: maxPos }] = await db
+      .select({ value: max(rows.position) })
+      .from(rows)
+      .where(eq(rows.section, "live_result"));
+    const nextPos = (maxPos ?? -1) + 1;
+    await db
+      .update(rows)
+      .set({ section: "live_result", position: nextPos, updatedAt: new Date() })
+      .where(eq(rows.id, params.id));
+    return NextResponse.json({ ok: true, moved: "live_result" });
+  }
+
   await db.delete(rows).where(eq(rows.id, params.id));
   return NextResponse.json({ ok: true });
 }

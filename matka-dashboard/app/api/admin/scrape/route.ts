@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { eq, and, or, ilike } from "drizzle-orm";
+import { eq, and, or, ilike, notInArray } from "drizzle-orm";
 import { requireAdmin } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { scrapeMainResults, scrapeMenu2Games, scrapeAnkData } from "@/lib/scraper";
@@ -87,6 +87,23 @@ export async function POST() {
   for (const g of menu2Games) {
     try { await upsertLiveUpdateGame(g, now); } catch (err) { console.error("live_update upsert error", err); }
   }
+
+  // Remove scraped live_update rows that are no longer in the source site's menu2
+  // (keeps manual rows untouched)
+  try {
+    const currentKeys = menu2Games.map((g) => g.sourceKey);
+    if (currentKeys.length > 0) {
+      await db.delete(schema.rows).where(
+        and(
+          eq(schema.rows.section, "live_update"),
+          eq(schema.rows.source, "scraped"),
+          notInArray(schema.rows.sourceKey, currentKeys)
+        )
+      );
+    } else {
+      // Source returned 0 games — don't wipe everything, could be a failed scrape
+    }
+  } catch (err) { console.error("live_update cleanup error", err); }
 
   // Cache ank data
   if (ankData) {
