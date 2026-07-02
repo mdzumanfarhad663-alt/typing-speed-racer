@@ -39,7 +39,7 @@ export function ResultCard({ row }: { row: Row }) {
   const rightIsPanel = row.rightTag?.trim().toLowerCase() === "panel";
 
   return (
-    <div className={`flex items-center justify-between px-4 py-3 border-t border-gray-300 ${row.highlight ? "kalyan-row" : ""}`}>
+    <div className={`flex items-center justify-between px-4 py-2.5 border-t border-gray-200 ${row.highlight ? "kalyan-row" : ""}`}>
       <div className="w-20">
         {row.leftTag && (
           <TagSide
@@ -50,11 +50,11 @@ export function ResultCard({ row }: { row: Row }) {
         )}
       </div>
       <div className="flex-1 text-center">
-        <div className="italic font-bold text-xl" style={{ color: row.color, textShadow: "1px 1px 0 rgba(0,0,0,0.15)" }}>
+        <div className="font-bold text-xl" style={{ color: row.color }}>
           {row.title}
         </div>
         <div className="text-xl font-bold tracking-wide">{row.resultValue}</div>
-        {row.timeRange && <div className="text-sm italic font-bold text-red-600">{row.timeRange}</div>}
+        {row.timeRange && <div className="text-sm font-bold text-red-600">{row.timeRange}</div>}
       </div>
       <div className="w-20 text-right">
         {row.rightTag && (

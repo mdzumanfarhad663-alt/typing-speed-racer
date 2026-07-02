@@ -93,8 +93,8 @@ function ChartSection({ heading, links }: { heading: string; links: ChartLink[] 
         style={{ background: "purple" }}
       >
         <span
-          className="font-bold italic text-sm sm:text-base"
-          style={{ color: "#ff0", textShadow: "1px 1px green" }}
+          className="font-bold text-sm sm:text-base"
+          style={{ color: "#ffd400" }}
         >
           {heading}
         </span>
@@ -105,21 +105,18 @@ function ChartSection({ heading, links }: { heading: string; links: ChartLink[] 
           key={i}
           className="text-center py-2 px-4"
           style={{
-            background: "#fff",
-            borderLeft: "2px groove #f00",
-            borderRight: "2px groove #f00",
-            borderBottom: "2px solid #f00",
-            borderTop: i === 0 ? "2px solid #f00" : "none",
+            background: i % 2 === 0 ? "#f7f7f7" : "#fff",
+            borderBottom: "1px solid #eee",
           }}
         >
+          <span className="arrow-icon" />
           <a
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-bold italic text-sm sm:text-base hover:underline"
+            className="font-bold text-sm sm:text-base hover:underline"
             style={{
               color: LINK_COLORS[i % LINK_COLORS.length],
-              textShadow: "1px 1px gold",
             }}
           >
             {item.label}

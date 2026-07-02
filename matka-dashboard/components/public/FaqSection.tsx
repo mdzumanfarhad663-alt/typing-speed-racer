@@ -50,7 +50,6 @@ function Accordion({ items, bulletStyle }: { items: FAQItem[]; bulletStyle?: boo
               style={{
                 color: bulletStyle ? "#000" : "#d70544",
                 fontSize: bulletStyle ? "0.85rem" : "0.95rem",
-                fontStyle: "italic",
                 textTransform: bulletStyle ? "none" : "uppercase",
               }}
             >
@@ -73,7 +72,6 @@ function Accordion({ items, bulletStyle }: { items: FAQItem[]; bulletStyle?: boo
                 borderTop: "1px solid #eee",
                 color: "#333",
                 lineHeight: 1.7,
-                fontStyle: "italic",
               }}
             >
               {item.a}
@@ -98,14 +96,14 @@ export function FaqSection() {
         <div
           className="text-center py-3 px-4"
           style={{
-            background: "linear-gradient(90deg, #000030 0%, #0d0d7a 50%, #000030 100%)",
-            borderTop: "3px solid #f00",
-            borderBottom: "3px solid #f00",
+            background: "#0b1f4d",
+            borderTop: "1px solid #000",
+            borderBottom: "1px solid #000",
           }}
         >
           <span
-            className="font-bold italic text-sm sm:text-base"
-            style={{ color: "#ffd700", textShadow: "1px 1px 2px #000", letterSpacing: "1px" }}
+            className="font-bold text-sm sm:text-base"
+            style={{ color: "#ffd700", letterSpacing: "1px" }}
           >
             FREQUENTLY ASKED QUESTIONS — SATTA MATKA DPBOSS
           </span>
@@ -123,7 +121,7 @@ export function FaqSection() {
       {/* Section 4 — plain text + nav links */}
       <div
         className="my-4 px-4 py-4 text-sm"
-        style={{ background: "#fff", color: "#000", fontStyle: "italic", lineHeight: 1.8 }}
+        style={{ background: "#fff", color: "#000", lineHeight: 1.8 }}
       >
         <p className="font-bold mb-3 text-center" style={{ color: "#00008b" }}>
           Satta Matka | Satta Market | 220 Patti | Satta Matta Matka | Kalyan Satta Matka Result | Kalyan Matka | DPBoss

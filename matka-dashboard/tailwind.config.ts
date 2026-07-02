@@ -6,8 +6,13 @@ export default {
     extend: {
       colors: {
         brand: {
-          orange: "#f0a000",
-          pink: "#ffeef0",
+          cyan: "#29b6d8",
+          yellow: "#ffd400",
+          navy: "#0b1f4d",
+          green: "#0b6e4f",
+          purple: "#6c1d8b",
+          maroon: "#8e2430",
+          cream: "#f5f5f0",
           highlight: "#ffd700",
         },
       },

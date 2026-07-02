@@ -3,41 +3,38 @@
 @tailwind utilities;
 
 html, body {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
-.section-frame {
-  border: 4px solid #000;
-  outline: 2px solid #ff00cc;
-  outline-offset: -8px;
-  background: #f3fff3;
+.section-card {
+  background: #fff;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 .gradient-band {
-  background: linear-gradient(180deg, #ffd29a 0%, #ff8a4c 100%);
-  border: 2px solid #ff8a00;
+  background: #ffd400;
+  border: none;
 }
 .live-band {
-  background: #f5a623;
-  border: 2px solid #000;
+  background: #29b6d8;
+  border: none;
 }
 .btn-pill {
-  background: linear-gradient(180deg, #4a1d1d 0%, #1a0a0a 100%);
+  background: #432004;
   color: #fff;
-  font-style: italic;
   font-weight: 700;
   border-radius: 999px;
   padding: 4px 14px;
-  border: 1px solid #000;
-  box-shadow: 0 2px 0 #000;
+  border: none;
+  box-shadow: none;
 }
 .tag-side {
   background: #d33;
   color: #fff;
   font-weight: 700;
-  font-style: italic;
   padding: 4px 12px;
   border-radius: 6px;
-  border: 1px solid #000;
+  border: none;
   font-size: 14px;
 }
 .kalyan-row {
@@ -53,4 +50,40 @@ html, body {
   font-size: 12px;
   border-radius: 999px;
   z-index: 50;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.06); }
+}
+.badge-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  padding: 1px 7px;
+  border-radius: 999px;
+  margin-left: 6px;
+  vertical-align: middle;
+  animation: badge-pulse 1.4s ease-in-out infinite;
+}
+.badge-new {
+  background: #e30000;
+}
+.badge-free {
+  background: #1f9d55;
+}
+.badge-update {
+  background: #0b6e4f;
+}
+
+.arrow-icon {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-right: 6px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid #e30000;
+  vertical-align: middle;
 }

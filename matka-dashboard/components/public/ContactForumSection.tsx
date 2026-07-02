@@ -1,30 +1,16 @@
 const FORUM_ROWS = [
-  {
-    prefix: { text: "🆕", color: "inherit" },
-    main: "Satta Matka Guessing Forum",
-    suffix: { text: "🆕", color: "inherit" },
-  },
-  {
-    prefix: { text: "FREE", color: "#e74c3c" },
-    main: "Daily 3 Ank Open To Close All Games",
-    suffix: { text: "FREE", color: "#e74c3c" },
-  },
-  {
-    prefix: { text: "•UPDATE•", color: "#e74c3c" },
-    main: "Weekly Jodi & Panna",
-    suffix: { text: "•UPDATE•", color: "#e74c3c" },
-  },
-  {
-    prefix: { text: "FREE", color: "#e74c3c" },
-    main: "All Matka Charts",
-    suffix: { text: "FREE", color: "#e74c3c" },
-  },
-  {
-    prefix: { text: "FREE", color: "#e74c3c" },
-    main: "Satta 220 Patti Favourite Panna Chart",
-    suffix: { text: "FREE", color: "#e74c3c" },
-  },
+  { badge: "new" as const, main: "Satta Matka Guessing Forum" },
+  { badge: "free" as const, main: "Daily 3 Ank Open To Close All Games" },
+  { badge: "update" as const, main: "Weekly Jodi & Panna" },
+  { badge: "free" as const, main: "All Matka Charts" },
+  { badge: "free" as const, main: "Satta 220 Patti Favourite Panna Chart" },
 ];
+
+const BADGE_LABEL: Record<"new" | "free" | "update", string> = {
+  new: "New",
+  free: "Free",
+  update: "Update",
+};
 
 export function ContactForumSection() {
   return (
@@ -32,14 +18,14 @@ export function ContactForumSection() {
       {/* Contact section */}
       <div
         className="my-4"
-        style={{ border: "2px solid #0077be", borderRadius: 6, overflow: "hidden" }}
+        style={{ border: "1px solid #ddd", borderRadius: 6, overflow: "hidden" }}
       >
         {/* Red header */}
         <div
           className="text-center py-3 px-4"
           style={{ background: "#e30000" }}
         >
-          <span className="font-bold italic text-white text-lg sm:text-xl">
+          <span className="font-bold text-white text-lg sm:text-xl">
             Contact For Any Support And Queries
           </span>
         </div>
@@ -48,7 +34,7 @@ export function ContactForumSection() {
           className="text-center py-2 px-4"
           style={{ background: "#000" }}
         >
-          <span className="italic text-white text-sm sm:text-base">
+          <span className="text-white text-sm sm:text-base">
             Email us, and we will get back to you shortly.
           </span>
         </div>
@@ -56,12 +42,11 @@ export function ContactForumSection() {
         <div className="bg-white text-center py-5 px-4">
           <a
             href="mailto:support@sattamatkadpboss.mobi"
-            className="inline-block font-bold text-black text-base sm:text-lg px-8 py-2 rounded-full"
+            className="inline-block font-bold text-white text-base sm:text-lg px-8 py-2 rounded-full"
             style={{
-              background: "#90ee90",
+              background: "#1f9d55",
               border: "none",
               textDecoration: "none",
-              fontStyle: "italic",
             }}
           >
             support@sattamatkadpboss.mobi
@@ -71,16 +56,13 @@ export function ContactForumSection() {
 
       {/* Member's Forum section */}
       <div className="my-4" style={{ overflow: "hidden", borderRadius: 4 }}>
-        {/* Crimson header */}
+        {/* Header */}
         <div
           className="text-center py-3 px-4"
-          style={{
-            background: "linear-gradient(90deg, #c0135a 0%, #e91e63 50%, #c0135a 100%)",
-          }}
+          style={{ background: "#0b6e4f" }}
         >
           <span
-            className="font-bold italic text-lg sm:text-xl"
-            style={{ color: "#fff200", textShadow: "1px 1px 2px #000" }}
+            className="font-bold text-lg sm:text-xl text-white"
           >
             MEMBER&apos;S FORUM AND FREE SATTA MATKA ZONE
           </span>
@@ -91,29 +73,17 @@ export function ContactForumSection() {
           {FORUM_ROWS.map((row, i) => (
             <div
               key={i}
-              className="text-center py-3 px-4"
+              className="py-2.5 px-4"
               style={{
-                background: i % 2 === 0 ? "#fff5f8" : "#fff",
-                borderBottom: i < FORUM_ROWS.length - 1 ? "1.5px solid #e0557f" : "none",
-                border: "2px solid #e0557f",
-                marginTop: i === 0 ? 0 : -2,
+                background: i % 2 === 0 ? "#f7f7f7" : "#fff",
+                borderBottom: "1px solid #ddd",
               }}
             >
-              <span
-                className="font-bold italic text-base sm:text-lg"
-                style={{ color: row.prefix.color, marginRight: 6 }}
-              >
-                {row.prefix.text}
-              </span>
-              <span className="font-bold italic text-black text-base sm:text-lg">
+              <span className="arrow-icon" />
+              <span className="font-bold text-black text-base sm:text-lg">
                 {row.main}
               </span>
-              <span
-                className="font-bold italic text-base sm:text-lg"
-                style={{ color: row.suffix.color, marginLeft: 6 }}
-              >
-                {row.suffix.text}
-              </span>
+              <span className={`badge-pill badge-${row.badge}`}>{BADGE_LABEL[row.badge]}</span>
             </div>
           ))}
         </div>

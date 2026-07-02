@@ -22,7 +22,7 @@ export function TopGuessers() {
         className="px-3 py-1"
         style={{ background: "#ff0000" }}
       >
-        <span className="font-bold italic text-white text-xs sm:text-sm">
+        <span className="font-bold text-white text-xs sm:text-sm">
           ⇒ Top Guessers And Result King
         </span>
       </div>
@@ -36,7 +36,7 @@ export function TopGuessers() {
             className="px-3 py-2"
             style={{ background: "#00004d" }}
           >
-            <span className="font-bold italic text-white text-base sm:text-lg">
+            <span className="font-bold text-white text-base sm:text-lg">
               TOP GUSSER
             </span>
           </div>
@@ -47,7 +47,7 @@ export function TopGuessers() {
               className="px-3 py-2"
               style={{ background: "#008000", borderTop: "1px solid #005000" }}
             >
-              <span className="font-bold italic text-white text-sm sm:text-base">
+              <span className="font-bold text-white text-sm sm:text-base">
                 {name}
               </span>
             </div>
@@ -61,7 +61,7 @@ export function TopGuessers() {
             className="px-3 py-2"
             style={{ background: "#00004d" }}
           >
-            <span className="font-bold italic text-white text-base sm:text-lg">
+            <span className="font-bold text-white text-base sm:text-lg">
               FAST RESULT
             </span>
           </div>
@@ -72,7 +72,7 @@ export function TopGuessers() {
               className="px-3 py-2"
               style={{ background: "#0000ff", borderTop: "1px solid #0000aa" }}
             >
-              <span className="font-bold italic text-white text-sm sm:text-base">
+              <span className="font-bold text-white text-sm sm:text-base">
                 {name}
               </span>
             </div>

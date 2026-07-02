@@ -30,8 +30,8 @@ const OTC_ROWS = [
   "Sun. => 0-2-5-7",
 ];
 
-const BORDER_STYLE = "3px solid #8b0000";
-const HEADER_BG = "linear-gradient(180deg, #ffd966 0%, #f4c430 100%)";
+const BORDER_STYLE = "1px solid #ddd";
+const HEADER_BG = "#ffcc00";
 
 function ChartBlock({
   heading,
@@ -48,21 +48,21 @@ function ChartBlock({
         style={{ background: HEADER_BG, borderBottom: BORDER_STYLE }}
       >
         <span
-          className="font-bold italic text-sm sm:text-base"
-          style={{ color: "#000", textShadow: "1px 1px 0 rgba(255,255,255,0.4)" }}
+          className="font-bold text-sm sm:text-base"
+          style={{ color: "#000" }}
         >
           {heading}
         </span>
       </div>
       {/* White body */}
       <div
-        className="text-center py-4 px-4"
-        style={{ background: "#fffff5" }}
+        className="text-center py-2.5 px-4"
+        style={{ background: "#fff" }}
       >
         {rows.map((line, i) => (
           <div
             key={i}
-            className="font-bold italic text-base sm:text-lg leading-relaxed"
+            className="font-bold text-base sm:text-lg leading-relaxed"
             style={{ color: "#000" }}
           >
             {line}

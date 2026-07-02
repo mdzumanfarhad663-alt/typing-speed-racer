@@ -7,13 +7,12 @@ export function MainFooter() {
         className="max-w-3xl mx-auto mb-6 p-5"
         style={{
           background: "#fff",
-          border: "2px solid #3d5afe",
+          border: "1px solid #3d5afe",
           borderRadius: 8,
-          boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
         }}
       >
         <div
-          className="text-center font-bold italic text-lg mb-3"
+          className="text-center font-bold text-lg mb-3"
           style={{ color: "#d32f2f" }}
         >
           !! DISCLAIMER !!
@@ -24,7 +23,7 @@ export function MainFooter() {
         >
           यह वेबसाइट (<em style={{ color: "#d32f2f" }}>SattaMatkaDpboss.Mobi</em>) केवल मनोरंजन और सूचना के उद्देश्य के लिए है। हम किसी भी अवैध सट्टा मटका व्यवसाय से नहीं जुड़े हैं। यहाँ दिखाए गए सभी परिणाम इंटरनेट पर उपलब्ध डेटा पर आधारित हैं। हम जुए या सट्टा खेलने का समर्थन नहीं करते हैं। कृपया अपने देश के कानूनों का पालन करें। किसी भी लाभ या हानि के लिए आप स्वयं जिम्मेदार होंगे।
         </p>
-        <p className="text-sm font-bold italic" style={{ color: "#d32f2f" }}>
+        <p className="text-sm font-bold" style={{ color: "#d32f2f" }}>
           Note: This site is for educational purposes only. View at your own risk.
         </p>
       </div>
@@ -39,7 +38,7 @@ export function MainFooter() {
         }}
       >
         <h2
-          className="text-center font-bold italic text-base sm:text-lg mb-3"
+          className="text-center font-bold text-base sm:text-lg mb-3"
           style={{ color: "#b71c1c" }}
         >
           Satta Matka DPBoss: सबसे तेज़ लाइव अपडेट
@@ -53,7 +52,7 @@ export function MainFooter() {
       <div
         className="mb-6 py-5 px-4"
         style={{
-          background: "rgba(67,32,4,0.9)",
+          background: "#432004",
           borderRadius: 8,
           border: "1px solid #9a4a09",
         }}
@@ -105,11 +104,11 @@ export function MainFooter() {
           background: "#fff",
           borderRadius: 12,
           borderTop: "4px solid #d32f2f",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.5)",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
         }}
       >
         <div
-          className="font-bold italic text-xl sm:text-2xl mb-1"
+          className="font-bold text-xl sm:text-2xl mb-1"
           style={{ color: "#d32f2f" }}
         >
           SattaMatkaDpboss.Mobi
@@ -142,20 +141,20 @@ export function MainFooter() {
           background: "#1a1a2e",
           border: "2px solid #fbc02d",
           borderRadius: 12,
-          boxShadow: "0 8px 20px rgba(0,0,0,0.5)",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
         }}
       >
-        <div className="font-bold text-white text-lg sm:text-xl italic mb-3">
+        <div className="font-bold text-white text-lg sm:text-xl mb-3">
           DPBoss User Reviews &amp; Ratings
         </div>
         <div className="flex items-center justify-center gap-2 mb-2">
           <span className="text-3xl" style={{ color: "#fbc02d" }}>★ ★ ★ ★ ★</span>
           <span className="font-bold text-2xl" style={{ color: "#fbc02d" }}>4.9 / 5</span>
         </div>
-        <div className="text-sm italic mb-3" style={{ color: "#ccc" }}>
+        <div className="text-sm mb-3" style={{ color: "#ccc" }}>
           (Based on 14,850 votes)
         </div>
-        <div className="text-sm italic" style={{ color: "#ddd" }}>
+        <div className="text-sm" style={{ color: "#ddd" }}>
           Fastest Satta Matka Results and Accurate Charts trusted by thousands of users daily.
         </div>
       </div>
