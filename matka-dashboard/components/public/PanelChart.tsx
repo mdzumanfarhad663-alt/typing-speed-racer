@@ -10,7 +10,7 @@ function DayCell({ d }: { d: PanelDay }) {
   const close = pad(d.close || "   ", 3);
   const jodiColor = d.color || "#000000";
   return (
-    <td className="border border-purple-700 bg-white text-black align-middle p-1 sm:p-2">
+    <td className="bg-white text-black align-middle p-1 sm:p-2" style={{ border: "1px solid #ddd" }}>
       <div className="flex items-center justify-center gap-1">
         <div className="flex flex-col text-[10px] sm:text-xs leading-tight font-bold">
           <span>{open[0]}</span><span>{open[1]}</span><span>{open[2]}</span>
@@ -32,7 +32,10 @@ function fmtDate(s: string) {
 function GameHeader({ game, anchorId, jumpHref, jumpLabel }: { game: Row; anchorId: string; jumpHref: string; jumpLabel: string }) {
   return (
     <div id={anchorId}>
-      <div className="bg-yellow-300 text-black text-center py-4 sm:py-6 px-4 border-y-4 border-red-700">
+      <div
+        className="text-black text-center py-4 sm:py-6 px-4"
+        style={{ background: "#ffff00", border: "4px double #b22222" }}
+      >
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-700">
           {game.title.toUpperCase()}
         </h2>
@@ -42,7 +45,11 @@ function GameHeader({ game, anchorId, jumpHref, jumpLabel }: { game: Row; anchor
         </div>
       </div>
       <div className="bg-black text-center py-2">
-        <a href={jumpHref} className="inline-block bg-yellow-100 text-red-600 font-bold px-4 py-1 rounded border border-red-600 text-sm">
+        <a
+          href={jumpHref}
+          className="inline-block font-bold px-4 py-1 text-sm"
+          style={{ background: "#fff", color: "#ff0000", borderRadius: 4 }}
+        >
           {jumpLabel}
         </a>
       </div>
@@ -53,13 +60,13 @@ function GameHeader({ game, anchorId, jumpHref, jumpLabel }: { game: Row; anchor
 export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[] }) {
   return (
     <main className="min-h-screen bg-black text-white p-2">
-      <div className="max-w-3xl mx-auto border-4 border-red-700">
-        <div id="top" className="bg-blue-900 text-center py-3 sm:py-4 border-b-4 border-red-700">
-          <h1 className="text-lg sm:text-2xl md:text-3xl font-bold text-red-500 px-2">
+      <div className="max-w-3xl mx-auto">
+        <div id="top" className="text-center py-3 sm:py-4 px-2" style={{ background: "#0c0361", border: "3px solid #ff0000" }}>
+          <h1 className="text-lg sm:text-2xl md:text-3xl font-bold px-2" style={{ color: "#ff0000" }}>
             {game.title.toUpperCase()} PANEL CHART
           </h1>
         </div>
-        <div className="bg-blue-900 text-center py-2 sm:py-3 border-b-4 border-red-700 px-4">
+        <div className="text-center py-2 sm:py-3 px-4" style={{ background: "#0c0361", border: "3px solid #ff0000", borderTop: "none" }}>
           <p className="text-base sm:text-xl font-bold text-white">{game.title} Jodi Patti chart</p>
           <p className="text-[10px] sm:text-xs text-white mt-1">
             panel chart, jodi patti record chart, satta panel chart, panel chart for matka
@@ -69,16 +76,16 @@ export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[]
         <GameHeader game={game} anchorId="header-top" jumpHref="#bottom" jumpLabel="Go to Bottom" />
 
         {entries.length === 0 ? (
-          <div className="bg-yellow-300 text-black text-center py-8 text-base font-bold border-y-4 border-red-700">
+          <div className="text-black text-center py-8 text-base font-bold" style={{ background: "#ffff00", border: "4px double #b22222" }}>
             No panel data yet. Admin can add weekly entries from the admin panel.
           </div>
         ) : (
-          <div className="bg-purple-900 p-1 sm:p-2 overflow-x-auto">
-            <table className="w-full min-w-[600px] border-collapse border-2 border-purple-700 bg-white">
+          <div className="bg-black p-1 sm:p-2 overflow-x-auto">
+            <table className="w-full min-w-[600px] border-collapse bg-white" style={{ border: "4px groove #893bff" }}>
               <tbody>
                 {entries.map((entry) => (
                   <tr key={entry.id}>
-                    <td className="border border-purple-700 p-1 sm:p-2 bg-yellow-300 text-black font-bold text-[10px] sm:text-xs w-20 sm:w-28 text-center">
+                    <td className="p-1 sm:p-2 bg-white text-black font-bold text-[10px] sm:text-xs w-20 sm:w-28 text-center" style={{ border: "1px solid #ddd" }}>
                       <div>{fmtDate(entry.weekStart)}</div>
                       <div>To</div>
                       <div>{fmtDate(entry.weekEnd)}</div>
@@ -93,7 +100,7 @@ export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[]
 
         <GameHeader game={game} anchorId="bottom" jumpHref="#top" jumpLabel="Go to Top" />
 
-        <div className="bg-blue-900 text-center py-3 border-t-4 border-red-700">
+        <div className="text-center py-3" style={{ background: "#0c0361", border: "3px solid #ff0000", borderTop: "none" }}>
           <a href="/" className="text-yellow-300 underline font-bold text-sm">← Back to dashboard</a>
         </div>
       </div>
