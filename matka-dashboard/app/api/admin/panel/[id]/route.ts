@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { panelEntries, type PanelDay } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
+import { syncJodiFromPanel } from "@/lib/syncJodi";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -40,6 +41,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   if ("position" in body) patch.position = Number(body.position) || 0;
   const [updated] = await db.update(panelEntries).set(patch).where(eq(panelEntries.id, params.id)).returning();
   if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  await syncJodiFromPanel(updated.rowId, updated.weekStart, updated.weekEnd, updated.days);
   return NextResponse.json({ entry: updated });
 }
 

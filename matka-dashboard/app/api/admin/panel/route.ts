@@ -3,6 +3,7 @@ import { asc, eq, max } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { panelEntries, type PanelDay } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
+import { syncJodiFromPanel } from "@/lib/syncJodi";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -70,5 +71,6 @@ export async function POST(req: Request) {
       position,
     })
     .returning();
+  await syncJodiFromPanel(inserted.rowId, inserted.weekStart, inserted.weekEnd, inserted.days);
   return NextResponse.json({ entry: inserted });
 }
