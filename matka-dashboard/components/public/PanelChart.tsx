@@ -10,13 +10,13 @@ function DayCell({ d }: { d: PanelDay }) {
   const close = pad(d.close || "   ", 3);
   const jodiColor = d.color || "#000000";
   return (
-    <td className="bg-white text-black align-middle p-1 sm:p-2" style={{ border: "1px solid #ddd" }}>
-      <div className="flex items-center justify-center gap-1">
-        <div className="flex flex-col text-[10px] sm:text-xs leading-tight font-bold">
+    <td className="bg-white text-black align-middle p-0.5 sm:p-1.5" style={{ border: "1px solid #ddd" }}>
+      <div className="flex items-center justify-center gap-0.5 sm:gap-1">
+        <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{open[0]}</span><span>{open[1]}</span><span>{open[2]}</span>
         </div>
-        <div className="text-base sm:text-xl font-bold px-1" style={{ color: jodiColor }}>{d.jodi || "--"}</div>
-        <div className="flex flex-col text-[10px] sm:text-xs leading-tight font-bold">
+        <div className="text-[11px] sm:text-lg md:text-xl font-bold px-0.5" style={{ color: jodiColor }}>{d.jodi || "--"}</div>
+        <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{close[0]}</span><span>{close[1]}</span><span>{close[2]}</span>
         </div>
       </div>
@@ -80,12 +80,12 @@ export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[]
             No panel data yet. Admin can add weekly entries from the admin panel.
           </div>
         ) : (
-          <div className="bg-black p-1 sm:p-2 overflow-x-auto">
-            <table className="w-full min-w-[600px] border-collapse bg-white" style={{ border: "4px groove #893bff" }}>
+          <div className="bg-black p-1 sm:p-2">
+            <table className="w-full table-fixed border-collapse bg-white" style={{ border: "4px groove #893bff" }}>
               <tbody>
                 {entries.map((entry) => (
                   <tr key={entry.id}>
-                    <td className="p-1 sm:p-2 bg-white text-black font-bold text-[10px] sm:text-xs w-20 sm:w-28 text-center" style={{ border: "1px solid #ddd" }}>
+                    <td className="p-0.5 sm:p-1.5 bg-white text-black font-bold text-[7px] sm:text-[11px] text-center" style={{ border: "1px solid #ddd", width: "13%" }}>
                       <div>{fmtDate(entry.weekStart)}</div>
                       <div>To</div>
                       <div>{fmtDate(entry.weekEnd)}</div>
