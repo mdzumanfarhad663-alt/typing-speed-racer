@@ -10,6 +10,7 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
     <div className="section-card my-4">
       <div className="live-result" style={toCss(styles.header)}>
         {content.heading}
+        <span className="badge-pill badge-new">NEW</span>
       </div>
       {items.map((row, i) => (
         <div
