@@ -4,24 +4,24 @@ type AnkData = { ank: string; finalAnk: string } | null;
 
 export function LuckyBand({ items, ankData }: { items: Row[]; ankData: AnkData }) {
   return (
-    <section className="section-card my-4">
-      <div className="text-center py-2" style={{ background: "#29b6d8" }}>
-        <h2 className="text-xl font-bold text-white">Today Satta Matka Lucky Number</h2>
+    <section className="my-4">
+      <div className="lucky-band-title text-center py-2">
+        <h2 className="text-lg font-bold italic" style={{ color: "#000" }}>Today Satta Matka Lucky Number</h2>
       </div>
 
       {/* Ank table — auto-scraped from source site */}
       {ankData && (ankData.ank || ankData.finalAnk) && (
-        <table className="w-full border-collapse bg-white text-center">
+        <table className="lucky-ank-box w-full border-collapse text-center">
           <thead>
-            <tr className="border-b border-gray-200">
-              <th className="py-2 text-red-600 font-bold">Ank (शुभांक)</th>
-              <th className="py-2 text-red-600 font-bold">Final Ank</th>
+            <tr>
+              <th className="py-2 font-bold italic" style={{ color: "#ff0000" }}>Ank (शुभांक)</th>
+              <th className="py-2 font-bold italic" style={{ color: "#ff0000" }}>Final Ank</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="py-2.5 font-bold text-lg">{ankData.ank}</td>
-              <td className="py-2.5 font-bold text-lg">{ankData.finalAnk}</td>
+              <td className="py-2.5 font-bold italic text-lg">{ankData.ank}</td>
+              <td className="py-2.5 font-bold italic text-lg">{ankData.finalAnk}</td>
             </tr>
           </tbody>
         </table>
