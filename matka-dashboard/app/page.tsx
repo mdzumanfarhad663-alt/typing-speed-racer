@@ -16,6 +16,7 @@ import { LiveResultList } from "@/components/public/LiveResultList";
 import { RefreshIndicator } from "@/components/public/RefreshIndicator";
 import type { PublicSectionsResponse } from "@/lib/types";
 import { makeResolver, type SectionSettingsMap } from "@/lib/resolveStyle";
+import type { MarketTiming } from "@/lib/schema";
 
 const EMPTY: PublicSectionsResponse = { lucky: [], live_result: [], free_zone: [], live_update: [] };
 type AnkData = { ank: string; finalAnk: string } | null;
@@ -26,6 +27,7 @@ export default function Home() {
   const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [error, setError] = useState<string | null>(null);
   const [settings, setSettings] = useState<SectionSettingsMap>({});
+  const [marketTimings, setMarketTimings] = useState<MarketTiming[]>([]);
 
   useEffect(() => {
     let alive = true;
@@ -64,13 +66,23 @@ export default function Home() {
       } catch { /* silent — components fall back to defaults */ }
     }
 
+    async function loadMarketTimings() {
+      try {
+        const res = await fetch("/api/public/market-timings", { cache: "no-store" });
+        const json = await res.json();
+        if (alive) setMarketTimings(json.marketTimings || []);
+      } catch { /* silent — falls back to defaults */ }
+    }
+
     load();
     loadAnk();
     loadSettings();
+    loadMarketTimings();
     const t = setInterval(load, 3000);
     const ankTimer = setInterval(loadAnk, 120_000); // refresh ank every 2 min
     const settingsTimer = setInterval(loadSettings, 3000);
-    return () => { alive = false; clearInterval(t); clearInterval(ankTimer); clearInterval(settingsTimer); };
+    const marketTimer = setInterval(loadMarketTimings, 30_000);
+    return () => { alive = false; clearInterval(t); clearInterval(ankTimer); clearInterval(settingsTimer); clearInterval(marketTimer); };
   }, []);
 
   const resolve = makeResolver(settings);
@@ -95,7 +107,7 @@ export default function Home() {
       <WeeklyCharts resolve={resolve} />
       <TopGuessers resolve={resolve} />
       <ChartRecords resolve={resolve} />
-      <SattaMatkaInfo resolve={resolve} />
+      <SattaMatkaInfo resolve={resolve} marketTimings={marketTimings} />
       <FaqSection resolve={resolve} />
       <MainFooter resolve={resolve} />
       <RefreshIndicator lastUpdated={lastUpdated} />

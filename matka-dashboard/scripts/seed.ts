@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { db } from "../lib/db";
-import { rows } from "../lib/schema";
+import { rows, marketTimings } from "../lib/schema";
 
 async function main() {
   console.log("Clearing existing rows...");
@@ -25,6 +25,31 @@ async function main() {
     { section: "free_zone", title: "PRABHAT", resultValue: "7-8-9-0", extraLines: ["7-8-9-0", "90-95-08-03-85-80-76-71"], color: "#7b1d1d", position: 2 },
     { section: "free_zone", title: "PRABHAT NIGHT", resultValue: "3-4-8-9", extraLines: ["3-4-8-9", "32-37-45-40-87-82-90-95"], color: "#666", position: 3 },
   ]);
+
+  console.log("Seeding market timings...");
+  await db.delete(marketTimings);
+  await db.insert(marketTimings).values([
+    { marketName: "Time Bazar", openTime: "01:00 PM", closeTime: "02:00 PM", status: "Mon–Sat", position: 0 },
+    { marketName: "Milan Day", openTime: "3:00 PM", closeTime: "5:00 PM", status: "Mon–Sat", position: 1 },
+    { marketName: "Rajdhani Day", openTime: "3:15 PM", closeTime: "5:15 PM", status: "Mon–Sat", position: 2 },
+    { marketName: "Kalyan", openTime: "3:45 PM", closeTime: "5:45 PM", status: "Mon–Sat", position: 3 },
+    { marketName: "Madhur Day", openTime: "1:30 PM", closeTime: "2:30 PM", status: "Daily", position: 4 },
+    { marketName: "Supreme Day", openTime: "3:30 PM", closeTime: "5:30 PM", status: "Daily", position: 5 },
+    { marketName: "Sridevi", openTime: "11:30 AM", closeTime: "12:30 PM", status: "Daily", position: 6 },
+    { marketName: "Day Bombay", openTime: "12:00 PM", closeTime: "2:00 PM", status: "Daily", position: 7 },
+    { marketName: "Main Mumbai", openTime: "9:30 PM", closeTime: "11:45 PM", status: "Mon–Fri", position: 8 },
+    { marketName: "Milan Night", openTime: "9:00 PM", closeTime: "11:00 PM", status: "Mon–Sat", position: 9 },
+    { marketName: "Rajdhani Night", openTime: "9:30 PM", closeTime: "11:45 PM", status: "Mon–Fri", position: 10 },
+    { marketName: "Madhur Night", openTime: "8:30 PM", closeTime: "10:30 PM", status: "Mon–Sat", position: 11 },
+    { marketName: "Supreme Night", openTime: "8:30 PM", closeTime: "10:30 PM", status: "Daily", position: 12 },
+    { marketName: "Sridevi Night", openTime: "7:15 PM", closeTime: "8:15 PM", status: "Daily", position: 13 },
+    { marketName: "Night Bombay", openTime: "8:00 PM", closeTime: "10:00 PM", status: "Daily", position: 14 },
+    { marketName: "KBC Bombay", openTime: "1:30 PM", closeTime: "2:30 PM", status: "Daily", position: 15 },
+    { marketName: "Malamal Bombay", openTime: "11:40 AM", closeTime: "12:40 PM", status: "Daily", position: 16 },
+    { marketName: "CMM Matka", openTime: "5:00 PM", closeTime: "7:00 PM", status: "Daily", position: 17 },
+    { marketName: "Main Bazar", openTime: "9:35 PM", closeTime: "12:05 AM", status: "Mon–Fri", position: 18 },
+  ]);
+
   console.log("Seed complete.");
   process.exit(0);
 }

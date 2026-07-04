@@ -64,6 +64,20 @@ export const jodiEntries = pgTable("jodi_entries", {
 export type JodiEntry = typeof jodiEntries.$inferSelect;
 export type NewJodiEntry = typeof jodiEntries.$inferInsert;
 
+export const marketTimings = pgTable("market_timings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  marketName: text("market_name").notNull(),
+  openTime: text("open_time").notNull(),
+  closeTime: text("close_time").notNull(),
+  status: text("status").notNull().default("Daily"),
+  position: integer("position").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type MarketTiming = typeof marketTimings.$inferSelect;
+export type NewMarketTiming = typeof marketTimings.$inferInsert;
+
 export const scrapedCache = pgTable("scraped_cache", {
   key: text("key").primaryKey(),
   data: jsonb("data").notNull(),

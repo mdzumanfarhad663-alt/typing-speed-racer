@@ -1,8 +1,34 @@
 import type { SectionResolver } from "@/lib/resolveStyle";
 import { toCss } from "@/lib/resolveStyle";
+import type { MarketTiming } from "@/lib/schema";
 
-export function SattaMatkaInfo({ resolve }: { resolve: SectionResolver }) {
+const DEFAULT_MARKET_TIMINGS: Array<[string, string, string, string]> = [
+  ["Time Bazar", "01:00 PM", "02:00 PM", "Mon–Sat"],
+  ["Milan Day", "3:00 PM", "5:00 PM", "Mon–Sat"],
+  ["Rajdhani Day", "3:15 PM", "5:15 PM", "Mon–Sat"],
+  ["Kalyan", "3:45 PM", "5:45 PM", "Mon–Sat"],
+  ["Madhur Day", "1:30 PM", "2:30 PM", "Daily"],
+  ["Supreme Day", "3:30 PM", "5:30 PM", "Daily"],
+  ["Sridevi", "11:30 AM", "12:30 PM", "Daily"],
+  ["Day Bombay", "12:00 PM", "2:00 PM", "Daily"],
+  ["Main Mumbai", "9:30 PM", "11:45 PM", "Mon–Fri"],
+  ["Milan Night", "9:00 PM", "11:00 PM", "Mon–Sat"],
+  ["Rajdhani Night", "9:30 PM", "11:45 PM", "Mon–Fri"],
+  ["Madhur Night", "8:30 PM", "10:30 PM", "Mon–Sat"],
+  ["Supreme Night", "8:30 PM", "10:30 PM", "Daily"],
+  ["Sridevi Night", "7:15 PM", "8:15 PM", "Daily"],
+  ["Night Bombay", "8:00 PM", "10:00 PM", "Daily"],
+  ["KBC Bombay", "1:30 PM", "2:30 PM", "Daily"],
+  ["Malamal Bombay", "11:40 AM", "12:40 PM", "Daily"],
+  ["CMM Matka", "5:00 PM", "7:00 PM", "Daily"],
+  ["Main Bazar", "9:35 PM", "12:05 AM", "Mon–Fri"],
+];
+
+export function SattaMatkaInfo({ resolve, marketTimings }: { resolve: SectionResolver; marketTimings?: MarketTiming[] }) {
   const { styles } = resolve("satta_matka_info");
+  const rows = marketTimings && marketTimings.length > 0
+    ? marketTimings.map((m) => [m.marketName, m.openTime, m.closeTime, m.status] as const)
+    : DEFAULT_MARKET_TIMINGS;
   return (
     <div
       className="my-4 p-3 sm:p-4"
@@ -88,27 +114,7 @@ export function SattaMatkaInfo({ resolve }: { resolve: SectionResolver }) {
       <table className="ansh-table">
         <thead><tr><th>Market Name</th><th>Open Time</th><th>Close Time</th><th>Status</th></tr></thead>
         <tbody>
-          {[
-            ["Time Bazar","01:00 PM","02:00 PM","Mon–Sat"],
-            ["Milan Day","3:00 PM","5:00 PM","Mon–Sat"],
-            ["Rajdhani Day","3:15 PM","5:15 PM","Mon–Sat"],
-            ["Kalyan","3:45 PM","5:45 PM","Mon–Sat"],
-            ["Madhur Day","1:30 PM","2:30 PM","Daily"],
-            ["Supreme Day","3:30 PM","5:30 PM","Daily"],
-            ["Sridevi","11:30 AM","12:30 PM","Daily"],
-            ["Day Bombay","12:00 PM","2:00 PM","Daily"],
-            ["Main Mumbai","9:30 PM","11:45 PM","Mon–Fri"],
-            ["Milan Night","9:00 PM","11:00 PM","Mon–Sat"],
-            ["Rajdhani Night","9:30 PM","11:45 PM","Mon–Fri"],
-            ["Madhur Night","8:30 PM","10:30 PM","Mon–Sat"],
-            ["Supreme Night","8:30 PM","10:30 PM","Daily"],
-            ["Sridevi Night","7:15 PM","8:15 PM","Daily"],
-            ["Night Bombay","8:00 PM","10:00 PM","Daily"],
-            ["KBC Bombay","1:30 PM","2:30 PM","Daily"],
-            ["Malamal Bombay","11:40 AM","12:40 PM","Daily"],
-            ["CMM Matka","5:00 PM","7:00 PM","Daily"],
-            ["Main Bazar","9:35 PM","12:05 AM","Mon–Fri"],
-          ].map(([name, open, close, status], i) => (
+          {rows.map(([name, open, close, status], i) => (
             <tr key={i}><td><strong>{name}</strong></td><td>{open}</td><td>{close}</td><td>{status}</td></tr>
           ))}
         </tbody>
