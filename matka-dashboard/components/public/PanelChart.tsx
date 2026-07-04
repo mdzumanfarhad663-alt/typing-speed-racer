@@ -88,7 +88,7 @@ export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[]
                 <tr>
                   <th
                     className="p-0.5 sm:p-1.5 text-[9px] sm:text-base font-bold italic"
-                    style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}
+                    style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif", color: "#000" }}
                   >
                     Date
                   </th>
@@ -96,7 +96,7 @@ export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[]
                     <th
                       key={label}
                       className="p-0.5 sm:p-1.5 text-[9px] sm:text-base font-bold italic"
-                      style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}
+                      style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif", color: "#000" }}
                     >
                       {label}
                     </th>
