@@ -1,6 +1,6 @@
-import type { Row, Section } from "./schema";
+import type { Row, Section, StyleSlot } from "./schema";
 
-export type { Row, Section };
+export type { Row, Section, StyleSlot };
 
 export type PublicSectionsResponse = {
   lucky: Row[];

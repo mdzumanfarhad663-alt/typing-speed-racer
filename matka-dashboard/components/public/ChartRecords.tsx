@@ -1,3 +1,7 @@
+import type { CSSProperties } from "react";
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
+
 type ChartLink = { label: string; href: string };
 
 const SATTA_JODI: ChartLink[] = [
@@ -67,7 +71,7 @@ const OTHER_JODI: ChartLink[] = [
 const OTHER_PANEL: ChartLink[] = [
   { label: "Dabra Penal Chart", href: "https://sattamatkadpboss.mobi/record/dabra-penal-chart.php" },
   { label: "Deluxe Panel Chart", href: "https://sattamatkadpboss.mobi/deluxe-panel-chart.php" },
-  { label: "Khajana Panel Chart", href: "https://sattamatkadpboss.mobi/record/khajana-panel-chart.php" },
+  { label: "Khajana Panel Chart", href: "https://sattamatkadpboss.mobi/record/khajana-penal-chart.php" },
   { label: "Prabhat Panel Chart", href: "https://sattamatkadpboss.mobi/record/prabhat-panel-chart.php" },
   { label: "Maharani Panel Chart", href: "https://sattamatkadpboss.mobi/maharani-panel-chart.php" },
   { label: "Karodpati Penal Chart", href: "https://sattamatkadpboss.mobi/record/amar-jyoti-penal-chart.php" },
@@ -84,40 +88,21 @@ const OTHER_PANEL: ChartLink[] = [
 // Link colors alternate to match source site style
 const LINK_COLORS = ["#00f", "#8b0000", "#0000aa", "#cc6600", "#00008b", "#b8860b"];
 
-function ChartSection({ heading, links }: { heading: string; links: ChartLink[] }) {
+function ChartSection({ heading, links, headerStyle }: { heading: string; links: ChartLink[]; headerStyle: CSSProperties }) {
   return (
     <div className="my-4">
-      {/* Purple header */}
-      <div
-        className="px-3 py-1"
-        style={{ background: "purple" }}
-      >
-        <span
-          className="font-bold text-sm sm:text-base"
-          style={{ color: "#ffd400" }}
-        >
-          {heading}
-        </span>
+      <div className="px-3 py-1" style={headerStyle}>
+        <span className="font-bold text-sm sm:text-base">{heading}</span>
       </div>
-      {/* Chart rows */}
       {links.map((item, i) => (
-        <div
-          key={i}
-          className="text-center py-2 px-4"
-          style={{
-            background: i % 2 === 0 ? "#f7f7f7" : "#fff",
-            borderBottom: "1px solid #eee",
-          }}
-        >
+        <div key={i} className="text-center py-2 px-4" style={{ background: i % 2 === 0 ? "#f7f7f7" : "#fff", borderBottom: "1px solid #eee" }}>
           <span className="arrow-icon" />
           <a
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
             className="font-bold text-sm sm:text-base hover:underline"
-            style={{
-              color: LINK_COLORS[i % LINK_COLORS.length],
-            }}
+            style={{ color: LINK_COLORS[i % LINK_COLORS.length] }}
           >
             {item.label}
           </a>
@@ -127,13 +112,15 @@ function ChartSection({ heading, links }: { heading: string; links: ChartLink[] 
   );
 }
 
-export function ChartRecords() {
+export function ChartRecords({ resolve }: { resolve: SectionResolver }) {
+  const { styles, content } = resolve("chart_records");
+  const headerStyle = toCss(styles.header);
   return (
     <>
-      <ChartSection heading="⇛SATTA MATKA JODI CHART RECORDS" links={SATTA_JODI} />
-      <ChartSection heading="⇛SATTA MATKA PANEL CHART RECORDS" links={SATTA_PANEL} />
-      <ChartSection heading="⇛OTHER MATKA BAZAR JODI CHART RECORDS" links={OTHER_JODI} />
-      <ChartSection heading="⇛OTHER MATKA BAZAR PANEL CHART RECORDS" links={OTHER_PANEL} />
+      <ChartSection heading={content.jodiHeading} links={SATTA_JODI} headerStyle={headerStyle} />
+      <ChartSection heading={content.panelHeading} links={SATTA_PANEL} headerStyle={headerStyle} />
+      <ChartSection heading={content.otherJodiHeading} links={OTHER_JODI} headerStyle={headerStyle} />
+      <ChartSection heading={content.otherPanelHeading} links={OTHER_PANEL} headerStyle={headerStyle} />
     </>
   );
 }

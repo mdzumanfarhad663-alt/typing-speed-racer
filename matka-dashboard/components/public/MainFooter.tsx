@@ -1,14 +1,17 @@
-export function MainFooter() {
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
+
+export function MainFooter({ resolve }: { resolve: SectionResolver }) {
+  const { styles, content } = resolve("main_footer");
   return (
-    <div style={{ background: "#0b131e" }} className="py-6 px-4">
+    <div style={toCss(styles.wrapper)} className="py-6 px-4">
 
       {/* Disclaimer box */}
       <div
         className="max-w-3xl mx-auto mb-6 p-5"
         style={{
-          background: "#fff",
-          border: "1px solid #3d5afe",
           borderRadius: 8,
+          ...toCss(styles.disclaimerBox),
         }}
       >
         <div
@@ -101,10 +104,10 @@ export function MainFooter() {
       <div
         className="max-w-sm mx-auto mb-6 text-center py-6 px-6"
         style={{
-          background: "#fff",
           borderRadius: 12,
           borderTop: "4px solid #d32f2f",
           boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+          ...toCss(styles.contactCard),
         }}
       >
         <div
@@ -123,14 +126,14 @@ export function MainFooter() {
           SITE OWNER:-
         </div>
         <div className="font-bold text-base sm:text-lg mb-3" style={{ color: "#00008b" }}>
-          PRO. BIG BOSS SIR
+          {content.ownerName}
         </div>
         <a
-          href="tel:08829959562"
+          href={`tel:${content.phone}`}
           className="font-bold text-2xl sm:text-3xl"
           style={{ color: "#0000cd", textDecoration: "none" }}
         >
-          08829959562
+          {content.phone}
         </a>
       </div>
 
@@ -138,10 +141,9 @@ export function MainFooter() {
       <div
         className="max-w-lg mx-auto text-center py-6 px-6"
         style={{
-          background: "#1a1a2e",
-          border: "2px solid #fbc02d",
           borderRadius: 12,
           boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+          ...toCss(styles.ratingsBox),
         }}
       >
         <div className="font-bold text-white text-lg sm:text-xl mb-3">
@@ -149,10 +151,10 @@ export function MainFooter() {
         </div>
         <div className="flex items-center justify-center gap-2 mb-2">
           <span className="text-3xl" style={{ color: "#fbc02d" }}>★ ★ ★ ★ ★</span>
-          <span className="font-bold text-2xl" style={{ color: "#fbc02d" }}>4.9 / 5</span>
+          <span className="font-bold text-2xl" style={{ color: "#fbc02d" }}>{content.rating}</span>
         </div>
         <div className="text-sm mb-3" style={{ color: "#ccc" }}>
-          (Based on 14,850 votes)
+          {content.ratingVotes}
         </div>
         <div className="text-sm" style={{ color: "#ddd" }}>
           Fastest Satta Matka Results and Accurate Charts trusted by thousands of users daily.

@@ -1,14 +1,15 @@
-export function SattaMatkaInfo() {
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
+
+export function SattaMatkaInfo({ resolve }: { resolve: SectionResolver }) {
+  const { styles } = resolve("satta_matka_info");
   return (
     <div
       className="my-4 p-3 sm:p-4"
       style={{
-        background: "#fdfefe",
-        color: "#000",
         fontSize: "small",
-        fontFamily: "Arial, sans-serif",
-        border: "2px inset #82e0aa",
         lineHeight: 1.6,
+        ...toCss(styles.container),
       }}
     >
       <style>{`

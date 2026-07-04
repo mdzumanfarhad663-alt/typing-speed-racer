@@ -1,3 +1,7 @@
+import type { CSSProperties } from "react";
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
+
 const PANEL_ROWS = [
   "0 => 145 235 334 488 668",
   "1 => 128 245 399 588 669",
@@ -31,40 +35,26 @@ const OTC_ROWS = [
 ];
 
 const BORDER_STYLE = "1px solid #ddd";
-const HEADER_BG = "#ffcc00";
 
 function ChartBlock({
   heading,
   rows,
+  headerStyle,
 }: {
   heading: string;
   rows: string[];
+  headerStyle: CSSProperties;
 }) {
   return (
     <div className="my-4" style={{ border: BORDER_STYLE, borderRadius: 3, overflow: "hidden" }}>
-      {/* Gold header */}
-      <div
-        className="text-center px-4 py-3"
-        style={{ background: HEADER_BG, borderBottom: BORDER_STYLE }}
-      >
-        <span
-          className="font-bold text-sm sm:text-base"
-          style={{ color: "#000" }}
-        >
-          {heading}
-        </span>
+      {/* Header */}
+      <div className="text-center px-4 py-3" style={{ borderBottom: BORDER_STYLE, ...headerStyle }}>
+        <span className="font-bold text-sm sm:text-base">{heading}</span>
       </div>
       {/* White body */}
-      <div
-        className="text-center py-2.5 px-4"
-        style={{ background: "#fff" }}
-      >
+      <div className="text-center py-2.5 px-4" style={{ background: "#fff" }}>
         {rows.map((line, i) => (
-          <div
-            key={i}
-            className="font-bold text-base sm:text-lg leading-relaxed"
-            style={{ color: "#000" }}
-          >
+          <div key={i} className="font-bold text-base sm:text-lg leading-relaxed" style={{ color: "#000" }}>
             {line}
           </div>
         ))}
@@ -73,21 +63,14 @@ function ChartBlock({
   );
 }
 
-export function WeeklyCharts() {
+export function WeeklyCharts({ resolve }: { resolve: SectionResolver }) {
+  const { styles, content } = resolve("weekly_charts");
+  const headerStyle = toCss(styles.header);
   return (
     <>
-      <ChartBlock
-        heading="Weekly Panel Or Patti Chart From 29-06-2026 To 05-07-2026 For Kalyan, Milan, Kalyan Night, Rajdhani Night, Time Bazar, Main Bazar Market"
-        rows={PANEL_ROWS}
-      />
-      <ChartBlock
-        heading="Weekly Jodi Chart From 29-06-2026 To 05-07-2026 For Kalyan, Milan, Kalyan Night, Rajdhani Night, Time Bazar, Main Bazar Market"
-        rows={JODI_ROWS}
-      />
-      <ChartBlock
-        heading="Weekly Number Open To Close From 29-06-2026 To 05-07-2026 For Kalyan, Milan, Kalyan Night, Rajdhani Night, Time Bazar, Main Bazar Market"
-        rows={OTC_ROWS}
-      />
+      <ChartBlock heading={content.panelHeading} rows={PANEL_ROWS} headerStyle={headerStyle} />
+      <ChartBlock heading={content.jodiHeading} rows={JODI_ROWS} headerStyle={headerStyle} />
+      <ChartBlock heading={content.otcHeading} rows={OTC_ROWS} headerStyle={headerStyle} />
     </>
   );
 }

@@ -1,3 +1,6 @@
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
+
 const GUESSERS = [
   "1-SURYA BHAI",
   "2- RUDRA PENAL KING",
@@ -14,67 +17,37 @@ const FAST_RESULT = [
   "5.SURYA BHAI",
 ];
 
-export function TopGuessers() {
+export function TopGuessers({ resolve }: { resolve: SectionResolver }) {
+  const { styles, content } = resolve("top_guessers");
   return (
     <div className="my-4" style={{ border: "2px solid #ff0000", overflow: "hidden" }}>
-      {/* Red top bar */}
-      <div
-        className="px-3 py-1"
-        style={{ background: "#ff0000" }}
-      >
-        <span className="font-bold text-white text-xs sm:text-sm">
-          ⇒ Top Guessers And Result King
-        </span>
+      {/* Top bar */}
+      <div className="px-3 py-1" style={toCss(styles.topBar)}>
+        <span className="font-bold text-xs sm:text-sm">{content.topBarLabel}</span>
       </div>
 
       {/* Two column grid */}
       <div className="grid grid-cols-2">
         {/* LEFT — TOP GUSSER */}
         <div>
-          {/* Column header */}
-          <div
-            className="px-3 py-2"
-            style={{ background: "#00004d" }}
-          >
-            <span className="font-bold text-white text-base sm:text-lg">
-              TOP GUSSER
-            </span>
+          <div className="px-3 py-2" style={toCss(styles.leftHeader)}>
+            <span className="font-bold text-base sm:text-lg">{content.leftHeading}</span>
           </div>
-          {/* Rows */}
           {GUESSERS.map((name, i) => (
-            <div
-              key={i}
-              className="px-3 py-2"
-              style={{ background: "#008000", borderTop: "1px solid #005000" }}
-            >
-              <span className="font-bold text-white text-sm sm:text-base">
-                {name}
-              </span>
+            <div key={i} className="px-3 py-2" style={{ borderTop: "1px solid #005000", ...toCss(styles.leftRows) }}>
+              <span className="font-bold text-sm sm:text-base">{name}</span>
             </div>
           ))}
         </div>
 
         {/* RIGHT — FAST RESULT */}
         <div style={{ borderLeft: "2px solid #ff0000" }}>
-          {/* Column header */}
-          <div
-            className="px-3 py-2"
-            style={{ background: "#00004d" }}
-          >
-            <span className="font-bold text-white text-base sm:text-lg">
-              FAST RESULT
-            </span>
+          <div className="px-3 py-2" style={toCss(styles.rightHeader)}>
+            <span className="font-bold text-base sm:text-lg">{content.rightHeading}</span>
           </div>
-          {/* Rows */}
           {FAST_RESULT.map((name, i) => (
-            <div
-              key={i}
-              className="px-3 py-2"
-              style={{ background: "#0000ff", borderTop: "1px solid #0000aa" }}
-            >
-              <span className="font-bold text-white text-sm sm:text-base">
-                {name}
-              </span>
+            <div key={i} className="px-3 py-2" style={{ borderTop: "1px solid #0000aa", ...toCss(styles.rightRows) }}>
+              <span className="font-bold text-sm sm:text-base">{name}</span>
             </div>
           ))}
         </div>

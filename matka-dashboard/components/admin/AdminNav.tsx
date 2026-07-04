@@ -8,6 +8,7 @@ const links = [
   { href: "/admin/live-update", label: "Top Live Update" },
   { href: "/admin/live-results", label: "Live Results" },
   { href: "/admin/free-zone", label: "Free Zone" },
+  { href: "/admin/design", label: "Design" },
 ];
 
 export function AdminNav() {

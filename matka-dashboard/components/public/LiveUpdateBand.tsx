@@ -1,12 +1,15 @@
 import type { Row } from "@/lib/types";
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
 
-export function LiveUpdateBand({ items }: { items: Row[] }) {
+export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: SectionResolver }) {
   if (!items || items.length === 0) return null;
+  const { styles, content } = resolve("live_update_band");
 
   return (
     <div className="section-card my-4">
-      <div className="live-result">
-        📡 LIVE UPDATE
+      <div className="live-result" style={toCss(styles.header)}>
+        {content.heading}
       </div>
       {items.map((row, i) => (
         <div

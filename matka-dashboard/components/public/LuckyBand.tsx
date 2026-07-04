@@ -1,21 +1,24 @@
 import type { Row } from "@/lib/types";
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
 
 type AnkData = { ank: string; finalAnk: string } | null;
 
-export function LuckyBand({ items, ankData }: { items: Row[]; ankData: AnkData }) {
+export function LuckyBand({ items, ankData, resolve }: { items: Row[]; ankData: AnkData; resolve: SectionResolver }) {
+  const { styles, content } = resolve("lucky_band");
   return (
     <section className="my-4">
-      <div className="lucky-band-title text-center py-2">
-        <h2 className="text-lg font-bold italic" style={{ color: "#000" }}>Today Satta Matka Lucky Number</h2>
+      <div className="lucky-band-title text-center py-2" style={toCss(styles.titleBand)}>
+        <h2 className="text-lg font-bold italic" style={{ color: "#000" }}>{content.heading}</h2>
       </div>
 
       {/* Ank table — auto-scraped from source site */}
       {ankData && (ankData.ank || ankData.finalAnk) && (
-        <table className="lucky-ank-box w-full border-collapse text-center">
+        <table className="lucky-ank-box w-full border-collapse text-center" style={toCss(styles.ankBox)}>
           <thead>
             <tr>
-              <th className="py-2 font-bold italic" style={{ color: "#ff0000" }}>Ank (शुभांक)</th>
-              <th className="py-2 font-bold italic" style={{ color: "#ff0000" }}>Final Ank</th>
+              <th className="py-2 font-bold italic" style={{ color: "#ff0000" }}>{content.ankLabel}</th>
+              <th className="py-2 font-bold italic" style={{ color: "#ff0000" }}>{content.finalAnkLabel}</th>
             </tr>
           </thead>
           <tbody>

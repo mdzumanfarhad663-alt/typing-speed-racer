@@ -69,3 +69,28 @@ export const scrapedCache = pgTable("scraped_cache", {
   data: jsonb("data").notNull(),
   scrapedAt: timestamp("scraped_at", { withTimezone: true }).notNull(),
 });
+
+export type StyleSlot = {
+  backgroundColor?: string;
+  textColor?: string;
+  fontSize?: string;
+  fontFamily?: string;
+  fontWeight?: string;
+  fontStyle?: string;
+  borderColor?: string;
+  borderWidth?: string;
+  borderStyle?: string;
+  padding?: string;
+  textAlign?: "left" | "center" | "right";
+};
+
+export const sectionSettings = pgTable("section_settings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sectionKey: text("section_key").notNull().unique(),
+  styles: jsonb("styles").$type<Record<string, StyleSlot>>().notNull().default({}),
+  content: jsonb("content").$type<Record<string, string>>().notNull().default({}),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type SectionSetting = typeof sectionSettings.$inferSelect;
+export type NewSectionSetting = typeof sectionSettings.$inferInsert;

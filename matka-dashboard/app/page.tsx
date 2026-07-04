@@ -15,6 +15,7 @@ import { MainFooter } from "@/components/public/MainFooter";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { RefreshIndicator } from "@/components/public/RefreshIndicator";
 import type { PublicSectionsResponse } from "@/lib/types";
+import { makeResolver, type SectionSettingsMap } from "@/lib/resolveStyle";
 
 const EMPTY: PublicSectionsResponse = { lucky: [], live_result: [], free_zone: [], live_update: [] };
 type AnkData = { ank: string; finalAnk: string } | null;
@@ -24,6 +25,7 @@ export default function Home() {
   const [ankData, setAnkData] = useState<AnkData>(null);
   const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [error, setError] = useState<string | null>(null);
+  const [settings, setSettings] = useState<SectionSettingsMap>({});
 
   useEffect(() => {
     let alive = true;
@@ -54,12 +56,24 @@ export default function Home() {
       } catch { /* silent */ }
     }
 
+    async function loadSettings() {
+      try {
+        const res = await fetch("/api/public/section-settings", { cache: "no-store" });
+        const json = await res.json();
+        if (alive) setSettings(json);
+      } catch { /* silent — components fall back to defaults */ }
+    }
+
     load();
     loadAnk();
+    loadSettings();
     const t = setInterval(load, 3000);
     const ankTimer = setInterval(loadAnk, 120_000); // refresh ank every 2 min
-    return () => { alive = false; clearInterval(t); clearInterval(ankTimer); };
+    const settingsTimer = setInterval(loadSettings, 3000);
+    return () => { alive = false; clearInterval(t); clearInterval(ankTimer); clearInterval(settingsTimer); };
   }, []);
+
+  const resolve = makeResolver(settings);
 
   return (
     <main className="min-h-screen pb-12 px-2 sm:px-4" style={{ background: "#f5f5f0" }}>
@@ -72,18 +86,18 @@ export default function Home() {
           {error === "db_unavailable" ? "Database not configured yet." : "Network error"}
         </div>
       )}
-      <HeroHeader />
-      <LuckyBand items={data.lucky} ankData={ankData} />
-      <LiveUpdateBand items={data.live_update} />
-      <PromoBlock />
-      <LiveResultList items={data.live_result} />
-      <ContactForumSection />
-      <WeeklyCharts />
-      <TopGuessers />
-      <ChartRecords />
-      <SattaMatkaInfo />
-      <FaqSection />
-      <MainFooter />
+      <HeroHeader resolve={resolve} />
+      <LuckyBand items={data.lucky} ankData={ankData} resolve={resolve} />
+      <LiveUpdateBand items={data.live_update} resolve={resolve} />
+      <PromoBlock resolve={resolve} />
+      <LiveResultList items={data.live_result} resolve={resolve} />
+      <ContactForumSection resolve={resolve} />
+      <WeeklyCharts resolve={resolve} />
+      <TopGuessers resolve={resolve} />
+      <ChartRecords resolve={resolve} />
+      <SattaMatkaInfo resolve={resolve} />
+      <FaqSection resolve={resolve} />
+      <MainFooter resolve={resolve} />
       <RefreshIndicator lastUpdated={lastUpdated} />
     </main>
   );

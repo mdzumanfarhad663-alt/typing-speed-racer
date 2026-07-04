@@ -1,13 +1,16 @@
 import type { Row } from "@/lib/types";
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
 import { ResultCard } from "./ResultCard";
 
-export function LiveResultList({ items }: { items: Row[] }) {
+export function LiveResultList({ items, resolve }: { items: Row[]; resolve: SectionResolver }) {
+  const { styles, content } = resolve("live_result_list");
   return (
     <section className="section-card my-4">
-      <div className="gradient-band text-center py-3">
+      <div className="gradient-band text-center py-3" style={toCss(styles.header)}>
         <h2 className="text-2xl font-bold text-black">
           <span className="mx-2">{"«««"}</span>
-          <span className="underline">📊 LIVE MATKA RESULT</span>
+          <span className="underline">{content.heading}</span>
           <span className="mx-2">{"»»»"}</span>
         </h2>
       </div>

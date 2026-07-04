@@ -1,11 +1,14 @@
 import type { Row } from "@/lib/types";
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
 
-export function FreeZoneBlock({ items }: { items: Row[] }) {
+export function FreeZoneBlock({ items, resolve }: { items: Row[]; resolve: SectionResolver }) {
+  const { styles, content } = resolve("free_zone_block");
   const dateLabel = items.find((i) => i.dateLabel)?.dateLabel || null;
   return (
     <section className="section-card my-4">
-      <div className="py-2 px-4" style={{ background: "#6c1d8b", color: "#fff200" }}>
-        <h2 className="font-bold text-lg">⇛ OPEN TO CLOSE FREE GAME ZONE</h2>
+      <div className="py-2 px-4" style={toCss(styles.header)}>
+        <h2 className="font-bold text-lg">{content.heading}</h2>
       </div>
       {dateLabel && (
         <div className="text-center font-bold py-2" style={{ background: "#ffd400" }}>
