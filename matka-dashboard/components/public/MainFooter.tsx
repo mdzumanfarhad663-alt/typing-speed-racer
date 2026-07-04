@@ -114,6 +114,12 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
           className="font-bold text-xl sm:text-2xl mb-1"
           style={{ color: "#d32f2f" }}
         >
+          SattaMatka-Dpboss.in
+        </div>
+        <div
+          className="font-bold text-xl sm:text-2xl mb-1"
+          style={{ color: "#d32f2f" }}
+        >
           SattaMatkaDpboss.Mobi
         </div>
         <div
