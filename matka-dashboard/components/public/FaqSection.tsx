@@ -93,20 +93,20 @@ export function FaqSection({ resolve }: { resolve: SectionResolver }) {
         className="my-4 px-4 py-4 text-sm"
         style={{ background: "#fff", color: "#000", lineHeight: 1.8 }}
       >
-        <p className="font-bold mb-3 text-center" style={{ color: "#00008b" }}>
-          Satta Matka | Satta Market | 220 Patti | Satta Matta Matka | Kalyan Satta Matka Result | Kalyan Matka | DPBoss
+        <p className="font-bold mb-3 text-center whitespace-pre-wrap" style={{ color: "#00008b" }}>
+          {content.seoKeywordsLine}
         </p>
-        <p className="mb-3 text-justify">
-          SattaMatkaDpboss.Mobi is one of India&apos;s most visited platforms for live Satta Matka results and free guessing tips. We cover all major markets including Kalyan Matka, Milan Day, Milan Night, Rajdhani Day, Rajdhani Night, Time Bazar, and Main Bazar — delivering the fastest result updates available online. Our experienced team shares daily free Kalyan guessing, weekly jodi panna charts, and open to close tips to help players make smarter decisions every single day.
+        <p className="mb-3 text-justify whitespace-pre-wrap">
+          {content.seoParagraph1}
         </p>
-        <p className="mb-3 text-justify">
-          DPBoss is recognized as India&apos;s leading Matka result platform for players who search terms like Indian satta matka, satta matka king, matka result live, and Kalyan matka result today. Our expert team shares daily free guessing for Kalyan open, Kalyan final ank, and Kalyan matka chart analysis — helping players make smarter decisions before every result window. Players looking for satta fix, dpboss guessing, and matka guessing 143 will find accurate and honest tips shared by experienced guessers in our free forum every single day.
+        <p className="mb-3 text-justify whitespace-pre-wrap">
+          {content.seoParagraph2}
         </p>
-        <p className="mb-3 text-justify">
-          Beyond Kalyan, DPBoss covers a wide range of popular markets including Madhur Matka, Sridevi Matka, Tara Matka, Star Matka, and Worli Matka. Players who follow madhur chart, sridevi chart, and tara satta matka results trust SattaMatkaDpboss.Mobi for the most current panna and jodi data available online. Our platform also serves players searching in regional languages including सट्टा मटका and मिलन मटका — making it one of the most inclusive and widely accessible Matka result sites in India.
+        <p className="mb-3 text-justify whitespace-pre-wrap">
+          {content.seoParagraph3}
         </p>
-        <p className="text-justify">
-          SattaMatkaDpboss.Mobi is also the go-to platform for players who search for satta matta matka 143, sattamatka 143, dpboss 143 guessing, golden matka, golden satta matka, and satta 143. Our free game zone, weekly jodi panna chart, and open to close daily tips make this platform the complete package for any serious Matka player. Bookmark SattaMatkaDpboss.Mobi today and get live matka updates, fast satta results, and free guessing tips delivered every single day without fail.
+        <p className="text-justify whitespace-pre-wrap">
+          {content.seoParagraph4}
         </p>
       </div>
     </>
