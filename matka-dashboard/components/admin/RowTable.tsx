@@ -30,15 +30,15 @@ function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Se
         <span className="inline-block w-4 h-4 rounded border border-gray-300 align-middle" style={{ background: row.color }} />
       </td>
       <td className="px-1 sm:px-2 py-2 text-right">
-        <div className="flex flex-wrap justify-end gap-x-2 gap-y-1">
+        <div className="flex flex-wrap justify-end gap-1.5 sm:gap-2">
           {(section === "live_result" || section === "live_update") && (
             <>
-              <Link href={`/admin/jodi/${row.id}`} className="text-red-700 underline text-xs sm:text-sm">Jodi chart</Link>
-              <Link href={`/admin/panel/${row.id}`} className="text-purple-700 underline text-xs sm:text-sm">Panel chart</Link>
+              <Link href={`/admin/jodi/${row.id}`} className="bg-red-600 hover:bg-red-700 text-white font-semibold px-2.5 py-1.5 rounded text-xs sm:text-sm whitespace-nowrap">Jodi chart</Link>
+              <Link href={`/admin/panel/${row.id}`} className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-2.5 py-1.5 rounded text-xs sm:text-sm whitespace-nowrap">Panel chart</Link>
             </>
           )}
-          <button onClick={onEdit} className="text-blue-700 underline text-xs sm:text-sm">Edit</button>
-          <button onClick={onDelete} className="text-red-700 underline text-xs sm:text-sm">Delete</button>
+          <button onClick={onEdit} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-2.5 py-1.5 rounded text-xs sm:text-sm whitespace-nowrap">Edit</button>
+          <button onClick={onDelete} className="bg-gray-700 hover:bg-gray-800 text-white font-semibold px-2.5 py-1.5 rounded text-xs sm:text-sm whitespace-nowrap">Delete</button>
         </div>
       </td>
     </tr>
