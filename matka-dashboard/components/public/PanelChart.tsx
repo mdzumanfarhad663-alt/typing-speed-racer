@@ -1,6 +1,8 @@
 import type { PanelDay, PanelEntry, Row } from "@/lib/schema";
 import { RefreshButton } from "./RefreshButton";
 
+const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
 function pad(s: string, len: number) {
   return (s + "      ").slice(0, len).split("");
 }
@@ -82,6 +84,25 @@ export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[]
         ) : (
           <div className="bg-black p-1 sm:p-2 mx-auto" style={{ maxWidth: "605px" }}>
             <table className="w-full table-fixed border-collapse bg-white" style={{ border: "4px groove #893bff" }}>
+              <thead>
+                <tr>
+                  <th
+                    className="p-0.5 sm:p-1.5 text-[9px] sm:text-base font-bold italic"
+                    style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}
+                  >
+                    Date
+                  </th>
+                  {DAY_LABELS.map((label) => (
+                    <th
+                      key={label}
+                      className="p-0.5 sm:p-1.5 text-[9px] sm:text-base font-bold italic"
+                      style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}
+                    >
+                      {label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
               <tbody>
                 {entries.map((entry) => (
                   <tr key={entry.id}>
