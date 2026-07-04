@@ -205,8 +205,61 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
   },
 ];
 
+export type ChartKind = "panel" | "jodi";
+
+export function chartSectionKey(kind: ChartKind, rowId: string): string {
+  return `${kind}_chart_${rowId}`;
+}
+
+const CHART_KEY_RE = /^(panel|jodi)_chart_(.+)$/;
+
+function buildChartConfig(kind: ChartKind, key: string): SectionConfigEntry {
+  const styleSlots: StyleSlotDef[] = [
+    { key: "topHeader", label: "Top title box", default: { backgroundColor: "#0c0361", textColor: "#ff0000", borderColor: "#ff0000", borderWidth: "3px", borderStyle: "solid", fontWeight: "700", fontStyle: "italic" } },
+    { key: "subtitleBox", label: "Subtitle box", default: { backgroundColor: "#0c0361", textColor: "#ffffff" } },
+    { key: "resultBox", label: "Yellow result box", default: { backgroundColor: "#ffff00", textColor: "#000000", borderColor: "#b22222", borderWidth: "4px", borderStyle: "double" } },
+    { key: "goToPill", label: "Go to Bottom/Top pill", default: { backgroundColor: "#ffffff", textColor: "#ff0000" } },
+    { key: "tableHeader", label: "Table header row", default: { backgroundColor: "#ffffff", textColor: "#000000", fontFamily: "Georgia, serif", fontStyle: "italic", fontWeight: "700", borderColor: "#dddddd", borderWidth: "1px", borderStyle: "solid" } },
+    { key: "tableBorder", label: "Table outer border", default: { borderColor: "#893bff", borderWidth: "4px", borderStyle: "groove" } },
+    { key: "footerBar", label: "Footer bar", default: { backgroundColor: "#0c0361", textColor: "#ffff00" } },
+  ];
+
+  const contentFields: ContentFieldDef[] = [
+    { key: "titleSuffix", label: "Title suffix", type: "text", default: kind === "panel" ? "PANEL CHART" : "CHART" },
+    { key: "subtitleText", label: "Subtitle text (after game name)", type: "text", default: kind === "panel" ? "Jodi Patti chart" : "Jodi Matka Chart" },
+    {
+      key: "keywordsText",
+      label: "SEO keywords line",
+      type: "textarea",
+      default:
+        kind === "panel"
+          ? "panel chart, jodi patti record chart, satta panel chart, panel chart for matka"
+          : "jodi chart, jodi matka chart, jodi record chart, jodi patti chart",
+    },
+    { key: "goToBottomLabel", label: "\"Go to Bottom\" label", type: "text", default: "Go to Bottom" },
+    { key: "goToTopLabel", label: "\"Go to Top\" label", type: "text", default: "Go to Top" },
+    {
+      key: "emptyMessage",
+      label: "Empty-state message",
+      type: "textarea",
+      default: kind === "panel" ? "No panel data yet. Admin can add weekly entries from the admin panel." : "No jodi data yet. Admin can add weekly entries from the admin panel.",
+    },
+    { key: "backLabel", label: "\"Back to dashboard\" label", type: "text", default: "← Back to dashboard" },
+  ];
+
+  if (kind === "panel") {
+    contentFields.push({ key: "dayLabels", label: "Day header labels (comma-separated)", type: "text", default: "MON,TUE,WED,THU,FRI,SAT,SUN" });
+  }
+
+  return { key, label: `${kind === "panel" ? "Panel" : "Jodi"} Chart Page Design`, styleSlots, contentFields };
+}
+
 export function getSectionConfig(key: string): SectionConfigEntry | undefined {
-  return SECTION_CONFIG.find((c) => c.key === key);
+  const found = SECTION_CONFIG.find((c) => c.key === key);
+  if (found) return found;
+  const m = key.match(CHART_KEY_RE);
+  if (m) return buildChartConfig(m[1] as ChartKind, key);
+  return undefined;
 }
 
 export function getSectionDefaults(key: string): { styles: Record<string, StyleSlot>; content: Record<string, string> } {

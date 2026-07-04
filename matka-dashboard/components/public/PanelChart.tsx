@@ -1,7 +1,8 @@
-import type { PanelDay, PanelEntry, Row } from "@/lib/schema";
+import type { PanelDay, PanelEntry, Row, StyleSlot } from "@/lib/schema";
+import { toCss } from "@/lib/resolveStyle";
 import { RefreshButton } from "./RefreshButton";
 
-const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+export type ChartDesign = { styles: Record<string, StyleSlot>; content: Record<string, string> };
 
 function pad(s: string, len: number) {
   return (s + "      ").slice(0, len).split("");
@@ -31,13 +32,23 @@ function fmtDate(s: string) {
   return `${d}/${m}/${y}`;
 }
 
-function GameHeader({ game, anchorId, jumpHref, jumpLabel }: { game: Row; anchorId: string; jumpHref: string; jumpLabel: string }) {
+function GameHeader({
+  game,
+  design,
+  anchorId,
+  jumpHref,
+  jumpLabel,
+}: {
+  game: Row;
+  design: ChartDesign;
+  anchorId: string;
+  jumpHref: string;
+  jumpLabel: string;
+}) {
+  const { styles } = design;
   return (
     <div id={anchorId}>
-      <div
-        className="text-black text-center py-4 sm:py-6 px-4"
-        style={{ background: "#ffff00", border: "4px double #b22222" }}
-      >
+      <div className="text-black text-center py-4 sm:py-6 px-4" style={toCss(styles.resultBox)}>
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-700">
           {game.title.toUpperCase()}
         </h2>
@@ -50,7 +61,7 @@ function GameHeader({ game, anchorId, jumpHref, jumpLabel }: { game: Row; anchor
         <a
           href={jumpHref}
           className="inline-block font-bold px-4 py-1 text-sm"
-          style={{ background: "#fff", color: "#ff0000", borderRadius: 4 }}
+          style={{ borderRadius: 4, ...toCss(styles.goToPill) }}
         >
           {jumpLabel}
         </a>
@@ -59,45 +70,39 @@ function GameHeader({ game, anchorId, jumpHref, jumpLabel }: { game: Row; anchor
   );
 }
 
-export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[] }) {
+export function PanelChart({ game, entries, design }: { game: Row; entries: PanelEntry[]; design: ChartDesign }) {
+  const { styles, content } = design;
+  const dayLabels = (content.dayLabels || "MON,TUE,WED,THU,FRI,SAT,SUN").split(",").map((s) => s.trim());
+
   return (
     <main className="min-h-screen bg-black text-white p-2">
       <div className="w-full">
-        <div id="top" className="text-center py-3 sm:py-4 px-2" style={{ background: "#0c0361", border: "3px solid #ff0000" }}>
-          <h1 className="text-lg sm:text-2xl md:text-3xl font-bold px-2" style={{ color: "#ff0000" }}>
-            {game.title.toUpperCase()} PANEL CHART
+        <div id="top" className="text-center py-3 sm:py-4 px-2" style={toCss(styles.topHeader)}>
+          <h1 className="text-lg sm:text-2xl md:text-3xl px-2">
+            {game.title.toUpperCase()} {content.titleSuffix}
           </h1>
         </div>
-        <div className="text-center py-2 sm:py-3 px-4" style={{ background: "#0c0361", border: "3px solid #ff0000", borderTop: "none" }}>
-          <p className="text-base sm:text-xl font-bold text-white">{game.title} Jodi Patti chart</p>
-          <p className="text-[10px] sm:text-xs text-white mt-1">
-            panel chart, jodi patti record chart, satta panel chart, panel chart for matka
-          </p>
+        <div className="text-center py-2 sm:py-3 px-4" style={{ borderTop: "none", ...toCss(styles.subtitleBox) }}>
+          <p className="text-base sm:text-xl font-bold">{game.title} {content.subtitleText}</p>
+          <p className="text-[10px] sm:text-xs mt-1">{content.keywordsText}</p>
         </div>
 
-        <GameHeader game={game} anchorId="header-top" jumpHref="#bottom" jumpLabel="Go to Bottom" />
+        <GameHeader game={game} design={design} anchorId="header-top" jumpHref="#bottom" jumpLabel={content.goToBottomLabel} />
 
         {entries.length === 0 ? (
-          <div className="text-black text-center py-8 text-base font-bold" style={{ background: "#ffff00", border: "4px double #b22222" }}>
-            No panel data yet. Admin can add weekly entries from the admin panel.
+          <div className="text-black text-center py-8 text-base font-bold" style={toCss(styles.resultBox)}>
+            {content.emptyMessage}
           </div>
         ) : (
           <div className="bg-black p-1 sm:p-2 mx-auto" style={{ maxWidth: "605px" }}>
-            <table className="w-full table-fixed border-collapse bg-white" style={{ border: "4px groove #893bff" }}>
+            <table className="w-full table-fixed border-collapse bg-white" style={toCss(styles.tableBorder)}>
               <thead>
                 <tr>
-                  <th
-                    className="p-0.5 sm:p-1.5 text-[9px] sm:text-base font-bold italic"
-                    style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif", color: "#000" }}
-                  >
+                  <th className="p-0.5 sm:p-1.5 text-[9px] sm:text-base" style={toCss(styles.tableHeader)}>
                     Date
                   </th>
-                  {DAY_LABELS.map((label) => (
-                    <th
-                      key={label}
-                      className="p-0.5 sm:p-1.5 text-[9px] sm:text-base font-bold italic"
-                      style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif", color: "#000" }}
-                    >
+                  {dayLabels.map((label) => (
+                    <th key={label} className="p-0.5 sm:p-1.5 text-[9px] sm:text-base" style={toCss(styles.tableHeader)}>
                       {label}
                     </th>
                   ))}
@@ -119,10 +124,10 @@ export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[]
           </div>
         )}
 
-        <GameHeader game={game} anchorId="bottom" jumpHref="#top" jumpLabel="Go to Top" />
+        <GameHeader game={game} design={design} anchorId="bottom" jumpHref="#top" jumpLabel={content.goToTopLabel} />
 
-        <div className="text-center py-3" style={{ background: "#0c0361", border: "3px solid #ff0000", borderTop: "none" }}>
-          <a href="/" className="text-yellow-300 underline font-bold text-sm">← Back to dashboard</a>
+        <div className="text-center py-3" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>
+          <a href="/" className="underline font-bold text-sm" style={{ color: toCss(styles.footerBar).color }}>{content.backLabel}</a>
         </div>
       </div>
     </main>

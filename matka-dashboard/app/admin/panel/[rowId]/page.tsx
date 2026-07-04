@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import type { PanelEntry, Row } from "@/lib/schema";
 import { PanelEntryForm } from "@/components/admin/PanelEntryForm";
+import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
+import { chartSectionKey } from "@/lib/sectionConfig";
 
 export default function AdminPanelPage({ params }: { params: { rowId: string } }) {
   const [game, setGame] = useState<Row | null>(null);
@@ -47,6 +49,8 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
           <button onClick={() => setAdding(true)} className="bg-black text-white px-4 py-2 rounded">+ Add week</button>
         )}
       </div>
+
+      <ChartDesignPanel sectionKey={chartSectionKey("panel", params.rowId)} />
 
       {(adding || editing) && (
         <div className="mb-6">

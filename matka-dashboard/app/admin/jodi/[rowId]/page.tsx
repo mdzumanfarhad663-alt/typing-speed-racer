@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import type { JodiEntry, Row } from "@/lib/schema";
 import { JodiEntryForm } from "@/components/admin/JodiEntryForm";
+import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
+import { chartSectionKey } from "@/lib/sectionConfig";
 
 export default function AdminJodiPage({ params }: { params: { rowId: string } }) {
   const [game, setGame] = useState<Row | null>(null);
@@ -47,6 +49,8 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
           <button onClick={() => setAdding(true)} className="bg-black text-white px-4 py-2 rounded">+ Add week</button>
         )}
       </div>
+
+      <ChartDesignPanel sectionKey={chartSectionKey("jodi", params.rowId)} />
 
       {(adding || editing) && (
         <div className="mb-6">

@@ -13,7 +13,7 @@ type SectionData = {
 };
 
 const FONT_FAMILIES = ["System UI", "Arial, sans-serif", '"Open Sans", sans-serif', "Georgia, serif", '"Times New Roman", serif', "Verdana, sans-serif"];
-const BORDER_STYLES = ["solid", "dashed", "dotted", "inset", "none"];
+const BORDER_STYLES = ["solid", "dashed", "dotted", "double", "groove", "inset", "none"];
 const TEXT_ALIGNS = ["left", "center", "right"] as const;
 
 function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
@@ -73,6 +73,22 @@ function StyleSlotFields({ slot, onChange }: { slot: StyleSlot; onChange: (next:
       <label className="block">
         <span className="text-xs font-semibold text-gray-700">Padding</span>
         <input className="w-full border border-gray-300 rounded px-2 py-1 text-sm" placeholder="e.g. 1rem" value={slot.padding || ""} onChange={(e) => onChange({ ...slot, padding: e.target.value })} />
+      </label>
+      <label className="flex items-center gap-2 mt-1">
+        <input
+          type="checkbox"
+          checked={slot.fontWeight === "700"}
+          onChange={(e) => onChange({ ...slot, fontWeight: e.target.checked ? "700" : "400" })}
+        />
+        <span className="text-xs font-semibold text-gray-700">Bold</span>
+      </label>
+      <label className="flex items-center gap-2 mt-1">
+        <input
+          type="checkbox"
+          checked={slot.fontStyle === "italic"}
+          onChange={(e) => onChange({ ...slot, fontStyle: e.target.checked ? "italic" : "normal" })}
+        />
+        <span className="text-xs font-semibold text-gray-700">Italic</span>
       </label>
     </div>
   );

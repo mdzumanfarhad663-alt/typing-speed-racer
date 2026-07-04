@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { sectionSettings } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
-import { getSectionConfig } from "@/lib/sectionConfig";
+import { getSectionConfig, getSectionDefaults } from "@/lib/sectionConfig";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,6 +12,22 @@ async function guard() {
   const s = await getSession();
   if (!s) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   return null;
+}
+
+export async function GET(_req: Request, { params }: { params: { key: string } }) {
+  const denied = await guard();
+  if (denied) return denied;
+  const cfg = getSectionConfig(params.key);
+  if (!cfg) return NextResponse.json({ error: "Unknown section" }, { status: 404 });
+
+  const [existing] = await db.select().from(sectionSettings).where(eq(sectionSettings.sectionKey, params.key)).limit(1);
+  const defaults = getSectionDefaults(params.key);
+  return NextResponse.json({
+    sectionKey: params.key,
+    label: cfg.label,
+    styles: existing ? { ...defaults.styles, ...(existing.styles as Record<string, unknown>) } : defaults.styles,
+    content: existing ? { ...defaults.content, ...(existing.content as Record<string, unknown>) } : defaults.content,
+  });
 }
 
 export async function PATCH(req: Request, { params }: { params: { key: string } }) {

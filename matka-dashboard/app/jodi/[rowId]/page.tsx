@@ -1,7 +1,9 @@
 import { asc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { jodiEntries, rows } from "@/lib/schema";
+import { jodiEntries, rows, sectionSettings } from "@/lib/schema";
 import { JodiChart } from "@/components/public/JodiChart";
+import { chartSectionKey } from "@/lib/sectionConfig";
+import { resolveSection } from "@/lib/resolveStyle";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -15,5 +17,10 @@ export default async function JodiPage({ params }: { params: { rowId: string } }
     .from(jodiEntries)
     .where(eq(jodiEntries.rowId, params.rowId))
     .orderBy(asc(jodiEntries.weekStart), asc(jodiEntries.position));
-  return <JodiChart game={game} entries={entries} />;
+
+  const key = chartSectionKey("jodi", params.rowId);
+  const [live] = await db.select().from(sectionSettings).where(eq(sectionSettings.sectionKey, key)).limit(1);
+  const design = resolveSection(key, live);
+
+  return <JodiChart game={game} entries={entries} design={design} />;
 }
