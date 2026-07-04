@@ -58,8 +58,15 @@ export function JodiChart({ game, entries }: { game: Row; entries: JodiEntry[] }
                 {entries.map((entry) => (
                   <tr key={entry.id}>
                     {entry.days.map((d, i) => (
-                      <td key={i} className="bg-white text-center align-middle p-0.5 sm:p-1.5" style={{ border: "1px solid #ddd" }}>
-                        <span className="text-[11px] sm:text-lg md:text-xl font-bold" style={{ color: d.color || "#000" }}>
+                      <td
+                        key={i}
+                        className="bg-white text-center align-middle p-0.5 sm:p-1.5"
+                        style={{ border: "1px inset #893bff" }}
+                      >
+                        <span
+                          className="text-[13px] sm:text-lg md:text-2xl font-bold italic"
+                          style={{ color: d.color || "#000", fontFamily: "Georgia, serif", textShadow: "1px 1px 0 #ffd700" }}
+                        >
                           {d.value || "--"}
                         </span>
                       </td>
