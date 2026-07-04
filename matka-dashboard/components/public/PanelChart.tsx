@@ -60,7 +60,7 @@ function GameHeader({ game, anchorId, jumpHref, jumpLabel }: { game: Row; anchor
 export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[] }) {
   return (
     <main className="min-h-screen bg-black text-white p-2">
-      <div className="mx-auto" style={{ width: "605.84px", maxWidth: "100%" }}>
+      <div className="w-full">
         <div id="top" className="text-center py-3 sm:py-4 px-2" style={{ background: "#0c0361", border: "3px solid #ff0000" }}>
           <h1 className="text-lg sm:text-2xl md:text-3xl font-bold px-2" style={{ color: "#ff0000" }}>
             {game.title.toUpperCase()} PANEL CHART
@@ -80,7 +80,7 @@ export function PanelChart({ game, entries }: { game: Row; entries: PanelEntry[]
             No panel data yet. Admin can add weekly entries from the admin panel.
           </div>
         ) : (
-          <div className="bg-black p-1 sm:p-2">
+          <div className="bg-black p-1 sm:p-2 mx-auto" style={{ maxWidth: "605px" }}>
             <table className="w-full table-fixed border-collapse bg-white" style={{ border: "4px groove #893bff" }}>
               <tbody>
                 {entries.map((entry) => (
