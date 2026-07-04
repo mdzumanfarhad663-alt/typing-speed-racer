@@ -21,17 +21,39 @@ export function PanelEntryForm({
 }) {
   const [weekStart, setWeekStart] = useState(initial?.weekStart ?? "");
   const [weekEnd, setWeekEnd] = useState(initial?.weekEnd ?? "");
-  const [days, setDays] = useState<PanelDay[]>(
-    initial?.days?.map((d) => ({ open: d.open, jodi: d.jodi, close: d.close, color: d.color || "#000000" })) ?? emptyDays()
-  );
+  const initialDays =
+    initial?.days?.map((d) => ({ open: d.open, jodi: d.jodi, close: d.close, color: d.color || "#000000" })) ?? emptyDays();
+  const [days, setDays] = useState<PanelDay[]>(initialDays);
   const [busy, setBusy] = useState(false);
+
+  // Undo/redo history for the day-cell grid: a stack of snapshots plus a pointer into it.
+  const [history, setHistory] = useState<PanelDay[][]>([initialDays]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+  const canUndo = historyIndex > 0;
+  const canRedo = historyIndex < history.length - 1;
 
   function update(i: number, k: keyof PanelDay, v: string) {
     setDays((prev) => {
       const copy = [...prev];
       copy[i] = { ...copy[i], [k]: v };
+      setHistory((h) => [...h.slice(0, historyIndex + 1), copy]);
+      setHistoryIndex((idx) => idx + 1);
       return copy;
     });
+  }
+
+  function undo() {
+    if (!canUndo) return;
+    const idx = historyIndex - 1;
+    setHistoryIndex(idx);
+    setDays(history[idx]);
+  }
+
+  function redo() {
+    if (!canRedo) return;
+    const idx = historyIndex + 1;
+    setHistoryIndex(idx);
+    setDays(history[idx]);
   }
 
   async function save() {
@@ -105,6 +127,8 @@ export function PanelEntryForm({
       <div className="flex gap-2 mt-4">
         <button onClick={save} disabled={busy} className="bg-black text-white px-4 py-2 rounded disabled:opacity-50">{busy ? "Saving…" : "Save"}</button>
         <button onClick={onCancel} className="border px-4 py-2 rounded">Cancel</button>
+        <button type="button" onClick={undo} disabled={!canUndo} className="border px-4 py-2 rounded disabled:opacity-40">↶ Undo</button>
+        <button type="button" onClick={redo} disabled={!canRedo} className="border px-4 py-2 rounded disabled:opacity-40">↷ Redo</button>
       </div>
     </div>
   );
