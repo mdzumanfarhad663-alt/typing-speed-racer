@@ -32,7 +32,7 @@ function GameHeader({ game, anchorId, jumpHref, jumpLabel }: { game: Row; anchor
 export function JodiChart({ game, entries }: { game: Row; entries: JodiEntry[] }) {
   return (
     <main className="min-h-screen bg-black text-white p-2">
-      <div className="w-full">
+      <div className="mx-auto" style={{ width: "605.84px", maxWidth: "100%" }}>
         <div id="top" className="text-center py-3 sm:py-4 px-2" style={{ background: "#0c0361", border: "3px solid #ff0000" }}>
           <h1 className="text-lg sm:text-2xl md:text-3xl font-bold px-2" style={{ color: "#ff0000" }}>
             {game.title.toUpperCase()} CHART
