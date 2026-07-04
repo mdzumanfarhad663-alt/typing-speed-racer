@@ -6,6 +6,13 @@ import { JodiEntryForm } from "@/components/admin/JodiEntryForm";
 import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
 import { chartSectionKey } from "@/lib/sectionConfig";
 
+const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+function fmtDate(s: string) {
+  const [y, m, d] = s.split("-");
+  return `${d}/${m}/${y}`;
+}
+
 export default function AdminJodiPage({ params }: { params: { rowId: string } }) {
   const [game, setGame] = useState<Row | null>(null);
   const [entries, setEntries] = useState<JodiEntry[]>([]);
@@ -63,36 +70,44 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
         </div>
       )}
 
-      <table className="w-full border-collapse text-sm">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border p-2 text-left">Week</th>
-            <th className="border p-2 text-left">Days</th>
-            <th className="border p-2 w-40">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.length === 0 && (
-            <tr><td colSpan={3} className="border p-6 text-center italic text-gray-500">No weeks yet</td></tr>
-          )}
-          {entries.map((e) => (
-            <tr key={e.id}>
-              <td className="border p-2 align-top">{e.weekStart} → {e.weekEnd}</td>
-              <td className="border p-2 align-top">
-                {e.days.map((d, i) => (
-                  <span key={i} className="inline-block mr-3 text-lg font-bold" style={{ color: d.color || "#000" }}>
-                    {d.value || "--"}
-                  </span>
-                ))}
-              </td>
-              <td className="border p-2 align-top">
-                <button onClick={() => setEditing(e)} className="text-blue-600 underline mr-3">Edit</button>
-                <button onClick={() => del(e.id)} className="text-red-600 underline">Delete</button>
-              </td>
+      <div className="bg-white p-1" style={{ border: "4px solid #893bff" }}>
+        <table className="w-full table-fixed border-collapse bg-white text-sm">
+          <thead>
+            <tr>
+              <th className="p-1 italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>Date</th>
+              {DAY_LABELS.map((label) => (
+                <th key={label} className="p-1 italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>{label}</th>
+              ))}
+              <th className="p-1 italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {entries.length === 0 && (
+              <tr><td colSpan={9} className="border p-6 text-center italic text-gray-500">No weeks yet</td></tr>
+            )}
+            {entries.map((e) => (
+              <tr key={e.id}>
+                <td className="p-1 bg-white text-black font-bold text-xs text-center" style={{ border: "1px solid #ddd" }}>
+                  <div>{fmtDate(e.weekStart)}</div>
+                  <div>To</div>
+                  <div>{fmtDate(e.weekEnd)}</div>
+                </td>
+                {e.days.map((d, i) => (
+                  <td key={i} className="bg-white text-center align-middle p-1" style={{ border: "1px solid #ddd" }}>
+                    <span className="text-lg font-bold italic" style={{ color: d.color || "#000", fontFamily: "Georgia, serif" }}>
+                      {d.value || "--"}
+                    </span>
+                  </td>
+                ))}
+                <td className="p-1 align-middle text-center whitespace-nowrap" style={{ border: "1px solid #ddd" }}>
+                  <button onClick={() => setEditing(e)} className="text-blue-600 underline mr-2 text-xs">Edit</button>
+                  <button onClick={() => del(e.id)} className="text-red-600 underline text-xs">Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </main>
   );
 }
