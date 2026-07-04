@@ -16,28 +16,30 @@ function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Se
   };
   return (
     <tr ref={setNodeRef} style={style} className="border-b border-gray-200">
-      <td className="px-2 py-2 cursor-grab text-gray-400 select-none" {...attributes} {...listeners}>⋮⋮</td>
-      <td className="px-2 py-2 font-semibold" style={{ color: row.color }}>
+      <td className="px-1 sm:px-2 py-2 cursor-grab text-gray-400 select-none" {...attributes} {...listeners}>⋮⋮</td>
+      <td className="px-1 sm:px-2 py-2 font-semibold text-xs sm:text-sm" style={{ color: row.color }}>
         {row.title}
         {row.source === "scraped" && (
           <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-normal align-middle">auto</span>
         )}
       </td>
-      <td className="px-2 py-2">{row.resultValue}</td>
-      <td className="px-2 py-2 text-sm text-gray-600">{row.timeRange}</td>
-      <td className="px-2 py-2 text-sm">{row.leftTag} / {row.rightTag}</td>
-      <td className="px-2 py-2">
+      <td className="px-1 sm:px-2 py-2 text-xs sm:text-sm">{row.resultValue}</td>
+      <td className="px-1 sm:px-2 py-2 text-xs sm:text-sm text-gray-600">{row.timeRange}</td>
+      <td className="px-1 sm:px-2 py-2 text-xs sm:text-sm">{row.leftTag} / {row.rightTag}</td>
+      <td className="px-1 sm:px-2 py-2">
         <span className="inline-block w-4 h-4 rounded border border-gray-300 align-middle" style={{ background: row.color }} />
       </td>
-      <td className="px-2 py-2 text-right whitespace-nowrap">
-        {(section === "live_result" || section === "live_update") && (
-          <>
-            <Link href={`/admin/jodi/${row.id}`} className="text-red-700 underline text-sm mr-3">Jodi chart</Link>
-            <Link href={`/admin/panel/${row.id}`} className="text-purple-700 underline text-sm mr-3">Panel chart</Link>
-          </>
-        )}
-        <button onClick={onEdit} className="text-blue-700 underline text-sm mr-3">Edit</button>
-        <button onClick={onDelete} className="text-red-700 underline text-sm">Delete</button>
+      <td className="px-1 sm:px-2 py-2 text-right">
+        <div className="flex flex-wrap justify-end gap-x-2 gap-y-1">
+          {(section === "live_result" || section === "live_update") && (
+            <>
+              <Link href={`/admin/jodi/${row.id}`} className="text-red-700 underline text-xs sm:text-sm">Jodi chart</Link>
+              <Link href={`/admin/panel/${row.id}`} className="text-purple-700 underline text-xs sm:text-sm">Panel chart</Link>
+            </>
+          )}
+          <button onClick={onEdit} className="text-blue-700 underline text-xs sm:text-sm">Edit</button>
+          <button onClick={onDelete} className="text-red-700 underline text-xs sm:text-sm">Delete</button>
+        </div>
       </td>
     </tr>
   );
@@ -110,28 +112,30 @@ export function RowTable({ section }: { section: Section }) {
       ) : items.length === 0 ? (
         <div className="text-gray-500 py-6 italic">No rows yet. Click "Add row" to create one.</div>
       ) : (
-        <table className="w-full bg-white border border-gray-200 rounded">
-          <thead className="bg-gray-100 text-left text-sm">
-            <tr>
-              <th className="px-2 py-2"></th>
-              <th className="px-2 py-2">Title</th>
-              <th className="px-2 py-2">Result</th>
-              <th className="px-2 py-2">Time</th>
-              <th className="px-2 py-2">Tags</th>
-              <th className="px-2 py-2">Color</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-              <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
-                {items.map((row) => (
-                  <SortableRow key={row.id} row={row} section={section} onEdit={() => setEditing(row)} onDelete={() => onDelete(row.id)} />
-                ))}
-              </SortableContext>
-            </DndContext>
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="w-full bg-white border border-gray-200 rounded">
+            <thead className="bg-gray-100 text-left text-xs sm:text-sm">
+              <tr>
+                <th className="px-1 sm:px-2 py-2"></th>
+                <th className="px-1 sm:px-2 py-2">Title</th>
+                <th className="px-1 sm:px-2 py-2">Result</th>
+                <th className="px-1 sm:px-2 py-2">Time</th>
+                <th className="px-1 sm:px-2 py-2">Tags</th>
+                <th className="px-1 sm:px-2 py-2">Color</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+                <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+                  {items.map((row) => (
+                    <SortableRow key={row.id} row={row} section={section} onEdit={() => setEditing(row)} onDelete={() => onDelete(row.id)} />
+                  ))}
+                </SortableContext>
+              </DndContext>
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
