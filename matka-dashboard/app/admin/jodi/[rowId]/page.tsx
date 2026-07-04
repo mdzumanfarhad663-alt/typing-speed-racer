@@ -45,8 +45,8 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
   if (!game) return <main className="p-6">Game not found. <Link href="/admin" className="underline">Back</Link></main>;
 
   return (
-    <main className="p-6 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-4">
+    <main className="p-4 sm:p-6 max-w-5xl mx-auto">
+      <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
         <div>
           <Link href="/admin" className="text-sm underline">← Admin</Link>
           <h1 className="text-2xl font-bold mt-1">Jodi chart: <span style={{ color: game.color }}>{game.title}</span></h1>
@@ -70,8 +70,8 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
         </div>
       )}
 
-      <div className="bg-white p-1" style={{ border: "4px solid #893bff" }}>
-        <table className="w-full table-fixed border-collapse bg-white text-sm">
+      <div className="bg-white p-1 overflow-x-auto" style={{ border: "4px solid #893bff" }}>
+        <table className="w-full min-w-[700px] table-fixed border-collapse bg-white text-sm">
           <thead>
             <tr>
               <th className="p-1 italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>Date</th>
