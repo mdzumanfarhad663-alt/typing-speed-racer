@@ -5,7 +5,7 @@ export function LiveUpdateBand({ items }: { items: Row[] }) {
 
   return (
     <div className="section-card my-4">
-      <div className="text-center py-2 font-bold text-xl tracking-wide text-white" style={{ background: "#29b6d8" }}>
+      <div className="live-result">
         📡 LIVE UPDATE
       </div>
       {items.map((row, i) => (

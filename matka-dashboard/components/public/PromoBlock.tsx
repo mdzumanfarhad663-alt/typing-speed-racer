@@ -3,12 +3,12 @@
 export function PromoBlock() {
   return (
     <div
-      className="my-4 py-5 px-4 text-center"
-      style={{ background: "#6c1d8b" }}
+      className="my-4 py-5 px-4 text-center rounded"
+      style={{ background: "#08619a" }}
     >
       {/* Hindi text */}
       <div
-        className="text-base sm:text-lg font-bold mb-4 leading-relaxed"
+        className="text-base sm:text-lg font-bold mb-4 leading-relaxed italic"
         style={{
           color: "#ffffff",
           fontFamily: "Arial, sans-serif",
@@ -20,9 +20,10 @@ export function PromoBlock() {
       {/* Play Online Matka button — scrolls to top */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="inline-block font-bold text-white text-base px-8 py-2 rounded-full mb-3 cursor-pointer"
+        className="inline-block font-bold text-white text-base px-3 py-1 rounded-full mb-3 cursor-pointer italic"
         style={{
-          background: "#8e2430",
+          backgroundImage: "linear-gradient(90deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)",
+          border: "1px solid #f7dc6f",
         }}
       >
         Play Online Matka
@@ -30,8 +31,8 @@ export function PromoBlock() {
 
       {/* India's Biggest & Most Trusted */}
       <div
-        className="text-base sm:text-lg font-bold"
-        style={{ color: "#ffd400" }}
+        className="text-base sm:text-lg font-bold italic"
+        style={{ color: "#f4d03f", textShadow: "1px 1px 0px #000" }}
       >
         India&apos;s Biggest &amp; Most Trusted
       </div>

@@ -24,6 +24,20 @@ html, body {
   border: 3px solid #ffa500;
   border-top: none;
 }
+.live-result {
+  background-color: #ffc107;
+  color: #000;
+  font-weight: 700;
+  font-size: 28px;
+  font-family: 'Open Sans', sans-serif;
+  border: orange solid 3px;
+  margin-bottom: 5px;
+  text-shadow: 1px 1px #d8b947;
+  border-radius: 4px;
+  text-align: center;
+  font-style: italic;
+  padding: 1px;
+}
 .gradient-band {
   background: #ffd400;
   border: none;
