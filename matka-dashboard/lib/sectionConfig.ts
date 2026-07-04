@@ -113,7 +113,7 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
   {
     key: "weekly_charts",
     label: "Weekly Charts",
-    styleSlots: [{ key: "header", label: "Header band", default: { backgroundColor: "#ffcc00", textColor: "#000000", borderColor: "#ddd", borderWidth: "1px", borderStyle: "solid" } }],
+    styleSlots: [{ key: "header", label: "Header band", default: { backgroundColor: "#ffcc66", textColor: "#000000", borderColor: "#ddd", borderWidth: "1px", borderStyle: "solid" } }],
     contentFields: [
       { key: "panelHeading", label: "Panel chart heading", type: "textarea", default: "Weekly Panel Or Patti Chart From 29-06-2026 To 05-07-2026 For Kalyan, Milan, Kalyan Night, Rajdhani Night, Time Bazar, Main Bazar Market" },
       { key: "jodiHeading", label: "Jodi chart heading", type: "textarea", default: "Weekly Jodi Chart From 29-06-2026 To 05-07-2026 For Kalyan, Milan, Kalyan Night, Rajdhani Night, Time Bazar, Main Bazar Market" },
@@ -125,9 +125,9 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
     label: "Top Guessers",
     styleSlots: [
       { key: "topBar", label: "Top bar", default: { backgroundColor: "#ff0000", textColor: "#ffffff" } },
-      { key: "leftHeader", label: "Left column header", default: { backgroundColor: "#00004d", textColor: "#ffffff" } },
+      { key: "leftHeader", label: "Left column header", default: { backgroundColor: "#00008b", textColor: "#ffffff" } },
       { key: "leftRows", label: "Left column rows", default: { backgroundColor: "#008000", textColor: "#ffffff" } },
-      { key: "rightHeader", label: "Right column header", default: { backgroundColor: "#00004d", textColor: "#ffffff" } },
+      { key: "rightHeader", label: "Right column header", default: { backgroundColor: "#00008b", textColor: "#ffffff" } },
       { key: "rightRows", label: "Right column rows", default: { backgroundColor: "#0000ff", textColor: "#ffffff" } },
     ],
     contentFields: [
@@ -139,7 +139,7 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
   {
     key: "chart_records",
     label: "Chart Records",
-    styleSlots: [{ key: "header", label: "Section headers", default: { backgroundColor: "purple", textColor: "#ffd400" } }],
+    styleSlots: [{ key: "header", label: "Section headers", default: { backgroundColor: "purple", textColor: "#ffff00", borderColor: "#a52a2a", borderWidth: "2px", borderStyle: "inset" } }],
     contentFields: [
       { key: "jodiHeading", label: "Jodi chart records heading", type: "text", default: "⇛SATTA MATKA JODI CHART RECORDS" },
       { key: "panelHeading", label: "Panel chart records heading", type: "text", default: "⇛SATTA MATKA PANEL CHART RECORDS" },
@@ -179,7 +179,7 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
       { key: "wrapper", label: "Footer background", default: { backgroundColor: "#0b131e" } },
       { key: "disclaimerBox", label: "Disclaimer box", default: { backgroundColor: "#ffffff", borderColor: "#3d5afe", borderWidth: "1px", borderStyle: "solid" } },
       { key: "contactCard", label: "Contact card", default: { backgroundColor: "#ffffff" } },
-      { key: "ratingsBox", label: "Ratings box", default: { backgroundColor: "#1a1a2e", borderColor: "#fbc02d", borderWidth: "2px", borderStyle: "solid" } },
+      { key: "ratingsBox", label: "Ratings box", default: { backgroundColor: "#111111", borderColor: "#fbc02d", borderWidth: "2px", borderStyle: "solid" } },
     ],
     contentFields: [
       { key: "disclaimerTitle", label: "Disclaimer title", type: "text", default: "!! DISCLAIMER !!" },

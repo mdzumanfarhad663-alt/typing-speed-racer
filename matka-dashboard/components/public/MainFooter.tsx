@@ -4,13 +4,17 @@ import { toCss } from "@/lib/resolveStyle";
 export function MainFooter({ resolve }: { resolve: SectionResolver }) {
   const { styles, content } = resolve("main_footer");
   return (
-    <div style={toCss(styles.wrapper)} className="py-6 px-4">
+    <div
+      style={{ fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif', ...toCss(styles.wrapper) }}
+      className="py-6 px-4"
+    >
 
       {/* Disclaimer box */}
       <div
         className="max-w-3xl mx-auto mb-6 p-5"
         style={{
-          borderRadius: 8,
+          borderRadius: 10,
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
           ...toCss(styles.disclaimerBox),
         }}
       >
@@ -130,7 +134,7 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
         style={{
           borderRadius: 12,
           borderTop: "4px solid #d32f2f",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.5)",
           ...toCss(styles.contactCard),
         }}
       >
@@ -155,10 +159,10 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
         <div className="text-xs font-semibold mb-1" style={{ color: "#555" }}>
           SITE OWNER:-
         </div>
-        <div className="font-bold text-base sm:text-lg mb-1" style={{ color: "#00008b" }}>
+        <div className="font-bold text-base sm:text-lg mb-1" style={{ color: "#1a237e" }}>
           {content.ownerName}
         </div>
-        <div className="font-bold text-base sm:text-lg mb-3" style={{ color: "#00008b" }}>
+        <div className="font-bold text-base sm:text-lg mb-3" style={{ color: "#1a237e" }}>
           SURYA BHAI
         </div>
         <a

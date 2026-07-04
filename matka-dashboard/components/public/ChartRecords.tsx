@@ -95,7 +95,7 @@ function ChartSection({ heading, links, headerStyle }: { heading: string; links:
         <span className="font-bold text-sm sm:text-base">{heading}</span>
       </div>
       {links.map((item, i) => (
-        <div key={i} className="text-center py-2 px-4" style={{ background: i % 2 === 0 ? "#f7f7f7" : "#fff", borderBottom: "1px solid #eee" }}>
+        <div key={i} className="text-center py-1 px-4" style={{ background: "#fff", border: "2px groove #ff0000", margin: "2px 0" }}>
           <span className="arrow-icon" />
           <a
             href={item.href}

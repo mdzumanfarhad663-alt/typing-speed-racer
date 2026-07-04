@@ -19,7 +19,7 @@ export function PromoBlock({ resolve }: { resolve: SectionResolver }) {
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className="inline-block font-bold text-base px-3 py-1 rounded-full mb-3 cursor-pointer italic"
-        style={toCss(styles.button)}
+        style={{ boxShadow: "0 0 15px #000", ...toCss(styles.button) }}
       >
         {content.buttonLabel}
       </button>
