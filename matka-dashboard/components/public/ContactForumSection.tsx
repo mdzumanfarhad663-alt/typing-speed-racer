@@ -20,18 +20,12 @@ function ArrowGif({ kind, className }: { kind: ArrowKind; className?: string }) 
 }
 
 const FORUM_ROWS = [
-  { badge: "new" as const, arrow: "small" as const, main: "Satta Matka Guessing Forum", href: "https://sattamatkadpboss.mobi/satta-matka-guessing-forum.php" },
-  { badge: "free" as const, arrow: "medium" as const, main: "Daily 3 Ank Open To Close All Games", href: "https://sattamatkadpboss.mobi/open-to-close.php" },
-  { badge: "update" as const, arrow: "wide" as const, main: "Weekly Jodi & Panna", href: "https://sattamatkadpboss.mobi/weekly-jodi-panna.php" },
-  { badge: "free" as const, arrow: "medium" as const, main: "All Matka Charts", href: "https://sattamatkadpboss.mobi/satta-matka-chart.php" },
-  { badge: "free" as const, arrow: "medium" as const, main: "Satta 220 Patti Favourite Panna Chart", href: "https://sattamatkadpboss.mobi/all-panna-record.php" },
+  { arrow: "small" as const, main: "Satta Matka Guessing Forum", href: "https://sattamatkadpboss.mobi/satta-matka-guessing-forum.php" },
+  { arrow: "medium" as const, main: "Daily 3 Ank Open To Close All Games", href: "https://sattamatkadpboss.mobi/open-to-close.php" },
+  { arrow: "wide" as const, main: "Weekly Jodi & Panna", href: "https://sattamatkadpboss.mobi/weekly-jodi-panna.php" },
+  { arrow: "medium" as const, main: "All Matka Charts", href: "https://sattamatkadpboss.mobi/satta-matka-chart.php" },
+  { arrow: "medium" as const, main: "Satta 220 Patti Favourite Panna Chart", href: "https://sattamatkadpboss.mobi/all-panna-record.php" },
 ];
-
-const BADGE_LABEL: Record<"new" | "free" | "update", string> = {
-  new: "New",
-  free: "Free",
-  update: "Update",
-};
 
 export function ContactForumSection({ resolve }: { resolve: SectionResolver }) {
   const { styles, content } = resolve("contact_forum");
@@ -66,13 +60,12 @@ export function ContactForumSection({ resolve }: { resolve: SectionResolver }) {
             <div
               key={i}
               className="text-center py-2.5 px-4 flex items-center justify-center gap-2"
-              style={{ background: i % 2 === 0 ? "#f7f7f7" : "#fff", borderBottom: "1px solid #ddd" }}
+              style={{ background: "#fff5f8", border: "2px solid #e70042", marginTop: i === 0 ? 0 : -2 }}
             >
               <ArrowGif kind={row.arrow} />
               <a href={row.href} target="_blank" rel="noopener noreferrer" className="font-bold text-black text-base sm:text-lg hover:underline">
                 {row.main}
               </a>
-              <span className={`badge-pill badge-${row.badge}`}>{BADGE_LABEL[row.badge]}</span>
               <ArrowGif kind={row.arrow} />
             </div>
           ))}

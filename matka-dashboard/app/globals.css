@@ -80,31 +80,6 @@ html, body {
   z-index: 50;
 }
 
-@keyframes badge-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.75; transform: scale(1.06); }
-}
-.badge-pill {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  color: #fff;
-  padding: 1px 7px;
-  border-radius: 999px;
-  margin-left: 6px;
-  vertical-align: middle;
-  animation: badge-pulse 1.4s ease-in-out infinite;
-}
-.badge-new {
-  background: #e30000;
-}
-.badge-free {
-  background: #1f9d55;
-}
-.badge-update {
-  background: #0b6e4f;
-}
-
 .arrow-icon {
   display: inline-block;
   width: 0;
