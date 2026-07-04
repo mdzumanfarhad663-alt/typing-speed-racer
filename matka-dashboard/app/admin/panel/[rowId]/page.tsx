@@ -21,13 +21,13 @@ function MiniDayCell({ d }: { d: PanelDay }) {
   const open = pad(d.open || "   ", 3);
   const close = pad(d.close || "   ", 3);
   return (
-    <td className="bg-white text-black align-middle p-1" style={{ border: "1px solid #ddd" }}>
-      <div className="flex items-center justify-center gap-1">
-        <div className="flex flex-col text-[9px] leading-tight font-bold">
+    <td className="bg-white text-black align-middle p-0.5 sm:p-1.5" style={{ border: "1px solid #ddd" }}>
+      <div className="flex items-center justify-center gap-0.5 sm:gap-1">
+        <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{open[0]}</span><span>{open[1]}</span><span>{open[2]}</span>
         </div>
-        <div className="text-base font-bold px-0.5" style={{ color: d.color || "#000" }}>{d.jodi || "--"}</div>
-        <div className="flex flex-col text-[9px] leading-tight font-bold">
+        <div className="text-[11px] sm:text-base font-bold px-0.5" style={{ color: d.color || "#000" }}>{d.jodi || "--"}</div>
+        <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{close[0]}</span><span>{close[1]}</span><span>{close[2]}</span>
         </div>
       </div>
@@ -92,15 +92,15 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
         </div>
       )}
 
-      <div className="bg-white p-1 overflow-x-auto" style={{ border: "4px solid #893bff" }}>
-        <table className="w-full min-w-[700px] table-fixed border-collapse bg-white text-sm">
+      <div className="bg-white p-1" style={{ border: "4px solid #893bff" }}>
+        <table className="w-full table-fixed border-collapse bg-white text-sm">
           <thead>
             <tr>
-              <th className="p-1 italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>Date</th>
+              <th className="p-0.5 sm:p-1 text-[9px] sm:text-base italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>Date</th>
               {DAY_LABELS.map((label) => (
-                <th key={label} className="p-1 italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>{label}</th>
+                <th key={label} className="p-0.5 sm:p-1 text-[9px] sm:text-base italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>{label}</th>
               ))}
-              <th className="p-1 italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>Actions</th>
+              <th className="p-0.5 sm:p-1 text-[9px] sm:text-base italic font-bold" style={{ border: "1px solid #ddd", fontFamily: "Georgia, serif" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -109,15 +109,17 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
             )}
             {entries.map((e) => (
               <tr key={e.id}>
-                <td className="p-1 bg-white text-black font-bold text-xs text-center" style={{ border: "1px solid #ddd" }}>
+                <td className="p-0.5 sm:p-1.5 bg-white text-black font-bold text-[7px] sm:text-[11px] text-center" style={{ border: "1px solid #ddd" }}>
                   <div>{fmtDate(e.weekStart)}</div>
                   <div>To</div>
                   <div>{fmtDate(e.weekEnd)}</div>
                 </td>
                 {e.days.map((d, i) => <MiniDayCell key={i} d={d} />)}
-                <td className="p-1 align-middle text-center whitespace-nowrap" style={{ border: "1px solid #ddd" }}>
-                  <button onClick={() => setEditing(e)} className="text-blue-600 underline mr-2 text-xs">Edit</button>
-                  <button onClick={() => del(e.id)} className="text-red-600 underline text-xs">Delete</button>
+                <td className="p-0.5 sm:p-1.5 align-middle text-center" style={{ border: "1px solid #ddd" }}>
+                  <div className="flex flex-col sm:flex-row sm:gap-2 items-center">
+                    <button onClick={() => setEditing(e)} className="text-blue-600 underline text-[8px] sm:text-xs">Edit</button>
+                    <button onClick={() => del(e.id)} className="text-red-600 underline text-[8px] sm:text-xs">Delete</button>
+                  </div>
                 </td>
               </tr>
             ))}
