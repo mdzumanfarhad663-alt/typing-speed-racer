@@ -18,16 +18,16 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
           className="text-center font-bold text-lg mb-3"
           style={{ color: "#d32f2f" }}
         >
-          !! DISCLAIMER !!
+          {content.disclaimerTitle}
         </div>
         <p
-          className="text-sm leading-relaxed mb-3"
+          className="text-sm leading-relaxed mb-3 whitespace-pre-wrap"
           style={{ color: "#222", fontWeight: 500, textAlign: "justify" }}
         >
-          यह वेबसाइट (<em style={{ color: "#d32f2f" }}>SattaMatkaDpboss.Mobi</em>) केवल मनोरंजन और सूचना के उद्देश्य के लिए है। हम किसी भी अवैध सट्टा मटका व्यवसाय से नहीं जुड़े हैं। यहाँ दिखाए गए सभी परिणाम इंटरनेट पर उपलब्ध डेटा पर आधारित हैं। हम जुए या सट्टा खेलने का समर्थन नहीं करते हैं। कृपया अपने देश के कानूनों का पालन करें। किसी भी लाभ या हानि के लिए आप स्वयं जिम्मेदार होंगे।
+          {content.disclaimerText}
         </p>
-        <p className="text-sm font-bold" style={{ color: "#d32f2f" }}>
-          Note: This site is for educational purposes only. View at your own risk.
+        <p className="text-sm font-bold whitespace-pre-wrap" style={{ color: "#d32f2f" }}>
+          {content.disclaimerNote}
         </p>
       </div>
 

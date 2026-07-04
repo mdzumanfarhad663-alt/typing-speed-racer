@@ -177,6 +177,9 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
       { key: "ratingsBox", label: "Ratings box", default: { backgroundColor: "#1a1a2e", borderColor: "#fbc02d", borderWidth: "2px", borderStyle: "solid" } },
     ],
     contentFields: [
+      { key: "disclaimerTitle", label: "Disclaimer title", type: "text", default: "!! DISCLAIMER !!" },
+      { key: "disclaimerText", label: "Disclaimer text (Hindi)", type: "textarea", default: "यह वेबसाइट (SattaMatkaDpboss.Mobi) केवल मनोरंजन और सूचना के उद्देश्य के लिए है। हम किसी भी अवैध सट्टा मटका व्यवसाय से नहीं जुड़े हैं। यहाँ दिखाए गए सभी परिणाम इंटरनेट पर उपलब्ध डेटा पर आधारित हैं। हम जुए या सट्टा खेलने का समर्थन नहीं करते हैं। कृपया अपने देश के कानूनों का पालन करें। किसी भी लाभ या हानि के लिए आप स्वयं जिम्मेदार होंगे।" },
+      { key: "disclaimerNote", label: "Disclaimer note (English)", type: "textarea", default: "Note: This site is for educational purposes only. View at your own risk." },
       { key: "phone", label: "Contact phone", type: "text", default: "08829959562" },
       { key: "ownerName", label: "Site owner name", type: "text", default: "PRO. BIG BOSS SIR" },
       { key: "rating", label: "Rating score", type: "text", default: "4.9 / 5" },
