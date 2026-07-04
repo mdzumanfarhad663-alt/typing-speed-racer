@@ -24,8 +24,8 @@ function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Se
         )}
       </td>
       <td className="px-1 sm:px-2 py-2 text-xs sm:text-sm">{row.resultValue}</td>
-      <td className="px-1 sm:px-2 py-2 text-xs sm:text-sm text-gray-600">{row.timeRange}</td>
-      <td className="px-1 sm:px-2 py-2 text-xs sm:text-sm">{row.leftTag} / {row.rightTag}</td>
+      <td className="hidden sm:table-cell px-1 sm:px-2 py-2 text-xs sm:text-sm text-gray-600">{row.timeRange}</td>
+      <td className="hidden sm:table-cell px-1 sm:px-2 py-2 text-xs sm:text-sm">{row.leftTag} / {row.rightTag}</td>
       <td className="px-1 sm:px-2 py-2">
         <span className="inline-block w-4 h-4 rounded border border-gray-300 align-middle" style={{ background: row.color }} />
       </td>
@@ -119,8 +119,8 @@ export function RowTable({ section }: { section: Section }) {
                 <th className="px-1 sm:px-2 py-2"></th>
                 <th className="px-1 sm:px-2 py-2">Title</th>
                 <th className="px-1 sm:px-2 py-2">Result</th>
-                <th className="px-1 sm:px-2 py-2">Time</th>
-                <th className="px-1 sm:px-2 py-2">Tags</th>
+                <th className="hidden sm:table-cell px-1 sm:px-2 py-2">Time</th>
+                <th className="hidden sm:table-cell px-1 sm:px-2 py-2">Tags</th>
                 <th className="px-1 sm:px-2 py-2">Color</th>
                 <th></th>
               </tr>
