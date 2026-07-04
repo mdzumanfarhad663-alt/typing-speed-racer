@@ -45,7 +45,7 @@ export function ContactForumSection({ resolve }: { resolve: SectionResolver }) {
         </div>
         <div>
           {FORUM_ROWS.map((row, i) => (
-            <div key={i} className="py-2.5 px-4" style={{ background: i % 2 === 0 ? "#f7f7f7" : "#fff", borderBottom: "1px solid #ddd" }}>
+            <div key={i} className="text-center py-2.5 px-4" style={{ background: i % 2 === 0 ? "#f7f7f7" : "#fff", borderBottom: "1px solid #ddd" }}>
               <span className="arrow-icon" />
               <span className="font-bold text-black text-base sm:text-lg">{row.main}</span>
               <span className={`badge-pill badge-${row.badge}`}>{BADGE_LABEL[row.badge]}</span>
