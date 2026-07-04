@@ -100,9 +100,33 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
         </div>
       </div>
 
+      {/* Ratings box */}
+      <div
+        className="max-w-lg mx-auto mb-6 text-center py-6 px-6"
+        style={{
+          borderRadius: 12,
+          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+          ...toCss(styles.ratingsBox),
+        }}
+      >
+        <div className="font-bold text-white text-lg sm:text-xl mb-3">
+          DPBoss User Reviews &amp; Ratings
+        </div>
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <span className="text-3xl" style={{ color: "#fbc02d" }}>★ ★ ★ ★ ★</span>
+          <span className="font-bold text-2xl" style={{ color: "#fbc02d" }}>{content.rating}</span>
+        </div>
+        <div className="text-sm mb-3" style={{ color: "#ccc" }}>
+          {content.ratingVotes}
+        </div>
+        <div className="text-sm" style={{ color: "#ddd" }}>
+          Fastest Satta Matka Results and Accurate Charts trusted by thousands of users daily.
+        </div>
+      </div>
+
       {/* Contact card */}
       <div
-        className="max-w-sm mx-auto mb-6 text-center py-6 px-6"
+        className="max-w-sm mx-auto text-center py-6 px-6"
         style={{
           borderRadius: 12,
           borderTop: "4px solid #d32f2f",
@@ -131,8 +155,11 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
         <div className="text-xs font-semibold mb-1" style={{ color: "#555" }}>
           SITE OWNER:-
         </div>
-        <div className="font-bold text-base sm:text-lg mb-3" style={{ color: "#00008b" }}>
+        <div className="font-bold text-base sm:text-lg mb-1" style={{ color: "#00008b" }}>
           {content.ownerName}
+        </div>
+        <div className="font-bold text-base sm:text-lg mb-3" style={{ color: "#00008b" }}>
+          SURYA BHAI
         </div>
         <a
           href={`tel:${content.phone}`}
@@ -141,30 +168,6 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
         >
           {content.phone}
         </a>
-      </div>
-
-      {/* Ratings box */}
-      <div
-        className="max-w-lg mx-auto text-center py-6 px-6"
-        style={{
-          borderRadius: 12,
-          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-          ...toCss(styles.ratingsBox),
-        }}
-      >
-        <div className="font-bold text-white text-lg sm:text-xl mb-3">
-          DPBoss User Reviews &amp; Ratings
-        </div>
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <span className="text-3xl" style={{ color: "#fbc02d" }}>★ ★ ★ ★ ★</span>
-          <span className="font-bold text-2xl" style={{ color: "#fbc02d" }}>{content.rating}</span>
-        </div>
-        <div className="text-sm mb-3" style={{ color: "#ccc" }}>
-          {content.ratingVotes}
-        </div>
-        <div className="text-sm" style={{ color: "#ddd" }}>
-          Fastest Satta Matka Results and Accurate Charts trusted by thousands of users daily.
-        </div>
       </div>
 
     </div>
