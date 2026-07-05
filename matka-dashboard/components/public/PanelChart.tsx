@@ -49,10 +49,13 @@ function GameHeader({
   return (
     <div id={anchorId}>
       <div className="text-black text-center py-4 sm:py-6 px-4" style={toCss(styles.resultBox)}>
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-700">
+        <h2
+          className="font-bold"
+          style={{ fontSize: "25px", fontStyle: "italic", textShadow: "1px 1px #8bc34a", fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif", color: "blue" }}
+        >
           {game.title.toUpperCase()}
         </h2>
-        <div className="text-base sm:text-xl font-bold mt-1">{game.resultValue}</div>
+        <div className="mt-1" style={{ fontWeight: 700, fontSize: "23px", letterSpacing: "1pt", fontFamily: "Georgia, serif" }}>{game.resultValue}</div>
         <div className="mt-3">
           <RefreshButton />
         </div>
@@ -60,8 +63,22 @@ function GameHeader({
       <div className="bg-black text-center py-2">
         <a
           href={jumpHref}
-          className="inline-block font-bold px-4 py-1 text-sm"
-          style={{ borderRadius: 4, ...toCss(styles.goToPill) }}
+          className="inline-block font-bold"
+          style={{
+            borderRadius: 4,
+            borderLeft: "5px solid gold",
+            borderRight: "5px solid gold",
+            borderTop: "2px solid gold",
+            borderBottom: "2px solid gold",
+            fontStyle: "italic",
+            fontSize: "large",
+            textShadow: "1px 1px gold",
+            fontFamily: "Trebuchet MS, sans-serif",
+            marginTop: "10px",
+            marginBottom: "5px",
+            padding: "5px 8px",
+            ...toCss(styles.goToPill),
+          }}
         >
           {jumpLabel}
         </a>
@@ -77,14 +94,14 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
   return (
     <main className="min-h-screen bg-black text-white p-2" style={{ fontFamily: "Georgia, serif", textAlign: "center" }}>
       <div className="w-full">
-        <div id="top" className="text-center py-3 sm:py-4 px-2" style={toCss(styles.topHeader)}>
-          <h1 className="text-xl sm:text-3xl md:text-4xl px-2" style={{ fontWeight: "bolder", fontFamily: "Georgia, serif" }}>
+        <div id="top" style={{ margin: "3px 0", padding: "3px", ...toCss(styles.topHeader) }}>
+          <h1>
             {game.title.toUpperCase()} {content.titleSuffix}
           </h1>
         </div>
-        <div className="text-center py-2 sm:py-3 px-4" style={{ borderTop: "none", ...toCss(styles.subtitleBox) }}>
-          <p className="text-base sm:text-xl font-bold">{game.title} {content.subtitleText}</p>
-          <p className="text-[10px] sm:text-xs mt-1">{content.keywordsText}</p>
+        <div style={{ margin: "3px 0", padding: "3px", ...toCss(styles.subtitleBox) }}>
+          <p>{game.title} {content.subtitleText}</p>
+          <p className="mt-1">{content.keywordsText}</p>
         </div>
 
         <GameHeader game={game} design={design} anchorId="header-top" jumpHref="#bottom" jumpLabel={content.goToBottomLabel} />
@@ -95,7 +112,7 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
           </div>
         ) : (
           <div className="bg-black p-1 sm:p-2 mx-auto" style={{ maxWidth: "605px" }}>
-            <table className="w-full table-fixed border-collapse bg-white" style={toCss(styles.tableBorder)}>
+            <table className="w-full table-fixed border-collapse bg-white" style={{ textShadow: "1px 1px 0 gold", ...toCss(styles.tableBorder) }}>
               <thead>
                 <tr>
                   <th className="p-0.5 sm:p-1.5 text-[9px] sm:text-base" style={toCss(styles.tableHeader)}>

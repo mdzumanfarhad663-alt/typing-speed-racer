@@ -215,12 +215,12 @@ const CHART_KEY_RE = /^(panel|jodi)_chart_(.+)$/;
 
 function buildChartConfig(kind: ChartKind, key: string): SectionConfigEntry {
   const styleSlots: StyleSlotDef[] = [
-    { key: "topHeader", label: "Top title box", default: { backgroundColor: "#0c0361", textColor: "#ff0000", borderColor: "#ff0000", borderWidth: "3px", borderStyle: "solid", fontWeight: "700", fontStyle: "italic" } },
-    { key: "subtitleBox", label: "Subtitle box", default: { backgroundColor: "#0c0361", textColor: "#ffffff" } },
-    { key: "resultBox", label: "Yellow result box", default: { backgroundColor: "#ffff00", textColor: "#000000", borderColor: "#b22222", borderWidth: "4px", borderStyle: "double" } },
-    { key: "goToPill", label: "Go to Bottom/Top pill", default: { backgroundColor: "#ffffff", textColor: "#ff0000" } },
+    { key: "topHeader", label: "Top title box", default: { backgroundColor: "#0c0361", textColor: "#ffffff", borderColor: "red", borderWidth: "3px", borderStyle: "solid", fontWeight: "700", fontStyle: "italic", fontSize: "small" } },
+    { key: "subtitleBox", label: "Subtitle box", default: { backgroundColor: "#0c0361", textColor: "#ffffff", borderColor: "red", borderWidth: "3px", borderStyle: "solid", fontWeight: "700", fontStyle: "italic", fontSize: "small" } },
+    { key: "resultBox", label: "Yellow result box", default: { backgroundColor: "#ffff00", textColor: "#000000", borderColor: "#b22222", borderWidth: "5px", borderStyle: "double" } },
+    { key: "goToPill", label: "Go to Bottom/Top pill", default: { backgroundColor: "#ffffff", textColor: "red" } },
     { key: "tableHeader", label: "Table header row", default: { backgroundColor: "#ffffff", textColor: "#000000", fontFamily: "Georgia, serif", fontStyle: "italic", fontWeight: "700", borderColor: "#dddddd", borderWidth: "1px", borderStyle: "solid" } },
-    { key: "tableBorder", label: "Table outer border", default: { borderColor: "#893bff", borderWidth: "4px", borderStyle: "groove" } },
+    { key: "tableBorder", label: "Table outer border", default: { borderColor: "#893bff", borderWidth: "5px", borderStyle: "groove" } },
     { key: "footerBar", label: "Footer bar", default: { backgroundColor: "#0c0361", textColor: "#ffff00" } },
   ];
 
