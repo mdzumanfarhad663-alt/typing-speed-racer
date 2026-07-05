@@ -11,6 +11,7 @@ const links = [
   { href: "/admin/free-zone", label: "Free Zone" },
   { href: "/admin/market-timings", label: "Market Timings" },
   { href: "/admin/design", label: "Design" },
+  { href: "/admin/result-box-design", label: "Result Box Design" },
 ];
 
 export function AdminNav() {
