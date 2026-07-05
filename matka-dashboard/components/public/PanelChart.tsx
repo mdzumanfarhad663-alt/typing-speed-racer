@@ -75,7 +75,10 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
   const dayLabels = (content.dayLabels || "MON,TUE,WED,THU,FRI,SAT,SUN").split(",").map((s) => s.trim());
 
   return (
-    <main className="min-h-screen bg-black text-white p-2" style={{ fontFamily: "Georgia, serif", textAlign: "center" }}>
+    <main
+      className="min-h-screen bg-black text-white p-2"
+      style={{ fontFamily: "Georgia, serif", textAlign: "center", fontWeight: "bolder", fontSize: "2em" }}
+    >
       <div className="w-full">
         <div id="top" className="text-center py-3 sm:py-4 px-2" style={toCss(styles.topHeader)}>
           <h1 className="text-lg sm:text-2xl md:text-3xl px-2">
