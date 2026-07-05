@@ -66,7 +66,7 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
     label: "Live Update Band",
     styleSlots: [
       { key: "header", label: "Header band", default: { backgroundColor: "#ffc107", textColor: "#000000", fontWeight: "700", fontStyle: "italic", borderColor: "orange", borderWidth: "3px", borderStyle: "solid", textShadowColor: "#d8b947", textShadowBlur: "0" } },
-      { key: "resultBox", label: "Result Box", default: {} },
+      { key: "resultBox", label: "Result Box Design", default: {} },
     ],
     contentFields: [{ key: "heading", label: "Heading", type: "text", default: "📡 LIVE UPDATE" }],
   },
@@ -205,7 +205,7 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
     label: "Live Result List",
     styleSlots: [
       { key: "header", label: "Header band", default: {} },
-      { key: "resultBox", label: "Result Box", default: {} },
+      { key: "resultBox", label: "Result Box Design", default: {} },
     ],
     contentFields: [{ key: "heading", label: "Heading", type: "text", default: "📊 LIVE MATKA RESULT" }],
   },
