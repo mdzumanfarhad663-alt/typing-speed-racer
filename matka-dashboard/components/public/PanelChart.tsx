@@ -124,11 +124,6 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
           </div>
         )}
 
-        <div className="text-left" style={{ margin: "3px", ...toCss(styles.seoBox) }}>
-          <strong>{game.title.toUpperCase()} {content.seoHeading}</strong>
-          <p className="mt-1">{content.seoParagraph}</p>
-        </div>
-
         <GameHeader game={game} design={design} anchorId="bottom" jumpHref="#top" jumpLabel={content.goToTopLabel} />
 
         <div className="text-center py-3" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>

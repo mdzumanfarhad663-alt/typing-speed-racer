@@ -222,21 +222,6 @@ function buildChartConfig(kind: ChartKind, key: string): SectionConfigEntry {
     { key: "tableHeader", label: "Table header row", default: { backgroundColor: "#ffffff", textColor: "#000000", fontFamily: "Georgia, serif", fontStyle: "italic", fontWeight: "700", borderColor: "#dddddd", borderWidth: "1px", borderStyle: "solid" } },
     { key: "tableBorder", label: "Table outer border", default: { borderColor: "#893bff", borderWidth: "4px", borderStyle: "groove" } },
     { key: "footerBar", label: "Footer bar", default: { backgroundColor: "#0c0361", textColor: "#ffff00" } },
-    {
-      key: "seoBox",
-      label: "SEO description box",
-      default: {
-        backgroundColor: "#0c0361",
-        textColor: "#ffffff",
-        fontSize: "small",
-        borderColor: "red",
-        borderWidth: "3px",
-        borderStyle: "solid",
-        fontWeight: "700",
-        fontStyle: "italic",
-        padding: "3px",
-      },
-    },
   ];
 
   const contentFields: ContentFieldDef[] = [
@@ -260,14 +245,6 @@ function buildChartConfig(kind: ChartKind, key: string): SectionConfigEntry {
       default: kind === "panel" ? "No panel data yet. Admin can add weekly entries from the admin panel." : "No jodi data yet. Admin can add weekly entries from the admin panel.",
     },
     { key: "backLabel", label: "\"Back to dashboard\" label", type: "text", default: "← Back to dashboard" },
-    { key: "seoHeading", label: "SEO heading (after game name)", type: "text", default: "Matka Panel Chart – Complete Panna Record" },
-    {
-      key: "seoParagraph",
-      label: "SEO paragraph",
-      type: "textarea",
-      default:
-        "This panel chart on SattaMatka-Dpboss.In is one of the most complete three-digit panna archives available for this Matka market in India. Players study this chart daily to identify hot panels, track repeating panna patterns, and sharpen their guessing strategy using years of historical data available completely free.",
-    },
   ];
 
   if (kind === "panel") {
