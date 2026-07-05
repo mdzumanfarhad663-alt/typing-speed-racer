@@ -5,7 +5,7 @@ export default function LiveUpdateAdmin() {
   return (
     <main className="min-h-screen bg-gray-100">
       <AdminNav />
-      <div className="max-w-5xl mx-auto p-8">
+      <div className="max-w-5xl mx-auto p-3 sm:p-8">
         <h1 className="text-2xl font-bold mb-2">📡 Top Live Update</h1>
         <div className="bg-blue-50 border border-blue-200 rounded p-4 mb-6 text-sm text-blue-900">
           <strong>How it works:</strong>
