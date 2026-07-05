@@ -16,6 +16,20 @@ html, body {
   background: #f5fffa;
   border: 3px inset #ff00ff;
 }
+.live-update-box {
+  background-color: #f5fffa;
+  color: #000;
+  font-weight: 700;
+  font-size: small;
+  font-family: 'Open Sans', sans-serif;
+  border: solid 3px #956f13;
+  border-radius: 8px;
+  font-style: italic;
+  text-align: center;
+  text-shadow: 1px 1px 0 pink, 1px 5px 5px #aba8a8;
+  margin-top: 9px;
+  margin-bottom: 9px;
+}
 .lucky-band-title {
   background-color: #fae6e9;
   color: #000;

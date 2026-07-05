@@ -11,7 +11,7 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
   const { styles, content } = resolve("live_update_band");
 
   return (
-    <div className="section-card my-4">
+    <div className="live-update-box">
       <div className="live-result" style={toCss(styles.header)}>
         {content.heading}
         <img src={NEW_BADGE_GIF} alt="New" width={38} height={17} className="inline-block ml-2 align-middle" />
