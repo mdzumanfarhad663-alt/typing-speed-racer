@@ -17,8 +17,18 @@ html, body {
   border: 3px inset #ff00ff;
 }
 .lucky-band-title {
-  background: #fae6e9;
-  border: 3px solid #956f13;
+  background-color: #fae6e9;
+  color: #000;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: 'Open Sans', sans-serif;
+  border: orange solid 3px;
+  margin-bottom: 5px;
+  text-shadow: 1px 1px #d8b947;
+  border-radius: 4px;
+  text-align: center;
+  font-style: italic;
+  padding: 1px;
 }
 .lucky-ank-box {
   background: #fff;
@@ -40,8 +50,15 @@ html, body {
   padding: 1px;
 }
 .gradient-band {
-  background: #ffd400;
-  border: none;
+  background: linear-gradient(180deg, rgba(247, 101, 101, 1) 0%, rgba(246, 238, 78, 1) 100%);
+  color: #000;
+  font-weight: 700;
+  font-size: 20px;
+  padding: 5px;
+  margin: 3px;
+  border-radius: 8px;
+  border-bottom: 2px solid #f39c12;
+  text-align: center;
 }
 .live-band {
   background: #29b6d8;

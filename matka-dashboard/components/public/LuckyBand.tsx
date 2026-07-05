@@ -8,8 +8,8 @@ export function LuckyBand({ items, ankData, resolve }: { items: Row[]; ankData: 
   const { styles, content } = resolve("lucky_band");
   return (
     <section className="my-4">
-      <div className="lucky-band-title text-center py-2" style={toCss(styles.titleBand)}>
-        <h2 className="text-lg font-bold italic" style={{ color: "#000" }}>{content.heading}</h2>
+      <div className="lucky-band-title" style={toCss(styles.titleBand)}>
+        <h2>{content.heading}</h2>
       </div>
 
       {/* Ank table — auto-scraped from source site */}

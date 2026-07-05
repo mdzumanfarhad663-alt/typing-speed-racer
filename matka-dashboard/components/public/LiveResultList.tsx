@@ -7,8 +7,8 @@ export function LiveResultList({ items, resolve }: { items: Row[]; resolve: Sect
   const { styles, content } = resolve("live_result_list");
   return (
     <section className="section-card my-4">
-      <div className="gradient-band text-center py-3" style={toCss(styles.header)}>
-        <h2 className="text-2xl font-bold text-black">
+      <div className="gradient-band" style={toCss(styles.header)}>
+        <h2>
           <span className="mx-2">{"«««"}</span>
           <span className="underline">{content.heading}</span>
           <span className="mx-2">{"»»»"}</span>

@@ -71,7 +71,7 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
     key: "lucky_band",
     label: "Lucky Number Band",
     styleSlots: [
-      { key: "titleBand", label: "Title band", default: { backgroundColor: "#fae6e9", borderColor: "#956f13", borderWidth: "3px", borderStyle: "solid", textColor: "#000000", fontStyle: "italic" } },
+      { key: "titleBand", label: "Title band", default: { backgroundColor: "#fae6e9", borderColor: "orange", borderWidth: "3px", borderStyle: "solid", textColor: "#000000", fontStyle: "italic", fontWeight: "700", fontSize: "18px", fontFamily: "'Open Sans', sans-serif" } },
       { key: "ankBox", label: "Ank table", default: { backgroundColor: "#fff", borderColor: "#ffa500", borderWidth: "3px", borderStyle: "solid" } },
     ],
     contentFields: [
@@ -200,7 +200,7 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
   {
     key: "live_result_list",
     label: "Live Result List",
-    styleSlots: [{ key: "header", label: "Header band", default: { backgroundColor: "#ffd400" } }],
+    styleSlots: [{ key: "header", label: "Header band", default: {} }],
     contentFields: [{ key: "heading", label: "Heading", type: "text", default: "📊 LIVE MATKA RESULT" }],
   },
 ];
