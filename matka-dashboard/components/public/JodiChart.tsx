@@ -69,7 +69,10 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
   const { styles, content } = design;
 
   return (
-    <main className="min-h-screen bg-black text-white p-2" style={{ fontFamily: "Georgia, serif", textAlign: "center" }}>
+    <main
+      className="min-h-screen bg-black text-white p-2"
+      style={{ fontFamily: "Times New Roman, serif", textAlign: "center", fontWeight: 700, fontStyle: "italic" }}
+    >
       <div className="w-full">
         <div id="top" style={{ margin: "3px 0", padding: "3px", ...toCss(styles.topHeader) }}>
           <h1 style={{ fontSize: "2em", fontWeight: "bolder", fontFamily: "Georgia, serif" }}>
