@@ -77,7 +77,20 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
           </h1>
         </div>
         <div style={{ margin: "3px 0", padding: "3px", ...toCss(styles.subtitleBox) }}>
-          <h2 style={{ fontSize: "1.5em" }}>{game.title.toUpperCase()} {content.seoHeading}</h2>
+          <h2
+            style={{
+              display: "block",
+              fontSize: "1.5em",
+              marginBlockStart: "0.83em",
+              marginBlockEnd: "0.83em",
+              marginInlineStart: "0px",
+              marginInlineEnd: "0px",
+              fontWeight: "bold",
+              unicodeBidi: "isolate",
+            }}
+          >
+            {game.title.toUpperCase()} {content.seoHeading}
+          </h2>
           <p>{game.title} {content.subtitleText}</p>
           <p className="mt-1">{content.keywordsText}</p>
         </div>
