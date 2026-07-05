@@ -5,7 +5,7 @@ export default function LuckyAdmin() {
   return (
     <main className="min-h-screen bg-gray-100">
       <AdminNav />
-      <div className="max-w-5xl mx-auto p-8">
+      <div className="max-w-5xl mx-auto p-3 sm:p-8">
         <RowTable section="lucky" />
       </div>
     </main>

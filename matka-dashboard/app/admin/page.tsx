@@ -13,7 +13,7 @@ export default function AdminHome() {
   return (
     <main className="min-h-screen bg-gray-100">
       <AdminNav />
-      <div className="max-w-5xl mx-auto p-8">
+      <div className="max-w-5xl mx-auto p-3 sm:p-8">
         <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
 
         {/* Auto-sync from source site */}
