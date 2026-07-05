@@ -95,7 +95,7 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
     <main className="min-h-screen bg-black text-white p-2" style={{ fontFamily: "Georgia, serif", textAlign: "center" }}>
       <div className="w-full">
         <div id="top" style={{ margin: "3px 0", padding: "3px", ...toCss(styles.topHeader) }}>
-          <h1 style={{ fontSize: "2em", fontWeight: "bolder", fontFamily: "Georgia, serif" }}>
+          <h1 className="text-xl sm:text-3xl md:text-4xl" style={{ fontWeight: "bolder", fontFamily: "Georgia, serif" }}>
             {game.title.toUpperCase()} {content.titleSuffix}
           </h1>
         </div>
