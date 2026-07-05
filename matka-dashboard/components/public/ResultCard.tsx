@@ -54,11 +54,11 @@ export function ResultCard({ row, resolve }: { row: Row; resolve: SectionResolve
         )}
       </div>
       <div className="flex-1 text-center">
-        <div className="font-bold text-xl" style={{ ...toCss(styles.itemTitle), color: row.color }}>
+        <div className="font-bold text-xl" style={{ ...toCss(styles.resultBox), color: row.color }}>
           {row.title}
         </div>
-        <div className="text-xl font-bold tracking-wide" style={toCss(styles.itemResult)}>{row.resultValue}</div>
-        {row.timeRange && <div className="text-sm font-bold text-red-600" style={toCss(styles.itemTime)}>{row.timeRange}</div>}
+        <div className="text-xl font-bold tracking-wide" style={toCss(styles.resultBox)}>{row.resultValue}</div>
+        {row.timeRange && <div className="text-sm font-bold text-red-600" style={toCss(styles.resultBox)}>{row.timeRange}</div>}
       </div>
       <div className="w-20 text-right">
         {row.rightTag && (
