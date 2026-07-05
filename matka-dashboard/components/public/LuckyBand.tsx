@@ -14,17 +14,17 @@ export function LuckyBand({ items, ankData, resolve }: { items: Row[]; ankData: 
 
       {/* Ank table — auto-scraped from source site */}
       {ankData && (ankData.ank || ankData.finalAnk) && (
-        <table className="lucky-ank-box w-full border-collapse text-center" style={toCss(styles.ankBox)}>
+        <table className="lucky-ank-box w-full border-collapse" style={toCss(styles.ankBox)}>
           <thead>
             <tr>
-              <th className="py-2 font-bold italic" style={{ color: "#ff0000" }}>{content.ankLabel}</th>
-              <th className="py-2 font-bold italic" style={{ color: "#ff0000" }}>{content.finalAnkLabel}</th>
+              <th className="py-2" style={{ color: "#ff0000" }}>{content.ankLabel}</th>
+              <th className="py-2" style={{ color: "#ff0000" }}>{content.finalAnkLabel}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="py-2.5 font-bold italic text-lg">{ankData.ank}</td>
-              <td className="py-2.5 font-bold italic text-lg">{ankData.finalAnk}</td>
+              <td className="py-2.5">{ankData.ank}</td>
+              <td className="py-2.5">{ankData.finalAnk}</td>
             </tr>
           </tbody>
         </table>

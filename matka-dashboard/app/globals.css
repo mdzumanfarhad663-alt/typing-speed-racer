@@ -31,9 +31,17 @@ html, body {
   padding: 1px;
 }
 .lucky-ank-box {
-  background: #fff;
-  border: 3px solid #ffa500;
-  border-top: none;
+  background-color: #f5fffa;
+  color: #000;
+  font-weight: 700;
+  font-size: 17px;
+  border: solid 3px #956f13;
+  border-radius: 8px;
+  font-style: italic;
+  text-align: center;
+  text-shadow: 1px 1px 0 pink, 1px 5px 5px #aba8a8;
+  margin-top: 9px;
+  margin-bottom: 9px;
 }
 .live-result {
   background-color: #ffc107;
