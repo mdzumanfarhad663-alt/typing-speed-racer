@@ -103,7 +103,7 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
           </h1>
         </div>
         <div style={{ margin: "3px 0", padding: "3px", ...toCss(styles.subtitleBox) }}>
-          <p>{game.title} {content.subtitleText}</p>
+          {content.subtitleText && <p>{game.title} {content.subtitleText}</p>}
           <p className="mt-1">{content.keywordsText}</p>
         </div>
 
