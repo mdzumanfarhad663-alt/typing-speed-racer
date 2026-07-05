@@ -3,6 +3,13 @@ import { toCss } from "@/lib/resolveStyle";
 import type { ChartDesign } from "./PanelChart";
 import { RefreshButton } from "./RefreshButton";
 
+const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+function fmtDate(s: string) {
+  const [y, m, d] = s.split("-");
+  return `${d}/${m}/${y}`;
+}
+
 function GameHeader({
   game,
   design,
@@ -84,9 +91,26 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
         ) : (
           <div className="bg-black p-1 sm:p-2 mx-auto" style={{ maxWidth: "605px" }}>
             <table className="w-full table-fixed border-collapse bg-white" style={{ textShadow: "1px 1px 0 gold", ...toCss(styles.tableBorder) }}>
+              <thead>
+                <tr>
+                  <th className="p-0.5 sm:p-1.5 text-[9px] sm:text-base" style={toCss(styles.tableHeader)}>
+                    Date
+                  </th>
+                  {DAY_LABELS.map((label) => (
+                    <th key={label} className="p-0.5 sm:p-1.5 text-[9px] sm:text-base" style={toCss(styles.tableHeader)}>
+                      {label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
               <tbody>
                 {entries.map((entry) => (
                   <tr key={entry.id}>
+                    <td className="p-0.5 sm:p-1.5 bg-white text-black font-bold text-[7px] sm:text-[11px] text-center" style={{ border: "1px solid #ddd", width: "13%" }}>
+                      <div>{fmtDate(entry.weekStart)}</div>
+                      <div>To</div>
+                      <div>{fmtDate(entry.weekEnd)}</div>
+                    </td>
                     {entry.days.map((d, i) => (
                       <td
                         key={i}
