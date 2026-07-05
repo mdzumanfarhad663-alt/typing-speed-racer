@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Row } from "@/lib/types";
+import type { SectionResolver } from "@/lib/resolveStyle";
+import { toCss } from "@/lib/resolveStyle";
 
 function TagSide({ text, href, external }: { text: string; href?: string; external?: boolean }) {
   if (href && external) {
@@ -25,7 +27,9 @@ function getExtraUrl(extraLines: string[] | null | undefined, prefix: string): s
   return line ? line.slice(prefix.length) : null;
 }
 
-export function ResultCard({ row }: { row: Row }) {
+export function ResultCard({ row, resolve }: { row: Row; resolve: SectionResolver }) {
+  const { styles } = resolve("live_result_list");
+
   // For scraped rows, use the source site's external Jodi/Panel URLs
   const scrapedJodiUrl = getExtraUrl(row.extraLines, "jodi_url:");
   const scrapedPanelUrl = getExtraUrl(row.extraLines, "panel_url:");
@@ -50,11 +54,11 @@ export function ResultCard({ row }: { row: Row }) {
         )}
       </div>
       <div className="flex-1 text-center">
-        <div className="font-bold text-xl" style={{ color: row.color }}>
+        <div className="font-bold text-xl" style={{ ...toCss(styles.itemTitle), color: row.color }}>
           {row.title}
         </div>
-        <div className="text-xl font-bold tracking-wide">{row.resultValue}</div>
-        {row.timeRange && <div className="text-sm font-bold text-red-600">{row.timeRange}</div>}
+        <div className="text-xl font-bold tracking-wide" style={toCss(styles.itemResult)}>{row.resultValue}</div>
+        {row.timeRange && <div className="text-sm font-bold text-red-600" style={toCss(styles.itemTime)}>{row.timeRange}</div>}
       </div>
       <div className="w-20 text-right">
         {row.rightTag && (

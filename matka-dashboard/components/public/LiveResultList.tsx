@@ -16,7 +16,7 @@ export function LiveResultList({ items, resolve }: { items: Row[]; resolve: Sect
       </div>
       <div className="bg-white">
         {items.length === 0 && <div className="py-6 text-center text-gray-500">No results yet</div>}
-        {items.map((r) => <ResultCard key={r.id} row={r} />)}
+        {items.map((r) => <ResultCard key={r.id} row={r} resolve={resolve} />)}
       </div>
     </section>
   );

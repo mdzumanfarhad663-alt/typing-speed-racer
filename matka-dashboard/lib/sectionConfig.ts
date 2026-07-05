@@ -64,7 +64,12 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
   {
     key: "live_update_band",
     label: "Live Update Band",
-    styleSlots: [{ key: "header", label: "Header band", default: { backgroundColor: "#ffc107", textColor: "#000000", fontWeight: "700", fontStyle: "italic", borderColor: "orange", borderWidth: "3px", borderStyle: "solid", textShadowColor: "#d8b947", textShadowBlur: "0" } }],
+    styleSlots: [
+      { key: "header", label: "Header band", default: { backgroundColor: "#ffc107", textColor: "#000000", fontWeight: "700", fontStyle: "italic", borderColor: "orange", borderWidth: "3px", borderStyle: "solid", textShadowColor: "#d8b947", textShadowBlur: "0" } },
+      { key: "itemTitle", label: "Result: market name", default: {} },
+      { key: "itemResult", label: "Result: number", default: {} },
+      { key: "itemTime", label: "Result: time range", default: {} },
+    ],
     contentFields: [{ key: "heading", label: "Heading", type: "text", default: "📡 LIVE UPDATE" }],
   },
   {
@@ -200,7 +205,12 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
   {
     key: "live_result_list",
     label: "Live Result List",
-    styleSlots: [{ key: "header", label: "Header band", default: {} }],
+    styleSlots: [
+      { key: "header", label: "Header band", default: {} },
+      { key: "itemTitle", label: "Result: market name", default: {} },
+      { key: "itemResult", label: "Result: number", default: {} },
+      { key: "itemTime", label: "Result: time range", default: {} },
+    ],
     contentFields: [{ key: "heading", label: "Heading", type: "text", default: "📊 LIVE MATKA RESULT" }],
   },
 ];

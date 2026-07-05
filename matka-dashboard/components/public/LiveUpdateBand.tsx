@@ -21,9 +21,9 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
           key={row.id}
           className={`flex flex-col items-center py-2.5 bg-white ${i < items.length - 1 ? "border-b border-gray-200" : ""}`}
         >
-          <span className="text-red-600 font-bold text-xl">{row.title}</span>
-          <span className="text-blue-700 font-bold text-2xl tracking-widest">{row.resultValue}</span>
-          {row.timeRange && <span className="text-red-500 text-sm">{row.timeRange}</span>}
+          <span className="text-red-600 font-bold text-xl" style={toCss(styles.itemTitle)}>{row.title}</span>
+          <span className="text-blue-700 font-bold text-2xl tracking-widest" style={toCss(styles.itemResult)}>{row.resultValue}</span>
+          {row.timeRange && <span className="text-red-500 text-sm" style={toCss(styles.itemTime)}>{row.timeRange}</span>}
         </div>
       ))}
     </div>
