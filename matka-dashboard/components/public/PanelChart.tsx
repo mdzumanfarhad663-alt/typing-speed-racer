@@ -100,6 +100,7 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
           </h1>
         </div>
         <div style={{ margin: "3px 0", padding: "3px", ...toCss(styles.subtitleBox) }}>
+          <h2 style={{ fontSize: "1.5em" }}>{game.title.toUpperCase()} {content.seoHeading}</h2>
           <p>{game.title} {content.subtitleText}</p>
           <p className="mt-1">{content.keywordsText}</p>
         </div>
