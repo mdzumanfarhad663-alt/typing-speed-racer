@@ -74,6 +74,11 @@ function StyleSlotFields({ slot, onChange }: { slot: StyleSlot; onChange: (next:
         <span className="text-xs font-semibold text-gray-700">Padding</span>
         <input className="w-full border border-gray-300 rounded px-2 py-1 text-sm" placeholder="e.g. 1rem" value={slot.padding || ""} onChange={(e) => onChange({ ...slot, padding: e.target.value })} />
       </label>
+      <ColorField label="Text shadow color" value={slot.textShadowColor || ""} onChange={(v) => onChange({ ...slot, textShadowColor: v })} />
+      <label className="block">
+        <span className="text-xs font-semibold text-gray-700">Text shadow blur (px)</span>
+        <input className="w-full border border-gray-300 rounded px-2 py-1 text-sm" placeholder="e.g. 0 or 3" value={slot.textShadowBlur || ""} onChange={(e) => onChange({ ...slot, textShadowBlur: e.target.value })} />
+      </label>
       <label className="flex items-center gap-2 mt-1">
         <input
           type="checkbox"

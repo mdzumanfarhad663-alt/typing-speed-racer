@@ -20,6 +20,7 @@ export function toCss(slot?: StyleSlot): CSSProperties {
   if (slot.borderStyle) css.borderStyle = slot.borderStyle as CSSProperties["borderStyle"];
   if (slot.padding) css.padding = slot.padding;
   if (slot.textAlign) css.textAlign = slot.textAlign;
+  if (slot.textShadowColor) css.textShadow = `1px 1px ${slot.textShadowBlur || "0"}px ${slot.textShadowColor}`;
   return css;
 }
 
