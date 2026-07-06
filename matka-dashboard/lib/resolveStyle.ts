@@ -20,7 +20,12 @@ export function toCss(slot?: StyleSlot): CSSProperties {
   if (slot.borderStyle) css.borderStyle = slot.borderStyle as CSSProperties["borderStyle"];
   if (slot.padding) css.padding = slot.padding;
   if (slot.textAlign) css.textAlign = slot.textAlign;
-  if (slot.textShadowColor) css.textShadow = `1px 1px ${slot.textShadowBlur || "0"}px ${slot.textShadowColor}`;
+  if (slot.textShadowOn) {
+    css.textShadow = "1px 1px 0 pink, 1px 5px 5px #aba8a8";
+  } else if (slot.textShadowColor) {
+    css.textShadow = `1px 1px ${slot.textShadowBlur || "0"}px ${slot.textShadowColor}`;
+  }
+  if (slot.textStroke) (css as Record<string, string>).WebkitTextStroke = slot.textStroke;
   return css;
 }
 
