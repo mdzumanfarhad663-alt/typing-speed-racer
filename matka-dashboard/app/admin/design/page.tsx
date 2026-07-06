@@ -12,6 +12,9 @@ type SectionData = {
   content: Record<string, string>;
 };
 
+// Hidden from this list but still resolved with their defaults on the public site.
+const HIDDEN_KEYS = new Set(["free_zone_block", "satta_matka_info"]);
+
 export default function DesignAdmin() {
   const [sections, setSections] = useState<SectionData[] | null>(null);
   const [openKey, setOpenKey] = useState<string | null>(null);
@@ -33,6 +36,7 @@ export default function DesignAdmin() {
         </p>
         {!sections && <div className="text-gray-500">Loading…</div>}
         {sections?.map((section) => {
+          if (HIDDEN_KEYS.has(section.sectionKey)) return null;
           const cfg = SECTION_CONFIG.find((c) => c.key === section.sectionKey);
           if (!cfg) return null;
           const isOpen = openKey === section.sectionKey;

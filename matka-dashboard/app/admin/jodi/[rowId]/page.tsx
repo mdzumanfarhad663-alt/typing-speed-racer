@@ -100,9 +100,9 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
                   </td>
                 ))}
                 <td className="p-0.5 sm:p-1.5 align-middle text-center" style={{ border: "1px solid #ddd" }}>
-                  <div className="flex flex-col sm:flex-row sm:gap-2 items-center">
-                    <button onClick={() => setEditing(e)} className="text-blue-600 underline text-[8px] sm:text-xs">Edit</button>
-                    <button onClick={() => del(e.id)} className="text-red-600 underline text-[8px] sm:text-xs">Delete</button>
+                  <div className="flex flex-col sm:flex-row gap-1 items-center">
+                    <button onClick={() => setEditing(e)} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-2 py-1 rounded text-[8px] sm:text-xs whitespace-nowrap">Edit</button>
+                    <button onClick={() => del(e.id)} className="bg-gray-700 hover:bg-gray-800 text-white font-semibold px-2 py-1 rounded text-[8px] sm:text-xs whitespace-nowrap">Delete</button>
                   </div>
                 </td>
               </tr>
