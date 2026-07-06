@@ -98,7 +98,7 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
             {content.emptyMessage}
           </div>
         ) : (
-          <div className="bg-black p-1 sm:p-2 mx-auto" style={{ maxWidth: "605px" }}>
+          <div className="bg-black p-1 sm:p-2 mx-auto" style={{ width: "316px", maxWidth: "100%" }}>
             <table
               className="w-full table-fixed border-collapse bg-white"
               style={{
