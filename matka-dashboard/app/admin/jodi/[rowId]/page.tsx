@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { JodiEntry, Row } from "@/lib/schema";
 import { JodiEntryForm } from "@/components/admin/JodiEntryForm";
 import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
+import { CsvImportButton } from "@/components/admin/CsvImportButton";
 import { chartSectionKey } from "@/lib/sectionConfig";
 
 const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
@@ -59,6 +60,14 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
 
       <ChartDesignPanel sectionKey={chartSectionKey("jodi", params.rowId)} />
 
+      <div className="bg-white border border-gray-200 rounded p-4 mb-6">
+        <div className="text-xs font-bold text-gray-500 uppercase mb-2">Import weeks from CSV</div>
+        <p className="text-xs text-gray-500 mb-2">
+          Columns: weekStart,weekEnd,mon,tue,wed,thu,fri,sat,sun — dates as YYYY-MM-DD, each day as a 2-digit value (e.g. 91) or blank/-- for no result.
+        </p>
+        <CsvImportButton rowId={params.rowId} kind="jodi" onDone={load} />
+      </div>
+
       {(adding || editing) && (
         <div className="mb-6">
           <JodiEntryForm
@@ -94,15 +103,15 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
                 </td>
                 {e.days.map((d, i) => (
                   <td key={i} className="bg-white text-center align-middle p-0.5 sm:p-1.5" style={{ border: "1px solid #ddd" }}>
-                    <span className="text-[11px] sm:text-lg font-bold italic" style={{ color: d.color || "#000", fontFamily: "Georgia, serif" }}>
+                    <span className="font-bold italic" style={{ color: d.color || "#000", fontFamily: "Georgia, serif", fontSize: "23px" }}>
                       {d.value || "--"}
                     </span>
                   </td>
                 ))}
                 <td className="p-0.5 sm:p-1.5 align-middle text-center" style={{ border: "1px solid #ddd" }}>
-                  <div className="flex flex-col sm:flex-row sm:gap-2 items-center">
-                    <button onClick={() => setEditing(e)} className="text-blue-600 underline text-[8px] sm:text-xs">Edit</button>
-                    <button onClick={() => del(e.id)} className="text-red-600 underline text-[8px] sm:text-xs">Delete</button>
+                  <div className="flex flex-col sm:flex-row gap-1 items-center">
+                    <button onClick={() => setEditing(e)} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-2 py-1 rounded text-[8px] sm:text-xs whitespace-nowrap">Edit</button>
+                    <button onClick={() => del(e.id)} className="bg-gray-700 hover:bg-gray-800 text-white font-semibold px-2 py-1 rounded text-[8px] sm:text-xs whitespace-nowrap">Delete</button>
                   </div>
                 </td>
               </tr>
