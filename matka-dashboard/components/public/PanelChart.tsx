@@ -94,7 +94,13 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
   return (
     <main
       className="min-h-screen bg-black text-white p-2"
-      style={{ fontFamily: "Times New Roman, serif", textAlign: "center", fontWeight: 700, fontStyle: "italic" }}
+      style={{
+        fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+        fontSize: "13px",
+        textAlign: "center",
+        fontWeight: 700,
+        fontStyle: "italic",
+      }}
     >
       <div className="w-full">
         <div id="top" style={{ margin: "3px 0", padding: "3px", ...toCss(styles.topHeader) }}>
