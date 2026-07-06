@@ -130,6 +130,33 @@ function FaqListField({ items, onChange }: { items: FaqItem[]; onChange: (items:
   );
 }
 
+type ChartLinkItem = { label: string; href: string };
+
+export function ChartLinkListField({ items, onChange }: { items: ChartLinkItem[]; onChange: (items: ChartLinkItem[]) => void }) {
+  return (
+    <div className="space-y-2">
+      {items.map((item, i) => (
+        <div key={i} className="flex gap-2 items-start border border-gray-200 rounded p-2">
+          <input
+            className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm"
+            placeholder="Link name"
+            value={item.label}
+            onChange={(e) => onChange(items.map((it, j) => (j === i ? { ...it, label: e.target.value } : it)))}
+          />
+          <input
+            className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm"
+            placeholder="https://..."
+            value={item.href}
+            onChange={(e) => onChange(items.map((it, j) => (j === i ? { ...it, href: e.target.value } : it)))}
+          />
+          <button type="button" onClick={() => onChange(items.filter((_, j) => j !== i))} className="text-xs text-red-700 shrink-0 mt-2">Remove</button>
+        </div>
+      ))}
+      <button type="button" onClick={() => onChange([...items, { label: "", href: "" }])} className="text-sm text-blue-700 underline">+ Add new line</button>
+    </div>
+  );
+}
+
 export function SectionSettingsForm({ config, data, onSaved }: { config: SectionConfigEntry; data: SectionData; onSaved: (d: SectionData) => void }) {
   const [styles, setStyles] = useState<Record<string, StyleSlot>>(data.styles);
   const [content, setContent] = useState<Record<string, string>>(data.content);
@@ -199,6 +226,19 @@ export function SectionSettingsForm({ config, data, onSaved }: { config: Section
           )}
           {fieldDef.type === "list" && (
             <FaqListField
+              items={(() => {
+                try {
+                  const parsed = JSON.parse(content[fieldDef.key] || "[]");
+                  return Array.isArray(parsed) ? parsed : [];
+                } catch {
+                  return [];
+                }
+              })()}
+              onChange={(items) => setContent((c) => ({ ...c, [fieldDef.key]: JSON.stringify(items) }))}
+            />
+          )}
+          {fieldDef.type === "linklist" && (
+            <ChartLinkListField
               items={(() => {
                 try {
                   const parsed = JSON.parse(content[fieldDef.key] || "[]");
