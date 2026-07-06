@@ -84,7 +84,10 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
             {content.emptyMessage}
           </div>
         ) : (
-          <div className="bg-black p-1 sm:p-2 mx-auto" style={{ width: "316px", maxWidth: "100%" }}>
+          <div
+            className="bg-black p-1 sm:p-2 mx-auto"
+            style={{ width: "316px", maxWidth: "100%", paddingTop: "10px", paddingBottom: "10px" }}
+          >
             <table
               className="w-full table-fixed bg-white"
               style={{
@@ -109,7 +112,7 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
                         style={{ border: "1px inset #893bff" }}
                       >
                         <span
-                          className="text-[13px] sm:text-lg md:text-2xl font-bold italic"
+                          className="text-[16px] sm:text-lg md:text-2xl font-bold italic"
                           style={{ color: d.color || "#000", fontFamily: "Georgia, serif", textShadow: "1px 1px 0 #ffd700" }}
                         >
                           {d.value || "--"}
