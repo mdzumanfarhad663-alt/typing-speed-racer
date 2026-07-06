@@ -6,7 +6,6 @@ const sections = [
   { href: "/admin/lucky", title: "Lucky Number Band", desc: "Ank / Final Ank cards at top." },
   { href: "/admin/live-update", title: "📡 Top Live Update", desc: "Manage the Live Update band. Games added here also appear in Live Matka Result automatically." },
   { href: "/admin/live-results", title: "Live Matka Result", desc: "Main list of result cards with Jodi/Panel tags." },
-  { href: "/admin/free-zone", title: "Open to Close Free Game Zone", desc: "Bottom forecast block with date + tips." },
 ];
 
 export default function AdminHome() {

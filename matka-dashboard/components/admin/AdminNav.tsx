@@ -8,10 +8,10 @@ const links = [
   { href: "/admin/lucky", label: "Lucky Number" },
   { href: "/admin/live-update", label: "Top Live Update" },
   { href: "/admin/live-results", label: "Live Results" },
-  { href: "/admin/free-zone", label: "Free Zone" },
   { href: "/admin/market-timings", label: "Market Timings" },
   { href: "/admin/design", label: "Design" },
   { href: "/admin/result-box-design", label: "Result Box Design" },
+  { href: "/admin/record", label: "Record" },
 ];
 
 export function AdminNav() {

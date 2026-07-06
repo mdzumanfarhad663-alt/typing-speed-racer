@@ -96,13 +96,12 @@ function ChartSection({ heading, links, headerStyle }: { heading: string; links:
       </div>
       {links.map((item, i) => (
         <div key={i} className="text-center py-1 px-4" style={{ background: "#fff", border: "2px groove #ff0000", margin: "2px 0" }}>
-          <span className="arrow-icon" />
           <a
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-bold text-sm sm:text-base hover:underline"
-            style={{ color: LINK_COLORS[i % LINK_COLORS.length] }}
+            className="font-bold hover:underline"
+            style={{ color: LINK_COLORS[i % LINK_COLORS.length], fontSize: "20px" }}
           >
             {item.label}
           </a>
