@@ -15,17 +15,11 @@ function DayCell({ d }: { d: PanelDay }) {
   return (
     <td className="bg-white text-black align-middle p-0.5 sm:p-1.5" style={{ border: "1px solid #ddd" }}>
       <div className="flex items-center justify-center gap-0.5 sm:gap-1">
-        <div
-          className="flex flex-col leading-tight font-bold"
-          style={{ fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'", fontSize: "13px" }}
-        >
+        <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{open[0]}</span><span>{open[1]}</span><span>{open[2]}</span>
         </div>
         <div className="font-bold px-0.5" style={{ color: jodiColor, fontSize: "18px" }}>{d.jodi || "--"}</div>
-        <div
-          className="flex flex-col leading-tight font-bold"
-          style={{ fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'", fontSize: "13px" }}
-        >
+        <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{close[0]}</span><span>{close[1]}</span><span>{close[2]}</span>
         </div>
       </div>
@@ -137,15 +131,7 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
               <tbody>
                 {entries.map((entry) => (
                   <tr key={entry.id}>
-                    <td
-                      className="p-0.5 sm:p-1.5 bg-white text-black font-bold text-center"
-                      style={{
-                        border: "1px solid #ddd",
-                        width: "13%",
-                        fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
-                        fontSize: "13px",
-                      }}
-                    >
+                    <td className="p-0.5 sm:p-1.5 bg-white text-black font-bold text-[7px] sm:text-[11px] text-center" style={{ border: "1px solid #ddd", width: "13%" }}>
                       <div>{fmtDate(entry.weekStart)}</div>
                       <div>To</div>
                       <div>{fmtDate(entry.weekEnd)}</div>

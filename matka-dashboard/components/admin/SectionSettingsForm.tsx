@@ -1,5 +1,8 @@
 "use client";
 import { useState } from "react";
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
+import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { StyleSlot } from "@/lib/schema";
 import type { SectionConfigEntry } from "@/lib/sectionConfig";
 
@@ -132,26 +135,70 @@ function FaqListField({ items, onChange }: { items: FaqItem[]; onChange: (items:
 
 type ChartLinkItem = { label: string; href: string };
 
+function SortableChartLinkRow({
+  id,
+  item,
+  onUpdate,
+  onRemove,
+}: {
+  id: string;
+  item: ChartLinkItem;
+  onUpdate: (next: ChartLinkItem) => void;
+  onRemove: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.6 : 1,
+  };
+  return (
+    <div ref={setNodeRef} style={style} className="flex gap-2 items-start border border-gray-200 rounded p-2 bg-white">
+      <span className="cursor-grab text-gray-400 select-none mt-2 shrink-0" {...attributes} {...listeners}>⋮⋮</span>
+      <input
+        className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm"
+        placeholder="Link name"
+        value={item.label}
+        onChange={(e) => onUpdate({ ...item, label: e.target.value })}
+      />
+      <input
+        className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm"
+        placeholder="https://..."
+        value={item.href}
+        onChange={(e) => onUpdate({ ...item, href: e.target.value })}
+      />
+      <button type="button" onClick={onRemove} className="text-xs text-red-700 shrink-0 mt-2">Remove</button>
+    </div>
+  );
+}
+
 export function ChartLinkListField({ items, onChange }: { items: ChartLinkItem[]; onChange: (items: ChartLinkItem[]) => void }) {
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
+  const ids = items.map((_, i) => String(i));
+
+  function onDragEnd(e: DragEndEvent) {
+    const { active, over } = e;
+    if (!over || active.id === over.id) return;
+    const oldIndex = ids.indexOf(String(active.id));
+    const newIndex = ids.indexOf(String(over.id));
+    onChange(arrayMove(items, oldIndex, newIndex));
+  }
+
   return (
     <div className="space-y-2">
-      {items.map((item, i) => (
-        <div key={i} className="flex gap-2 items-start border border-gray-200 rounded p-2">
-          <input
-            className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm"
-            placeholder="Link name"
-            value={item.label}
-            onChange={(e) => onChange(items.map((it, j) => (j === i ? { ...it, label: e.target.value } : it)))}
-          />
-          <input
-            className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm"
-            placeholder="https://..."
-            value={item.href}
-            onChange={(e) => onChange(items.map((it, j) => (j === i ? { ...it, href: e.target.value } : it)))}
-          />
-          <button type="button" onClick={() => onChange(items.filter((_, j) => j !== i))} className="text-xs text-red-700 shrink-0 mt-2">Remove</button>
-        </div>
-      ))}
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+        <SortableContext items={ids} strategy={verticalListSortingStrategy}>
+          {items.map((item, i) => (
+            <SortableChartLinkRow
+              key={ids[i]}
+              id={ids[i]}
+              item={item}
+              onUpdate={(next) => onChange(items.map((it, j) => (j === i ? next : it)))}
+              onRemove={() => onChange(items.filter((_, j) => j !== i))}
+            />
+          ))}
+        </SortableContext>
+      </DndContext>
       <button type="button" onClick={() => onChange([...items, { label: "", href: "" }])} className="text-sm text-blue-700 underline">+ Add new line</button>
     </div>
   );
