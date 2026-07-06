@@ -114,8 +114,21 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
             {content.emptyMessage}
           </div>
         ) : (
-          <div className="bg-black p-1 sm:p-2 mx-auto" style={{ maxWidth: "605px" }}>
-            <table className="w-full table-fixed border-collapse bg-white" style={{ textShadow: "1px 1px 0 gold", ...toCss(styles.tableBorder) }}>
+          <div className="bg-black p-1 sm:p-2 mx-auto" style={{ width: "508px", maxWidth: "100%" }}>
+            <table
+              className="w-full table-fixed border-collapse bg-white"
+              style={{
+                color: "#000",
+                fontWeight: 700,
+                fontStyle: "italic",
+                fontSize: "large",
+                textShadow: "1px 1px #ffd700",
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                textAlign: "center",
+                ...toCss(styles.tableBorder),
+              }}
+            >
               <thead>
                 <tr>
                   <th className="p-0.5 sm:p-1.5 text-[9px] sm:text-base" style={toCss(styles.tableHeader)}>
