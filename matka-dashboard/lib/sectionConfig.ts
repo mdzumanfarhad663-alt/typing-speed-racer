@@ -311,9 +311,6 @@ function buildChartConfig(kind: ChartKind, key: string): SectionConfigEntry {
     { key: "tableHeader", label: "Table header row", default: { backgroundColor: "#ffffff", textColor: "#000000", fontFamily: "Georgia, serif", fontStyle: "italic", fontWeight: "700", borderColor: "#dddddd", borderWidth: "1px", borderStyle: "solid" } },
     { key: "tableBorder", label: "Table outer border", default: { borderColor: "#893bff", borderWidth: "5px", borderStyle: "groove" } },
     { key: "footerBar", label: "Footer bar", default: { backgroundColor: "#0c0361", textColor: "#ffff00" } },
-    { key: "headingText", label: "Heading", default: {} },
-    { key: "subtitleHeadingText", label: "Subtitle Heading", default: {} },
-    { key: "subtitleBodyText", label: "Subtitle Text", default: {} },
   ];
 
   const contentFields: ContentFieldDef[] = [

@@ -72,8 +72,8 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
             {game.title.toUpperCase()} {content.titleSuffix}
           </h1>
         </div>
-        <div className="py-2 px-3">
-          <h3
+        <div style={{ margin: "3px 0", padding: "3px", ...toCss(styles.subtitleBox) }}>
+          <h2
             style={{
               display: "block",
               fontSize: "1.5em",
@@ -83,15 +83,12 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
               marginInlineEnd: "0px",
               fontWeight: "bold",
               unicodeBidi: "isolate",
-              ...toCss(styles.headingText),
             }}
           >
             {game.title.toUpperCase()} {content.seoHeading}
-          </h3>
-        </div>
-        <div className="py-2 px-3">
-          <p style={toCss(styles.subtitleHeadingText)}>{game.title} {content.subtitleText}</p>
-          <p className="mt-1" style={{ fontWeight: "normal", fontStyle: "normal", ...toCss(styles.subtitleBodyText) }}>{content.keywordsText}</p>
+          </h2>
+          <p>{game.title} {content.subtitleText}</p>
+          <p className="mt-1">{content.keywordsText}</p>
         </div>
 
         <GameHeader game={game} design={design} anchorId="header-top" jumpHref="#bottom" jumpLabel={content.goToBottomLabel} />

@@ -12,7 +12,6 @@ const links = [
   { href: "/admin/design", label: "Design" },
   { href: "/admin/result-box-design", label: "Result Box Design" },
   { href: "/admin/record", label: "Record" },
-  { href: "/admin/page-design", label: "Page Design" },
 ];
 
 export function AdminNav() {
