@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { PanelDay, PanelEntry, Row } from "@/lib/schema";
 import { PanelEntryForm } from "@/components/admin/PanelEntryForm";
 import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
-import { CsvImportButton } from "@/components/admin/CsvImportButton";
 import { chartSectionKey } from "@/lib/sectionConfig";
 
 const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
@@ -27,7 +26,7 @@ function MiniDayCell({ d }: { d: PanelDay }) {
         <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{open[0]}</span><span>{open[1]}</span><span>{open[2]}</span>
         </div>
-        <div className="font-bold px-0.5" style={{ color: d.color || "#000", fontSize: "23px" }}>{d.jodi || "--"}</div>
+        <div className="text-[11px] sm:text-base font-bold px-0.5" style={{ color: d.color || "#000" }}>{d.jodi || "--"}</div>
         <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{close[0]}</span><span>{close[1]}</span><span>{close[2]}</span>
         </div>
@@ -82,14 +81,6 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
 
       <ChartDesignPanel sectionKey={chartSectionKey("panel", params.rowId)} />
 
-      <div className="bg-white border border-gray-200 rounded p-4 mb-6">
-        <div className="text-xs font-bold text-gray-500 uppercase mb-2">Import weeks from CSV</div>
-        <p className="text-xs text-gray-500 mb-2">
-          Columns: weekStart,weekEnd,mon,tue,wed,thu,fri,sat,sun — dates as YYYY-MM-DD, each day as open-jodi-close (e.g. 128-91-690) or blank/-- for no result.
-        </p>
-        <CsvImportButton rowId={params.rowId} kind="panel" onDone={load} />
-      </div>
-
       {(adding || editing) && (
         <div className="mb-6">
           <PanelEntryForm
@@ -125,9 +116,9 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
                 </td>
                 {e.days.map((d, i) => <MiniDayCell key={i} d={d} />)}
                 <td className="p-0.5 sm:p-1.5 align-middle text-center" style={{ border: "1px solid #ddd" }}>
-                  <div className="flex flex-col sm:flex-row gap-1 items-center">
-                    <button onClick={() => setEditing(e)} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-2 py-1 rounded text-[8px] sm:text-xs whitespace-nowrap">Edit</button>
-                    <button onClick={() => del(e.id)} className="bg-gray-700 hover:bg-gray-800 text-white font-semibold px-2 py-1 rounded text-[8px] sm:text-xs whitespace-nowrap">Delete</button>
+                  <div className="flex flex-col sm:flex-row sm:gap-2 items-center">
+                    <button onClick={() => setEditing(e)} className="text-blue-600 underline text-[8px] sm:text-xs">Edit</button>
+                    <button onClick={() => del(e.id)} className="text-red-600 underline text-[8px] sm:text-xs">Delete</button>
                   </div>
                 </td>
               </tr>
