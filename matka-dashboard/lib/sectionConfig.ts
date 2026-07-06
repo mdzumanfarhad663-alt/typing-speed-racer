@@ -114,16 +114,6 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
     ],
   },
   {
-    key: "weekly_charts",
-    label: "Weekly Charts",
-    styleSlots: [{ key: "header", label: "Header band", default: { backgroundColor: "#ffcc66", textColor: "#000000", borderColor: "#ddd", borderWidth: "1px", borderStyle: "solid" } }],
-    contentFields: [
-      { key: "panelHeading", label: "Panel chart heading", type: "textarea", default: "Weekly Panel Or Patti Chart From 29-06-2026 To 05-07-2026 For Kalyan, Milan, Kalyan Night, Rajdhani Night, Time Bazar, Main Bazar Market" },
-      { key: "jodiHeading", label: "Jodi chart heading", type: "textarea", default: "Weekly Jodi Chart From 29-06-2026 To 05-07-2026 For Kalyan, Milan, Kalyan Night, Rajdhani Night, Time Bazar, Main Bazar Market" },
-      { key: "otcHeading", label: "Open-to-close heading", type: "textarea", default: "Weekly Number Open To Close From 29-06-2026 To 05-07-2026 For Kalyan, Milan, Kalyan Night, Rajdhani Night, Time Bazar, Main Bazar Market" },
-    ],
-  },
-  {
     key: "top_guessers",
     label: "Top Guessers",
     styleSlots: [

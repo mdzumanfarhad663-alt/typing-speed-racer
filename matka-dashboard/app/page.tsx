@@ -6,7 +6,6 @@ import { LuckyBand } from "@/components/public/LuckyBand";
 import { LiveUpdateBand } from "@/components/public/LiveUpdateBand";
 import { PromoBlock } from "@/components/public/PromoBlock";
 import { ContactForumSection } from "@/components/public/ContactForumSection";
-import { WeeklyCharts } from "@/components/public/WeeklyCharts";
 import { TopGuessers } from "@/components/public/TopGuessers";
 import { ChartRecords } from "@/components/public/ChartRecords";
 import { SattaMatkaInfo } from "@/components/public/SattaMatkaInfo";
@@ -104,7 +103,6 @@ export default function Home() {
       <PromoBlock resolve={resolve} />
       <LiveResultList items={data.live_result} resolve={resolve} />
       <ContactForumSection resolve={resolve} />
-      <WeeklyCharts resolve={resolve} />
       <TopGuessers resolve={resolve} />
       <ChartRecords resolve={resolve} />
       <SattaMatkaInfo resolve={resolve} marketTimings={marketTimings} />
