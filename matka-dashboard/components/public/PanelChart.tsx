@@ -18,7 +18,7 @@ function DayCell({ d }: { d: PanelDay }) {
         <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{open[0]}</span><span>{open[1]}</span><span>{open[2]}</span>
         </div>
-        <div className="text-[11px] sm:text-lg md:text-xl font-bold px-0.5" style={{ color: jodiColor }}>{d.jodi || "--"}</div>
+        <div className="font-bold px-0.5" style={{ color: jodiColor, fontSize: "23px" }}>{d.jodi || "--"}</div>
         <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{close[0]}</span><span>{close[1]}</span><span>{close[2]}</span>
         </div>
