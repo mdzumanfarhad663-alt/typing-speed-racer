@@ -73,14 +73,16 @@ export function ResultCellFields({
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold text-gray-500">Stroke</span>
+          <span className="text-xs font-semibold text-gray-500">Stroke width</span>
           <input
             className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm mt-1"
-            placeholder="e.g. 1px #000"
-            value={slot.textStroke || ""}
-            onChange={(e) => onChange({ ...slot, textStroke: e.target.value })}
+            placeholder="e.g. 1px"
+            value={slot.textStrokeWidth || ""}
+            onChange={(e) => onChange({ ...slot, textStrokeWidth: e.target.value })}
           />
         </label>
+
+        <ColorField label="Stroke color" value={slot.textStrokeColor || ""} onChange={(v) => onChange({ ...slot, textStrokeColor: v })} />
 
         <div className="flex gap-2 pt-1">
           <ToggleButton active={slot.fontWeight === "700"} onClick={() => onChange({ ...slot, fontWeight: slot.fontWeight === "700" ? "400" : "700" })}>

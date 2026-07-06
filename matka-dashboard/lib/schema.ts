@@ -99,7 +99,8 @@ export type StyleSlot = {
   textShadowColor?: string;
   textShadowBlur?: string;
   textShadowOn?: boolean;
-  textStroke?: string;
+  textStrokeWidth?: string;
+  textStrokeColor?: string;
 };
 
 export const sectionSettings = pgTable("section_settings", {

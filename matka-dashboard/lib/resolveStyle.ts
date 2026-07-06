@@ -25,7 +25,9 @@ export function toCss(slot?: StyleSlot): CSSProperties {
   } else if (slot.textShadowColor) {
     css.textShadow = `1px 1px ${slot.textShadowBlur || "0"}px ${slot.textShadowColor}`;
   }
-  if (slot.textStroke) (css as Record<string, string>).WebkitTextStroke = slot.textStroke;
+  if (slot.textStrokeWidth || slot.textStrokeColor) {
+    (css as Record<string, string>).WebkitTextStroke = `${slot.textStrokeWidth || "1px"} ${slot.textStrokeColor || "#000000"}`;
+  }
   return css;
 }
 
