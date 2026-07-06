@@ -100,7 +100,7 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
         ) : (
           <div className="bg-black p-1 sm:p-2 mx-auto" style={{ width: "316px", maxWidth: "100%" }}>
             <table
-              className="w-full table-fixed border-collapse bg-white"
+              className="w-full table-fixed bg-white"
               style={{
                 color: "#000",
                 fontWeight: 700,
@@ -110,6 +110,7 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
                 paddingTop: "10px",
                 paddingBottom: "10px",
                 ...toCss(styles.tableBorder),
+                borderStyle: "solid",
               }}
             >
               <tbody>
