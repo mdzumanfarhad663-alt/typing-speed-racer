@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { PanelDay, PanelEntry, Row } from "@/lib/schema";
 import { PanelEntryForm } from "@/components/admin/PanelEntryForm";
 import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
+import { CsvImportButton } from "@/components/admin/CsvImportButton";
 import { chartSectionKey } from "@/lib/sectionConfig";
 
 const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
@@ -80,6 +81,14 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
       </div>
 
       <ChartDesignPanel sectionKey={chartSectionKey("panel", params.rowId)} />
+
+      <div className="bg-white border border-gray-200 rounded p-4 mb-6">
+        <div className="text-xs font-bold text-gray-500 uppercase mb-2">Import weeks from CSV</div>
+        <p className="text-xs text-gray-500 mb-2">
+          Columns: Week Ending Date,MON,TUE,WED,THU,FRI,SAT,SUN — week as "DD/MM/YYYY to DD/MM/YYYY", each day as open-jodi-close (e.g. 128-91-690), or "Holiday/No data" / blank for no result.
+        </p>
+        <CsvImportButton rowId={params.rowId} kind="panel" onDone={load} />
+      </div>
 
       {(adding || editing) && (
         <div className="mb-6">

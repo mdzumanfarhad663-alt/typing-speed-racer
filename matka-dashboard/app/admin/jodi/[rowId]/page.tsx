@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { JodiEntry, Row } from "@/lib/schema";
 import { JodiEntryForm } from "@/components/admin/JodiEntryForm";
 import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
+import { CsvImportButton } from "@/components/admin/CsvImportButton";
 import { chartSectionKey } from "@/lib/sectionConfig";
 
 const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
@@ -58,6 +59,14 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
       </div>
 
       <ChartDesignPanel sectionKey={chartSectionKey("jodi", params.rowId)} />
+
+      <div className="bg-white border border-gray-200 rounded p-4 mb-6">
+        <div className="text-xs font-bold text-gray-500 uppercase mb-2">Import weeks from CSV</div>
+        <p className="text-xs text-gray-500 mb-2">
+          Columns: Week Ending Date,MON,TUE,WED,THU,FRI,SAT,SUN — week as "DD/MM/YYYY to DD/MM/YYYY", each day as a 2-digit value (e.g. 91), or "Holiday/No data" / blank for no result.
+        </p>
+        <CsvImportButton rowId={params.rowId} kind="jodi" onDone={load} />
+      </div>
 
       {(adding || editing) && (
         <div className="mb-6">
