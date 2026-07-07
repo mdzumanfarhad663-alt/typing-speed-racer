@@ -5,13 +5,13 @@ import { useState } from "react";
 
 const links = [
   { href: "/admin", label: "Dashboard" },
-  { href: "/admin/my-game", label: "My Game", accent: true },
   { href: "/admin/record", label: "Record" },
   { href: "/admin/live-results", label: "Live Result" },
   { href: "/admin/market-timings", label: "Market Timings" },
-  { href: "/admin/live-update", label: "Top Live Update", accent: true },
+  { href: "/admin/live-update", label: "Top Live Update" },
   { href: "/admin/result-box-design", label: "Result Box Design" },
   { href: "/admin/design", label: "Home Page Design" },
+  { href: "/admin/my-game", label: "My Game", accent: true },
 ];
 
 export function AdminNav() {
