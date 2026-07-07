@@ -15,5 +15,5 @@ export async function POST() {
     return NextResponse.json({ error: result.error ?? "scrape_failed", upserted: 0 }, { status: 502 });
   }
 
-  return NextResponse.json({ ok: true, ...result, timestamp: new Date().toISOString() });
+  return NextResponse.json({ ...result, timestamp: new Date().toISOString() });
 }
