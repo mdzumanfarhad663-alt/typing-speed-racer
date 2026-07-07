@@ -49,6 +49,13 @@ export default function Home() {
       }
     }
 
+    // Pull fresh results from the source site into our DB. The browser holds this
+    // request open until the scrape finishes, keeping the serverless function alive
+    // (fire-and-forget on the server gets killed on Vercel). Throttled to 5s server-side.
+    async function triggerRefresh() {
+      try { await fetch("/api/public/refresh", { cache: "no-store" }); } catch { /* silent */ }
+    }
+
     async function loadAnk() {
       try {
         const res = await fetch("/api/public/ank", { cache: "no-store" });
@@ -73,15 +80,19 @@ export default function Home() {
       } catch { /* silent — falls back to defaults */ }
     }
 
+    triggerRefresh();
     load();
     loadAnk();
     loadSettings();
     loadMarketTimings();
-    const t = setInterval(load, 5000); // matches the server's 5s auto-sync cadence
+    // Trigger a source-site scrape every 5s so results stay live whenever the
+    // public page is open — no admin dashboard required.
+    const refreshTimer = setInterval(triggerRefresh, 5000);
+    const t = setInterval(load, 5000); // re-read the freshly-synced DB
     const ankTimer = setInterval(loadAnk, 120_000); // refresh ank every 2 min
     const settingsTimer = setInterval(loadSettings, 3000);
     const marketTimer = setInterval(loadMarketTimings, 30_000);
-    return () => { alive = false; clearInterval(t); clearInterval(ankTimer); clearInterval(settingsTimer); clearInterval(marketTimer); };
+    return () => { alive = false; clearInterval(refreshTimer); clearInterval(t); clearInterval(ankTimer); clearInterval(settingsTimer); clearInterval(marketTimer); };
   }, []);
 
   const resolve = makeResolver(settings);

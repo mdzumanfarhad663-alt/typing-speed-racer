@@ -3,14 +3,11 @@ import { asc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rows } from "@/lib/schema";
 import type { PublicSectionsResponse } from "@/lib/types";
-import { maybeAutoSync } from "@/lib/autoSync";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function GET() {
-  // Kick off a background scrape of the source site (throttled to once per 5s).
-  maybeAutoSync();
   try {
     const all = await db.select().from(rows).orderBy(asc(rows.position), asc(rows.createdAt));
     const grouped: PublicSectionsResponse = { lucky: [], live_result: [], free_zone: [], live_update: [] };

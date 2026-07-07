@@ -128,20 +128,27 @@ export async function runFullSync(): Promise<{ ok: boolean; upserted: number; to
 const AUTO_SYNC_INTERVAL_MS = 5_000;
 
 let lastSyncAt = 0;
-let syncing = false;
+let inFlight: Promise<void> | null = null;
 
 /**
- * Fire-and-forget: triggers a full sync if the last one finished more than
- * AUTO_SYNC_INTERVAL_MS ago. Never runs two syncs concurrently and never
- * throws — safe to call on every public request.
+ * Throttled sync that the caller can AWAIT. If the last sync finished less than
+ * AUTO_SYNC_INTERVAL_MS ago, resolves immediately without scraping. If a sync is
+ * already running, awaits that same one instead of starting a second. Never throws.
+ *
+ * Because the caller (a browser fetch) keeps the connection open until this
+ * resolves, the serverless function stays alive long enough for the scrape to
+ * finish — unlike fire-and-forget, which Vercel tears down after the response.
  */
-export function maybeAutoSync(): void {
-  if (syncing || Date.now() - lastSyncAt < AUTO_SYNC_INTERVAL_MS) return;
-  syncing = true;
-  runFullSync()
+export async function maybeAutoSync(): Promise<void> {
+  if (inFlight) return inFlight;
+  if (Date.now() - lastSyncAt < AUTO_SYNC_INTERVAL_MS) return;
+
+  inFlight = runFullSync()
+    .then(() => undefined)
     .catch((err) => console.error("[autoSync] failed", err))
     .finally(() => {
       lastSyncAt = Date.now();
-      syncing = false;
+      inFlight = null;
     });
+  return inFlight;
 }
