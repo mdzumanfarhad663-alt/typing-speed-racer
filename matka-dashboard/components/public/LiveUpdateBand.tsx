@@ -23,7 +23,6 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
         >
           <span className="font-bold text-xl" style={toCss(styles.nameText)}>{row.title}</span>
           <span className="font-bold text-2xl tracking-widest" style={toCss(styles.resultText)}>{row.resultValue}</span>
-          {row.timeRange && <span className="text-sm" style={toCss(styles.timeText)}>{row.timeRange}</span>}
         </div>
       ))}
     </div>
