@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { ScrapeButton } from "@/components/admin/ScrapeButton";
+import { LiveUpdateToggles } from "@/components/admin/LiveUpdateToggles";
 
 const sections = [
   { href: "/admin/live-update", title: "📡 Top Live Update", desc: "Manage the Live Update band. Games added here also appear in Live Matka Result automatically." },
@@ -31,6 +32,7 @@ export default function AdminHome() {
               <div className="mt-4 text-blue-700 underline text-sm">Manage rows →</div>
             </Link>
           ))}
+          <LiveUpdateToggles />
         </div>
       </div>
     </main>
