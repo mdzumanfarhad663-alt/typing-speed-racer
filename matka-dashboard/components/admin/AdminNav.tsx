@@ -11,6 +11,7 @@ const links = [
   { href: "/admin/live-update", label: "Top Live Update" },
   { href: "/admin/result-box-design", label: "Result Box Design" },
   { href: "/admin/design", label: "Home Page Design" },
+  { href: "/admin/database", label: "Database" },
   { href: "/admin/my-game", label: "My Game", accent: true },
 ];
 
