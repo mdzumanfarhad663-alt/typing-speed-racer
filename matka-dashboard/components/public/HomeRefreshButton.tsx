@@ -16,7 +16,7 @@ export function HomeRefreshButton() {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center pointer-events-none pb-3">
+    <div className="fixed inset-x-0 bottom-0 z-50 flex justify-end pointer-events-none pb-3 pr-3">
       <button
         onClick={refresh}
         disabled={busy}
@@ -36,7 +36,7 @@ export function HomeRefreshButton() {
             <path d="M21 3v6h-6" />
           </svg>
         </span>
-        {busy ? "Refreshing…" : "Refresh from Source"}
+        {busy ? "Refreshing…" : "Refresh"}
         <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       </button>
     </div>
