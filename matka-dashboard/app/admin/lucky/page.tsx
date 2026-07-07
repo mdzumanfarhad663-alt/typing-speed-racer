@@ -38,7 +38,7 @@ export default function LuckyAdmin() {
     setData((d) => (d ? { ...d, content: { ...d.content, [key]: value } } : d));
   }
 
-  function setSlotColor(slot: string, field: "textColor" | "borderColor" | "borderWidth", value: string) {
+  function setSlotColor(slot: string, field: "textColor" | "borderColor" | "borderWidth" | "backgroundColor" | "fontSize", value: string) {
     setData((d) =>
       d ? { ...d, styles: { ...d.styles, [slot]: { ...d.styles[slot], [field]: value } } } : d
     );
@@ -75,6 +75,28 @@ export default function LuckyAdmin() {
           <div className="text-gray-500 py-6 text-center">Loading…</div>
         ) : (
           <div className="space-y-6">
+            {/* Title band */}
+            <div className="bg-white border border-gray-300 rounded p-4 space-y-3">
+              <div className="font-bold text-gray-700">Section title (top band)</div>
+              <label className="block">
+                <span className="text-xs font-semibold text-gray-700">Title text</span>
+                <input className="w-full border border-gray-300 rounded px-2 py-1 text-sm" value={data.content.heading || ""} onChange={(e) => setContent("heading", e.target.value)} />
+              </label>
+              <div className="grid md:grid-cols-2 gap-4">
+                <ColorField label="Text color" value={data.styles.titleBand?.textColor || ""} onChange={(v) => setSlotColor("titleBand", "textColor", v)} />
+                <ColorField label="Background color" value={data.styles.titleBand?.backgroundColor || ""} onChange={(v) => setSlotColor("titleBand", "backgroundColor", v)} />
+                <ColorField label="Border color" value={data.styles.titleBand?.borderColor || ""} onChange={(v) => setSlotColor("titleBand", "borderColor", v)} />
+                <label className="block">
+                  <span className="text-xs font-semibold text-gray-700">Border width</span>
+                  <input className="w-full border border-gray-300 rounded px-2 py-1 text-sm" placeholder="e.g. 3px" value={data.styles.titleBand?.borderWidth || ""} onChange={(e) => setSlotColor("titleBand", "borderWidth", e.target.value)} />
+                </label>
+                <label className="block">
+                  <span className="text-xs font-semibold text-gray-700">Font size</span>
+                  <input className="w-full border border-gray-300 rounded px-2 py-1 text-sm" placeholder="e.g. 18px" value={data.styles.titleBand?.fontSize || ""} onChange={(e) => setSlotColor("titleBand", "fontSize", e.target.value)} />
+                </label>
+              </div>
+            </div>
+
             <div className="grid md:grid-cols-2 gap-4">
               {/* Left side */}
               <div className="bg-white border border-gray-300 rounded p-4 space-y-3">
