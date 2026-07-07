@@ -163,11 +163,31 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
       { key: "ankBox", label: "Ank table", default: { backgroundColor: "#f5fffa", textColor: "#000000", borderColor: "#956f13", borderWidth: "3px", borderStyle: "solid", fontWeight: "700", fontStyle: "italic", fontSize: "17px" } },
       { key: "ankNameText", label: "Name", default: { textColor: "#ff0000" } },
       { key: "ankNumberText", label: "Number", default: {} },
+      { key: "ankLeftTitle", label: "Left title", default: {} },
+      { key: "ankLeftValue", label: "Left result value", default: {} },
+      { key: "ankRightTitle", label: "Right title", default: {} },
+      { key: "ankRightValue", label: "Right result value", default: {} },
     ],
     contentFields: [
       { key: "heading", label: "Heading", type: "text", default: "Today Satta Matka Lucky Number" },
       { key: "ankLabel", label: "Ank column label", type: "text", default: "Ank (शुभांक)" },
       { key: "finalAnkLabel", label: "Final Ank column label", type: "text", default: "Final Ank" },
+      { key: "ankValue", label: "Left result value (empty = auto from source)", type: "text", default: "" },
+      { key: "finalAnkValue", label: "Right result value (empty = auto from source)", type: "text", default: "" },
+    ],
+  },
+  {
+    key: "announcement",
+    label: "Announcement Box",
+    styleSlots: [
+      {
+        key: "box",
+        label: "Announcement box",
+        default: { backgroundColor: "#fff8e1", textColor: "#000000", fontSize: "16px", borderColor: "orange", borderWidth: "2px", borderStyle: "solid", textAlign: "center", padding: "12px", fontWeight: "700" },
+      },
+    ],
+    contentFields: [
+      { key: "text", label: "Announcement text (empty = box hidden)", type: "textarea", default: "" },
     ],
   },
   {

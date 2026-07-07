@@ -5,13 +5,13 @@ import { useState } from "react";
 
 const links = [
   { href: "/admin", label: "Dashboard" },
-  { href: "/admin/lucky", label: "Lucky Number" },
-  { href: "/admin/live-update", label: "Top Live Update" },
-  { href: "/admin/live-results", label: "Live Results" },
-  { href: "/admin/market-timings", label: "Market Timings" },
-  { href: "/admin/design", label: "Design" },
-  { href: "/admin/result-box-design", label: "Result Box Design" },
   { href: "/admin/record", label: "Record" },
+  { href: "/admin/live-results", label: "Live Result" },
+  { href: "/admin/lucky", label: "Lucky Number" },
+  { href: "/admin/market-timings", label: "Market Timings" },
+  { href: "/admin/live-update", label: "Top Live Update" },
+  { href: "/admin/result-box-design", label: "Result Box Design" },
+  { href: "/admin/design", label: "Home Page Design" },
 ];
 
 export function AdminNav() {
@@ -25,13 +25,20 @@ export function AdminNav() {
     router.refresh();
   }
 
+  const linkClass = (href: string) =>
+    pathname === href
+      ? "bg-blue-600 text-white px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap"
+      : "text-gray-300 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors";
+
   return (
-    <nav className="bg-black text-white px-4 py-3 md:px-6">
-      <div className="flex items-center justify-between md:gap-6">
-        <span className="font-bold">Matka Admin</span>
+    <nav className="bg-gradient-to-r from-gray-900 to-gray-800 text-white px-4 py-2.5 md:px-6 shadow-md sticky top-0 z-50">
+      <div className="flex items-center justify-between gap-4">
+        <span className="font-bold text-lg tracking-wide shrink-0">
+          <span className="text-blue-400">Matka</span> Admin
+        </span>
 
         <button
-          className="md:hidden p-2 -mr-2"
+          className="lg:hidden p-2 -mr-2"
           aria-label="Toggle menu"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
@@ -41,35 +48,30 @@ export function AdminNav() {
           <span className="block w-6 h-0.5 bg-white" />
         </button>
 
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-1 flex-wrap">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className={pathname === l.href ? "underline font-semibold" : "opacity-80 hover:opacity-100"}>
+            <Link key={l.href} href={l.href} className={linkClass(l.href)}>
               {l.label}
             </Link>
           ))}
         </div>
 
-        <div className="hidden md:flex ml-auto gap-4 items-center">
-          <Link href="/" className="opacity-80 hover:opacity-100 text-sm">View Public →</Link>
-          <button onClick={logout} className="bg-red-600 px-3 py-1 rounded text-sm font-semibold">Logout</button>
+        <div className="hidden lg:flex gap-3 items-center shrink-0">
+          <Link href="/" className="text-gray-300 hover:text-white text-sm whitespace-nowrap">View Public →</Link>
+          <button onClick={logout} className="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-full text-sm font-semibold transition-colors">Logout</button>
         </div>
       </div>
 
       {open && (
-        <div className="md:hidden flex flex-col gap-3 pt-4 pb-2">
+        <div className="lg:hidden flex flex-col gap-1 pt-3 pb-2">
           {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className={pathname === l.href ? "underline font-semibold" : "opacity-80 hover:opacity-100"}
-            >
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className={linkClass(l.href)}>
               {l.label}
             </Link>
           ))}
-          <div className="flex items-center gap-4 pt-2 border-t border-white/20 mt-1">
-            <Link href="/" className="opacity-80 hover:opacity-100 text-sm" onClick={() => setOpen(false)}>View Public →</Link>
-            <button onClick={logout} className="bg-red-600 px-3 py-1 rounded text-sm font-semibold">Logout</button>
+          <div className="flex items-center gap-4 pt-3 border-t border-white/20 mt-2">
+            <Link href="/" className="text-gray-300 hover:text-white text-sm" onClick={() => setOpen(false)}>View Public →</Link>
+            <button onClick={logout} className="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-full text-sm font-semibold">Logout</button>
           </div>
         </div>
       )}

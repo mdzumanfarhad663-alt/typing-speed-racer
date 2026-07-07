@@ -1,46 +1,42 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const INTERVAL_SECS = 2 * 60; // 2 minutes
+const INTERVAL_SECS = 5; // auto-refresh every 5 seconds
 
 export function ScrapeButton() {
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
   const [countdown, setCountdown] = useState(INTERVAL_SECS);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
-  // Keep a stable ref so the interval closure always calls the latest version
-  const scrapeRef = useRef<() => Promise<void>>(async () => {});
+  // Guard against overlapping requests — a scrape can take longer than the interval
+  const inFlight = useRef(false);
 
   const handleScrape = useCallback(async () => {
-    if (status === "loading") return;
+    if (inFlight.current) return;
+    inFlight.current = true;
     setStatus("loading");
-    setMessage("");
     try {
       const res = await fetch("/api/admin/scrape", { method: "POST" });
       const data = await res.json();
       if (res.ok && data.ok) {
         setStatus("done");
         setMessage(`✓ Updated ${data.upserted} of ${data.total} games`);
+        setLastUpdated(new Date().toLocaleTimeString());
       } else {
         setStatus("error");
-        setMessage(data.error ?? "Scrape failed");
+        setMessage(data.error === "unauthorized" ? "Session expired — please log in again" : data.error ?? "Scrape failed");
       }
     } catch {
       setStatus("error");
       setMessage("Network error");
+    } finally {
+      inFlight.current = false;
     }
-    setTimeout(() => {
-      setStatus("idle");
-      setMessage("");
-    }, 6000);
-  }, [status]);
+  }, []);
 
-  // Keep ref in sync with latest handleScrape
-  useEffect(() => {
-    scrapeRef.current = handleScrape;
-  }, [handleScrape]);
-
-  // Single interval: ticks every second, fires scrape when countdown hits 0
+  // Single 1s ticker: fires a scrape whenever the countdown reaches 0.
+  // If a scrape is still running, the countdown resets and it tries again next cycle.
   useEffect(() => {
     let secs = INTERVAL_SECS;
     setCountdown(secs);
@@ -49,16 +45,13 @@ export function ScrapeButton() {
       secs -= 1;
       if (secs <= 0) {
         secs = INTERVAL_SECS;
-        scrapeRef.current();
+        handleScrape();
       }
       setCountdown(secs);
     }, 1000);
 
     return () => clearInterval(tick);
-  }, []); // runs once on mount — interval is driven by scrapeRef not handleScrape
-
-  const mins = Math.floor(countdown / 60);
-  const secs = String(countdown % 60).padStart(2, "0");
+  }, [handleScrape]);
 
   return (
     <div className="flex items-center gap-3 flex-wrap">
@@ -80,7 +73,7 @@ export function ScrapeButton() {
         )}
       </button>
       <span className="text-xs text-gray-500">
-        Auto-refresh in {mins}:{secs}
+        Auto-refresh in {countdown}s{lastUpdated ? ` · last updated ${lastUpdated}` : ""}
       </span>
       {message && (
         <span className={`text-sm font-medium ${status === "error" ? "text-red-600" : "text-green-700"}`}>

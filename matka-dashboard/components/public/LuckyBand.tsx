@@ -4,42 +4,34 @@ import { toCss } from "@/lib/resolveStyle";
 
 type AnkData = { ank: string; finalAnk: string } | null;
 
-export function LuckyBand({ items, ankData, resolve }: { items: Row[]; ankData: AnkData; resolve: SectionResolver }) {
+export function LuckyBand({ ankData, resolve }: { items: Row[]; ankData: AnkData; resolve: SectionResolver }) {
   const { styles, content } = resolve("lucky_band");
+
+  // Admin-entered values win; empty falls back to the auto-scraped value.
+  const leftValue = content.ankValue || ankData?.ank || "";
+  const rightValue = content.finalAnkValue || ankData?.finalAnk || "";
+
   return (
     <section className="my-4">
       <div className="lucky-band-title" style={toCss(styles.titleBand)}>
         <h2>{content.heading}</h2>
       </div>
 
-      {/* Ank table — auto-scraped from source site */}
-      {ankData && (ankData.ank || ankData.finalAnk) && (
+      {(leftValue || rightValue) && (
         <table className="lucky-ank-box w-full border-collapse" style={toCss(styles.ankBox)}>
           <thead>
             <tr>
-              <th className="py-2" style={toCss(styles.ankNameText)}>{content.ankLabel}</th>
-              <th className="py-2" style={toCss(styles.ankNameText)}>{content.finalAnkLabel}</th>
+              <th className="py-2" style={{ ...toCss(styles.ankNameText), ...toCss(styles.ankLeftTitle) }}>{content.ankLabel}</th>
+              <th className="py-2" style={{ ...toCss(styles.ankNameText), ...toCss(styles.ankRightTitle) }}>{content.finalAnkLabel}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="py-2.5" style={toCss(styles.ankNumberText)}>{ankData.ank}</td>
-              <td className="py-2.5" style={toCss(styles.ankNumberText)}>{ankData.finalAnk}</td>
+              <td className="py-2.5" style={{ ...toCss(styles.ankNumberText), ...toCss(styles.ankLeftValue) }}>{leftValue}</td>
+              <td className="py-2.5" style={{ ...toCss(styles.ankNumberText), ...toCss(styles.ankRightValue) }}>{rightValue}</td>
             </tr>
           </tbody>
         </table>
-      )}
-
-      {/* Admin-managed lucky cards */}
-      {items.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 py-6 px-8">
-          {items.map((r) => (
-            <div key={r.id} className="text-center">
-              <div className="font-bold text-lg" style={{ color: r.color }}>{r.title}</div>
-              <div className="text-lg font-semibold">{r.resultValue}</div>
-            </div>
-          ))}
-        </div>
       )}
     </section>
   );

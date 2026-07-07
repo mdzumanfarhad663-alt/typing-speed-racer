@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import { asc, eq, max } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { panelEntries, type PanelDay } from "@/lib/schema";
@@ -73,4 +74,19 @@ export async function POST(req: Request) {
     .returning();
   await syncJodiFromPanel(inserted.rowId, inserted.weekStart, inserted.weekEnd, inserted.days);
   return NextResponse.json({ entry: inserted });
+}
+
+// Delete ALL weeks of a chart. Requires the admin password even with a valid session.
+export async function DELETE(req: Request) {
+  const denied = await guard();
+  if (denied) return denied;
+  const body = await req.json().catch(() => null);
+  if (!body?.rowId) return NextResponse.json({ error: "rowId required" }, { status: 400 });
+
+  const hash = process.env.ADMIN_PASSWORD_HASH || "";
+  const ok = hash && (await bcrypt.compare(body.password || "", hash));
+  if (!ok) return NextResponse.json({ error: "wrong_password" }, { status: 403 });
+
+  await db.delete(panelEntries).where(eq(panelEntries.rowId, body.rowId));
+  return NextResponse.json({ ok: true });
 }

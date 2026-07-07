@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { HeroHeader } from "@/components/public/HeroHeader";
+import { AnnouncementBox } from "@/components/public/AnnouncementBox";
 import { LuckyBand } from "@/components/public/LuckyBand";
 import { LiveUpdateBand } from "@/components/public/LiveUpdateBand";
 import { PromoBlock } from "@/components/public/PromoBlock";
@@ -77,7 +78,7 @@ export default function Home() {
     loadAnk();
     loadSettings();
     loadMarketTimings();
-    const t = setInterval(load, 3000);
+    const t = setInterval(load, 5000); // matches the server's 5s auto-sync cadence
     const ankTimer = setInterval(loadAnk, 120_000); // refresh ank every 2 min
     const settingsTimer = setInterval(loadSettings, 3000);
     const marketTimer = setInterval(loadMarketTimings, 30_000);
@@ -98,6 +99,7 @@ export default function Home() {
         </div>
       )}
       <HeroHeader resolve={resolve} />
+      <AnnouncementBox resolve={resolve} />
       <LuckyBand items={data.lucky} ankData={ankData} resolve={resolve} />
       <LiveUpdateBand items={data.live_update} resolve={resolve} />
       <PromoBlock resolve={resolve} />

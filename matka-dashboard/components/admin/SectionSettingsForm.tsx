@@ -15,6 +15,18 @@ type SectionData = {
   content: Record<string, string>;
 };
 
+// Shared style for editor section headings (TOP HEADER, SUBTITLE BOX, …)
+export function EditorHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className="text-2xl font-bold text-center uppercase"
+      style={{ color: "blue", paddingTop: "30px", paddingBottom: "10px" }}
+    >
+      {children}
+    </div>
+  );
+}
+
 const FONT_FAMILIES = ["System UI", "Arial, sans-serif", '"Open Sans", sans-serif', "Georgia, serif", '"Times New Roman", serif', "Verdana, sans-serif"];
 const BORDER_STYLES = ["solid", "dashed", "dotted", "double", "groove", "inset", "none"];
 const TEXT_ALIGNS = ["left", "center", "right"] as const;
@@ -78,7 +90,7 @@ function StyleSlotFields({ slot, onChange }: { slot: StyleSlot; onChange: (next:
         <input className="w-full border border-gray-300 rounded px-2 py-1 text-sm" placeholder="e.g. 1rem" value={slot.padding || ""} onChange={(e) => onChange({ ...slot, padding: e.target.value })} />
       </label>
       <div className="col-span-2 mt-2 pt-2 border-t border-gray-200">
-        <div className="text-xs font-bold text-gray-500 uppercase mb-2">Text Shadow</div>
+        <EditorHeading>Text Shadow</EditorHeading>
         <div className="grid grid-cols-2 gap-3">
           <ColorField label="Shadow color" value={slot.textShadowColor || ""} onChange={(v) => onChange({ ...slot, textShadowColor: v })} />
           <label className="block">
@@ -245,7 +257,7 @@ export function SectionSettingsForm({ config, data, onSaved }: { config: Section
 
       {config.styleSlots.map((slotDef) => (
         <div key={slotDef.key}>
-          <div className="text-xs font-bold text-gray-500 uppercase mb-1">{slotDef.label}</div>
+          <EditorHeading>{slotDef.label}</EditorHeading>
           <StyleSlotFields
             slot={styles[slotDef.key] || {}}
             onChange={(next) => setStyles((s) => ({ ...s, [slotDef.key]: next }))}
@@ -255,7 +267,7 @@ export function SectionSettingsForm({ config, data, onSaved }: { config: Section
 
       {config.contentFields.map((fieldDef) => (
         <div key={fieldDef.key}>
-          <div className="text-xs font-bold text-gray-500 uppercase mb-1">{fieldDef.label}</div>
+          <EditorHeading>{fieldDef.label}</EditorHeading>
           {fieldDef.type === "text" && (
             <input
               className="w-full border border-gray-300 rounded px-2 py-1 text-sm"

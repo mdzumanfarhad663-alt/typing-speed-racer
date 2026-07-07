@@ -64,6 +64,28 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
     load();
   }
 
+  function startEditing(e: PanelEntry) {
+    setEditing(e);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function deleteAll() {
+    const password = prompt("Delete ALL weeks of this chart?\nEnter admin password to confirm:");
+    if (!password) return;
+    const res = await fetch("/api/admin/panel", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rowId: params.rowId, password }),
+    });
+    if (res.ok) {
+      alert("All weeks deleted.");
+      load();
+    } else {
+      const j = await res.json().catch(() => ({}));
+      alert(j.error === "wrong_password" ? "Wrong password — nothing was deleted." : "Delete failed.");
+    }
+  }
+
   if (loading) return <main className="p-6">Loading…</main>;
   if (!game) return <main className="p-6">Game not found. <Link href="/admin" className="underline">Back</Link></main>;
 
@@ -76,7 +98,10 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
           <Link href={`/panel/${game.id}`} target="_blank" className="text-sm underline text-blue-600">View public panel page ↗</Link>
         </div>
         {!adding && !editing && (
-          <button onClick={() => setAdding(true)} className="bg-black text-white px-4 py-2 rounded">+ Add week</button>
+          <div className="flex gap-2">
+            <button onClick={deleteAll} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-semibold">All Delete</button>
+            <button onClick={() => setAdding(true)} className="bg-black text-white px-4 py-2 rounded">+ Add week</button>
+          </div>
         )}
       </div>
 
@@ -126,7 +151,7 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
                 {e.days.map((d, i) => <MiniDayCell key={i} d={d} />)}
                 <td className="p-0.5 sm:p-1.5 align-middle text-center" style={{ border: "1px solid #ddd" }}>
                   <div className="flex flex-col sm:flex-row gap-1 items-center">
-                    <button onClick={() => setEditing(e)} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-2 py-1 rounded text-[8px] sm:text-xs whitespace-nowrap">Edit</button>
+                    <button onClick={() => startEditing(e)} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-2 py-1 rounded text-[8px] sm:text-xs whitespace-nowrap">Edit</button>
                     <button onClick={() => del(e.id)} className="bg-gray-700 hover:bg-gray-800 text-white font-semibold px-2 py-1 rounded text-[8px] sm:text-xs whitespace-nowrap">Delete</button>
                   </div>
                 </td>
