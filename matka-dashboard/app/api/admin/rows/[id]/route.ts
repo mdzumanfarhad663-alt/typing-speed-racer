@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import { and, eq, max } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rows, type Section } from "@/lib/schema";
@@ -48,9 +49,15 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   return NextResponse.json({ row: updated });
 }
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   const denied = await guard();
   if (denied) return denied;
+
+  // Deleting a game page requires the admin password (even with a valid session).
+  const body = await req.json().catch(() => null);
+  const hash = process.env.ADMIN_PASSWORD_HASH || "";
+  const ok = hash && (await bcrypt.compare(body?.password || "", hash));
+  if (!ok) return NextResponse.json({ error: "wrong_password" }, { status: 403 });
 
   const [existing] = await db.select().from(rows).where(eq(rows.id, params.id)).limit(1);
   if (!existing) return NextResponse.json({ ok: true });
