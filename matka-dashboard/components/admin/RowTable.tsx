@@ -48,7 +48,7 @@ function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Se
   );
 }
 
-export function RowTable({ section, title }: { section: Section; title?: string }) {
+export function RowTable({ section, title, manualOnly }: { section: Section; title?: string; manualOnly?: boolean }) {
   const [items, setItems] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -64,9 +64,12 @@ export function RowTable({ section, title }: { section: Section; title?: string 
       : await fetch(`/api/admin/rows?section=${section}`, { cache: "no-store" });
     if (res.ok) {
       const { rows } = await res.json();
-      const list: Row[] = section === "live_result"
+      let list: Row[] = section === "live_result"
         ? rows.filter((r: Row) => r.section === "live_result" || r.section === "live_update")
         : rows;
+      // My Game view: only the manually added game pages (e.g. Silon Day, Silon Night),
+      // never the auto-scraped source games.
+      if (manualOnly) list = list.filter((r) => r.source !== "scraped");
       setItems(list);
     }
     setLoading(false);

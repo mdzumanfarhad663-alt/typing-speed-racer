@@ -10,7 +10,7 @@ export default function MyGameAdmin() {
           All your game pages (Silon Day, Silon Night, …). Every game here shows in Live Matka Result.
           Use “+ Add row” to add a new game, and each game has its own Jodi chart and Panel chart pages.
         </p>
-        <RowTable section="live_result" title="My Games" />
+        <RowTable section="live_result" title="My Games" manualOnly />
       </div>
     </main>
   );
