@@ -1,6 +1,11 @@
-// Standard matka "red" jodis — digit pairs differing by 5 (1&6, 2&7, 3&8, 4&9, 5&0).
-// These always render in red automatically, whatever color is stored on the cell.
-const RED_JODIS = new Set(["16", "27", "38", "49", "50", "61", "72", "83", "94", "05"]);
+// Standard matka "red" jodis — always render in red automatically, whatever
+// color is stored on the cell:
+//   - cut pairs differing by 5:  16 27 38 49 50 61 72 83 94 05
+//   - double/pair jodis:         11 22 33 44 55 66 77 88 99 00
+const RED_JODIS = new Set([
+  "16", "27", "38", "49", "50", "61", "72", "83", "94", "05",
+  "11", "22", "33", "44", "55", "66", "77", "88", "99", "00",
+]);
 
 export const RED_JODI_COLOR = "#e40000";
 
