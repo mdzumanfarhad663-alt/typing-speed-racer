@@ -116,8 +116,8 @@ export function PanelEntryForm({
                 <td className="border px-2 py-1"><input value={d.close} onChange={(e) => update(i, "close", e.target.value)} className="w-20 border rounded px-1" placeholder="690" maxLength={6} /></td>
                 <td className="border px-2 py-1 whitespace-nowrap">
                   <input type="color" value={d.color || "#000000"} onChange={(e) => update(i, "color", e.target.value)} className="w-10 h-7 align-middle" />
-                  <button type="button" onClick={() => update(i, "color", "#000000")} className="text-xs underline ml-1">black</button>
-                  <button type="button" onClick={() => update(i, "color", "#d00000")} className="text-xs underline ml-1 text-red-600">red</button>
+                  <button type="button" onClick={() => update(i, "color", "#000000")} className="text-xs font-semibold text-white bg-black rounded px-2 py-1 ml-1">black</button>
+                  <button type="button" onClick={() => update(i, "color", "#d00000")} className="text-xs font-semibold text-white rounded px-2 py-1 ml-1" style={{ background: "#d00000" }}>red</button>
                 </td>
               </tr>
             ))}

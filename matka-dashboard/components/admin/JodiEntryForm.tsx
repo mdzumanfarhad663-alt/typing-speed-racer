@@ -111,8 +111,8 @@ export function JodiEntryForm({
               </td>
               <td className="border px-2 py-1">
                 <input type="color" value={d.color || "#000000"} onChange={(e) => update(i, "color", e.target.value)} className="w-12 h-8" />
-                <button onClick={() => update(i, "color", "#000000")} className="text-xs underline ml-1">black</button>
-                <button onClick={() => update(i, "color", "#d00000")} className="text-xs underline ml-1 text-red-600">red</button>
+                <button type="button" onClick={() => update(i, "color", "#000000")} className="text-xs font-semibold text-white bg-black rounded px-2 py-1 ml-1">black</button>
+                <button type="button" onClick={() => update(i, "color", "#d00000")} className="text-xs font-semibold text-white rounded px-2 py-1 ml-1" style={{ background: "#d00000" }}>red</button>
               </td>
               <td className="border px-2 py-1 text-center bg-white">
                 <span className="text-xl font-bold italic" style={{ color: d.color || "#000" }}>{d.value || "--"}</span>
