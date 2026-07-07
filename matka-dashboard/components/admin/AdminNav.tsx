@@ -5,6 +5,7 @@ import { useState } from "react";
 
 const links = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/backup", label: "Backup" },
   { href: "/admin/record", label: "Record" },
   { href: "/admin/live-results", label: "Live Result" },
   { href: "/admin/market-timings", label: "Market Timings" },
@@ -63,7 +64,6 @@ export function AdminNav() {
         </div>
 
         <div className="hidden lg:flex gap-3 items-center shrink-0">
-          <Link href="/admin/backup" className={pathname === "/admin/backup" ? "bg-emerald-600 text-white px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap" : "text-emerald-400 hover:text-white hover:bg-emerald-600 px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors"}>⛃ Backup</Link>
           <Link href="/" className="text-gray-300 hover:text-white text-sm whitespace-nowrap">View Public →</Link>
           <button onClick={logout} className="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-full text-sm font-semibold transition-colors">Logout</button>
         </div>
@@ -76,7 +76,6 @@ export function AdminNav() {
               {l.label}
             </Link>
           ))}
-          <Link href="/admin/backup" onClick={() => setOpen(false)} className={pathname === "/admin/backup" ? "bg-emerald-600 text-white px-3 py-1.5 rounded-full text-sm font-semibold" : "text-emerald-400 hover:text-white hover:bg-emerald-600 px-3 py-1.5 rounded-full text-sm font-semibold transition-colors"}>⛃ Backup</Link>
           <div className="flex items-center gap-4 pt-3 border-t border-white/20 mt-2">
             <Link href="/" className="text-gray-300 hover:text-white text-sm" onClick={() => setOpen(false)}>View Public →</Link>
             <button onClick={logout} className="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-full text-sm font-semibold">Logout</button>

@@ -4,13 +4,34 @@ import type { BackupMeta } from "@/lib/backup";
 
 function fmt(iso: string) {
   const d = new Date(iso);
-  return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+  return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short", hour12: true });
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function fmtDur(ms: number) {
+  if (ms <= 0) return "due now";
+  const s = Math.floor(ms / 1000);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return `${h}h ${String(m).padStart(2, "0")}m ${String(sec).padStart(2, "0")}s`;
 }
 
 export function BackupManager() {
   const [backups, setBackups] = useState<BackupMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
+  const [nowTs, setNowTs] = useState(() => Date.now());
+
+  useEffect(() => {
+    const t = setInterval(() => setNowTs(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const lastBackup = backups[0];
+  const nextAt = lastBackup ? new Date(lastBackup.createdAt).getTime() + DAY_MS : null;
+  const remaining = nextAt !== null ? nextAt - nowTs : null;
 
   const load = useCallback(async () => {
     const res = await fetch("/api/admin/backups", { cache: "no-store" });
@@ -66,6 +87,15 @@ export function BackupManager() {
         <button onClick={backupNow} disabled={busy === "new"} className="bg-green-700 hover:bg-green-800 disabled:opacity-50 text-white px-4 py-2 rounded font-semibold whitespace-nowrap">
           {busy === "new" ? "Backing up…" : "⛃ Backup now"}
         </button>
+      </div>
+
+      <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 bg-blue-50 border border-blue-200 rounded px-4 py-2 text-sm">
+        <span className="text-lg leading-none">⏱️</span>
+        <span>
+          Next daily backup in{" "}
+          <strong className="font-mono">{remaining !== null ? fmtDur(remaining) : "—"}</strong>
+        </span>
+        {lastBackup && <span className="text-gray-500">· last backup {fmt(lastBackup.createdAt)}</span>}
       </div>
 
       {loading ? (
