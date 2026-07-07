@@ -11,6 +11,10 @@ type Props = {
 
 export function RowForm({ section, initial, onSaved, onCancel }: Props) {
   const isFreeZone = section === "free_zone";
+  // Live Result and Live Update are the same kind of "game" row — a game always
+  // shows in Live Matka Result, and the checkbox controls whether it also appears
+  // in the 📡 Live Update band (which the section value drives).
+  const isGame = section === "live_result" || section === "live_update";
   const [title, setTitle] = useState(initial?.title || "");
   const [resultValue, setResultValue] = useState(initial?.resultValue || "");
   const [timeRange, setTimeRange] = useState(initial?.timeRange || "");
@@ -18,6 +22,7 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
   const [rightTag, setRightTag] = useState(initial?.rightTag || "");
   const [color, setColor] = useState(initial?.color || "#0066cc");
   const [highlight, setHighlight] = useState(Boolean(initial?.highlight));
+  const [showInLiveUpdate, setShowInLiveUpdate] = useState((initial?.section ?? section) === "live_update");
   const [dateLabel, setDateLabel] = useState(initial?.dateLabel || "");
   const [extraLines, setExtraLines] = useState<string[]>(initial?.extraLines || []);
   const [busy, setBusy] = useState(false);
@@ -27,8 +32,9 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
     e.preventDefault();
     setBusy(true);
     setError(null);
+    const effectiveSection = isGame ? (showInLiveUpdate ? "live_update" : "live_result") : section;
     const payload = {
-      section,
+      section: effectiveSection,
       title,
       resultValue,
       timeRange: timeRange || null,
@@ -88,6 +94,10 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
             <label className="flex items-center gap-2 col-span-2">
               <input type="checkbox" checked={highlight} onChange={(e) => setHighlight(e.target.checked)} />
               <span className="text-sm">Highlight row (yellow band, e.g. KALYAN MORNING)</span>
+            </label>
+            <label className="flex items-center gap-2 col-span-2">
+              <input type="checkbox" checked={showInLiveUpdate} onChange={(e) => setShowInLiveUpdate(e.target.checked)} />
+              <span className="text-sm">Show in 📡 Live Update list (always shows in Live Matka Result)</span>
             </label>
           </>
         )}

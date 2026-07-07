@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
-import { eq, max } from "drizzle-orm";
+import { and, eq, max } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { rows } from "@/lib/schema";
+import { rows, type Section } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
+
+const VALID_SECTIONS: Section[] = ["lucky", "live_result", "free_zone", "live_update"];
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,6 +28,20 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   if ("highlight" in body) patch.highlight = Boolean(body.highlight);
   if ("position" in body) patch.position = Number(body.position) || 0;
   if ("extraLines" in body) patch.extraLines = Array.isArray(body.extraLines) ? body.extraLines.map(String) : null;
+
+  // Allow moving a game between Live Result and Live Update (checkbox toggle).
+  // When the section changes, give it a fresh manual position in the target section.
+  if ("section" in body && VALID_SECTIONS.includes(body.section)) {
+    const [existing] = await db.select({ section: rows.section }).from(rows).where(eq(rows.id, params.id)).limit(1);
+    if (existing && existing.section !== body.section) {
+      patch.section = body.section;
+      const [{ value: maxPos }] = await db
+        .select({ value: max(rows.position) })
+        .from(rows)
+        .where(and(eq(rows.section, body.section), eq(rows.source, "manual")));
+      patch.position = Math.min((maxPos ?? -1) + 1, 9999);
+    }
+  }
 
   const [updated] = await db.update(rows).set(patch).where(eq(rows.id, params.id)).returning();
   if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });

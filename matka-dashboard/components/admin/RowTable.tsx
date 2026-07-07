@@ -22,6 +22,9 @@ function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Se
         {row.source === "scraped" && (
           <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-normal align-middle">auto</span>
         )}
+        {row.section === "live_update" && (
+          <span className="ml-2 text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-normal align-middle">📡 Live Update</span>
+        )}
       </td>
       <td className="px-1 sm:px-2 py-2 text-xs sm:text-sm">{row.resultValue}</td>
       <td className="hidden sm:table-cell px-1 sm:px-2 py-2 text-xs sm:text-sm text-gray-600">{row.timeRange}</td>
@@ -54,10 +57,17 @@ export function RowTable({ section }: { section: Section }) {
 
   async function reload() {
     setLoading(true);
-    const res = await fetch(`/api/admin/rows?section=${section}`, { cache: "no-store" });
+    // The Live Result page manages ALL game rows: both live_result and live_update,
+    // so a game toggled into Live Update via the checkbox doesn't vanish from the list.
+    const res = section === "live_result"
+      ? await fetch(`/api/admin/rows`, { cache: "no-store" })
+      : await fetch(`/api/admin/rows?section=${section}`, { cache: "no-store" });
     if (res.ok) {
       const { rows } = await res.json();
-      setItems(rows);
+      const list: Row[] = section === "live_result"
+        ? rows.filter((r: Row) => r.section === "live_result" || r.section === "live_update")
+        : rows;
+      setItems(list);
     }
     setLoading(false);
   }
