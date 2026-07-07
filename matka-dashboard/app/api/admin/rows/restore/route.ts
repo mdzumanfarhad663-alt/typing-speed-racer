@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, notInArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rows } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
@@ -8,7 +8,12 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Bulk-restore the MANUAL game rows from a snapshot (used by undo/redo in the
-// admin row tables). Scraped/auto rows are never touched — they stay live-synced.
+// admin row tables).
+//
+// IMPORTANT: panel_entries / jodi_entries have ON DELETE CASCADE on row_id, so
+// deleting a row destroys its chart data. We therefore UPSERT existing rows
+// (never delete them) and only delete manual rows that were added after the
+// snapshot. Auto-scraped rows are never touched.
 export async function PUT(req: Request) {
   const s = await getSession();
   if (!s) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -41,14 +46,28 @@ export async function PUT(req: Request) {
       dateLabel: r.dateLabel ?? null,
       highlight: Boolean(r.highlight),
       position: typeof r.position === "number" ? r.position : 0,
-      source: "manual",
     }));
 
-  // Replace all manual rows in these sections with the snapshot (ids preserved so
-  // linked Jodi/Panel charts keep working).
-  await db.delete(rows).where(and(inArray(rows.section, [...SECTIONS]), eq(rows.source, "manual")));
-  if (values.length > 0) {
-    await db.insert(rows).values(values);
+  // Upsert by id — updates existing rows in place (no delete → no chart cascade).
+  for (const v of values) {
+    await db.insert(rows).values(v).onConflictDoUpdate({
+      target: rows.id,
+      set: {
+        section: v.section, title: v.title, resultValue: v.resultValue,
+        timeRange: v.timeRange, leftTag: v.leftTag, rightTag: v.rightTag,
+        color: v.color, extraLines: v.extraLines, dateLabel: v.dateLabel,
+        highlight: v.highlight, position: v.position, updatedAt: new Date(),
+      },
+    });
   }
+
+  // Remove only manual rows added AFTER the snapshot (i.e. undo of an "add").
+  const keepIds = values.map((v) => v.id);
+  await db.delete(rows).where(
+    keepIds.length > 0
+      ? and(inArray(rows.section, [...SECTIONS]), eq(rows.source, "manual"), notInArray(rows.id, keepIds))
+      : and(inArray(rows.section, [...SECTIONS]), eq(rows.source, "manual"))
+  );
+
   return NextResponse.json({ ok: true, count: values.length });
 }
