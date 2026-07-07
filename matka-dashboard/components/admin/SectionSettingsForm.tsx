@@ -19,7 +19,7 @@ type SectionData = {
 export function EditorHeading({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className="text-2xl font-bold text-center uppercase"
+      className="text-2xl font-bold text-left uppercase"
       style={{ color: "blue", paddingTop: "30px", paddingBottom: "10px" }}
     >
       {children}

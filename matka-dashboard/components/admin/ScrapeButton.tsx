@@ -58,19 +58,25 @@ export function ScrapeButton() {
       <button
         onClick={handleScrape}
         disabled={status === "loading"}
-        className="bg-blue-700 hover:bg-blue-800 disabled:opacity-50 text-white px-4 py-2 rounded font-semibold text-sm flex items-center gap-2"
+        className="group relative overflow-hidden bg-gradient-to-b from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 active:scale-95 disabled:cursor-wait text-white pl-3 pr-5 py-2.5 rounded-lg font-semibold text-sm flex items-center gap-2.5 shadow-lg shadow-blue-900/30 ring-1 ring-white/20 transition-all duration-200"
       >
-        {status === "loading" ? (
-          <>
-            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-            </svg>
-            Fetching from source…
-          </>
-        ) : (
-          "↻ Refresh from Source"
-        )}
+        <span className="grid place-items-center h-6 w-6 rounded-full bg-white/15">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={`h-4 w-4 transition-transform duration-500 ${status === "loading" ? "animate-spin" : "group-hover:rotate-180"}`}
+          >
+            <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+            <path d="M21 3v6h-6" />
+          </svg>
+        </span>
+        {status === "loading" ? "Fetching from source…" : "Refresh from Source"}
+        {/* sheen sweep on hover */}
+        <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       </button>
       <span className="text-xs text-gray-500">
         Auto-refresh in {countdown}s{lastUpdated ? ` · last updated ${lastUpdated}` : ""}
