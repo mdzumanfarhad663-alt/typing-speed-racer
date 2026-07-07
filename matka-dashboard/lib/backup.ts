@@ -72,6 +72,11 @@ export async function listBackups(): Promise<BackupMeta[]> {
   }));
 }
 
+export async function deleteBackup(id: string): Promise<void> {
+  await ensureTable();
+  await db.execute(sql`DELETE FROM db_backups WHERE id = ${id}`);
+}
+
 type Snap = Awaited<ReturnType<typeof snapshot>>;
 const toDate = (v: unknown) => new Date(v as string);
 

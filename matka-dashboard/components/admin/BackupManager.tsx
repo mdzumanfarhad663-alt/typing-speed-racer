@@ -31,6 +31,18 @@ export function BackupManager() {
     setBusy(null);
   }
 
+  async function remove(id: string, when: string) {
+    if (!confirm(`Delete the backup taken on ${fmt(when)}? This cannot be undone.`)) return;
+    setBusy(id);
+    const res = await fetch(`/api/admin/backups/${id}`, { method: "DELETE" });
+    setBusy(null);
+    if (res.ok) {
+      setBackups((bs) => bs.filter((b) => b.id !== id));
+    } else {
+      alert("Delete failed. Please try again.");
+    }
+  }
+
   async function restore(id: string, when: string) {
     if (!confirm(`Restore all data from the backup taken on ${fmt(when)}?\n\nThis replaces the current data. A safety backup of the current state is saved first, so you can undo this.`)) return;
     setBusy(id);
@@ -84,13 +96,22 @@ export function BackupManager() {
                   <td className="px-3 py-2 hidden sm:table-cell">{b.rows}</td>
                   <td className="px-3 py-2 hidden sm:table-cell">{b.panel} / {b.jodi}</td>
                   <td className="px-3 py-2 text-right">
-                    <button
-                      onClick={() => restore(b.id, b.createdAt)}
-                      disabled={busy === b.id}
-                      className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold px-4 py-1.5 rounded whitespace-nowrap"
-                    >
-                      {busy === b.id ? "Restoring…" : "↺ Restore"}
-                    </button>
+                    <div className="flex justify-end gap-2">
+                      <button
+                        onClick={() => restore(b.id, b.createdAt)}
+                        disabled={busy === b.id}
+                        className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold px-4 py-1.5 rounded whitespace-nowrap"
+                      >
+                        {busy === b.id ? "Working…" : "↺ Restore"}
+                      </button>
+                      <button
+                        onClick={() => remove(b.id, b.createdAt)}
+                        disabled={busy === b.id}
+                        className="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-white font-semibold px-4 py-1.5 rounded whitespace-nowrap"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
