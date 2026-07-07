@@ -48,7 +48,7 @@ function SortableRow({ row, section, onEdit, onDelete }: { row: Row; section: Se
   );
 }
 
-export function RowTable({ section }: { section: Section }) {
+export function RowTable({ section, title }: { section: Section; title?: string }) {
   const [items, setItems] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -97,7 +97,7 @@ export function RowTable({ section }: { section: Section }) {
   return (
     <div>
       <div className="flex justify-between items-center mb-3">
-        <h2 className="text-xl font-bold capitalize">{section.replace("_", " ")} rows</h2>
+        <h2 className="text-xl font-bold capitalize">{title ?? `${section.replace("_", " ")} rows`}</h2>
         {!showForm && !editing && (
           <button onClick={() => setShowForm(true)} className="bg-green-700 text-white px-4 py-2 rounded font-semibold">+ Add row</button>
         )}
