@@ -160,7 +160,7 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
     label: "Lucky Number Band",
     styleSlots: [
       { key: "titleBand", label: "Title band", default: { backgroundColor: "#fae6e9", borderColor: "orange", borderWidth: "3px", borderStyle: "solid", textColor: "#000000", fontStyle: "italic", fontWeight: "700", fontSize: "18px", fontFamily: "'Open Sans', sans-serif" } },
-      { key: "ankBox", label: "Ank table", default: { backgroundColor: "#f5fffa", textColor: "#000000", borderColor: "#956f13", borderWidth: "3px", borderStyle: "solid", fontWeight: "700", fontStyle: "italic", fontSize: "17px" } },
+      { key: "ankBox", label: "Ank table", default: { backgroundColor: "#f5fffa", textColor: "#000000", borderColor: "orange", borderWidth: "3px", borderStyle: "solid", fontWeight: "700", fontStyle: "italic", fontSize: "17px" } },
       { key: "ankNameText", label: "Name", default: { textColor: "#ff0000" } },
       { key: "ankNumberText", label: "Number", default: {} },
       { key: "ankLeftTitle", label: "Left title", default: {} },

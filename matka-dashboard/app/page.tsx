@@ -13,7 +13,6 @@ import { SattaMatkaInfo } from "@/components/public/SattaMatkaInfo";
 import { FaqSection } from "@/components/public/FaqSection";
 import { MainFooter } from "@/components/public/MainFooter";
 import { LiveResultList } from "@/components/public/LiveResultList";
-import { RefreshIndicator } from "@/components/public/RefreshIndicator";
 import type { PublicSectionsResponse } from "@/lib/types";
 import { makeResolver, type SectionSettingsMap } from "@/lib/resolveStyle";
 import type { MarketTiming } from "@/lib/schema";
@@ -90,7 +89,7 @@ export default function Home() {
   return (
     <main className="min-h-screen pb-12 px-2 sm:px-4" style={{ background: "#f5f5f0" }}>
       <header className="bg-black text-white text-center py-2 text-xs flex justify-between px-4">
-        <span>Matka Production System</span>
+        <span />
         <Link href="/admin" className="underline">Admin</Link>
       </header>
       {error && (
@@ -110,7 +109,6 @@ export default function Home() {
       <SattaMatkaInfo resolve={resolve} marketTimings={marketTimings} />
       <FaqSection resolve={resolve} />
       <MainFooter resolve={resolve} />
-      <RefreshIndicator lastUpdated={lastUpdated} />
     </main>
   );
 }

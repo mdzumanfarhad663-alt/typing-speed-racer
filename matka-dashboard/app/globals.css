@@ -49,12 +49,12 @@ html, body {
   color: #000;
   font-weight: 700;
   font-size: 17px;
-  border: solid 3px #956f13;
-  border-radius: 8px;
+  border: solid 3px orange;
+  border-radius: 4px;
   font-style: italic;
   text-align: center;
   text-shadow: 1px 1px 0 pink, 1px 5px 5px #aba8a8;
-  margin-top: 9px;
+  margin-top: 0;
   margin-bottom: 9px;
 }
 .live-result {
