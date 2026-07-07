@@ -1,5 +1,6 @@
 import type { JodiEntry, Row } from "@/lib/schema";
 import { toCss } from "@/lib/resolveStyle";
+import { jodiColor } from "@/lib/redJodi";
 import type { ChartDesign } from "./PanelChart";
 import { RefreshButton } from "./RefreshButton";
 
@@ -113,7 +114,7 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
                       >
                         <span
                           className="text-[16px] sm:text-lg md:text-2xl font-bold italic"
-                          style={{ color: d.color || "#000", fontFamily: "Georgia, serif", textShadow: "1px 1px 0 #ffd700" }}
+                          style={{ color: jodiColor(d.value, d.color || "#000"), fontFamily: "Georgia, serif", textShadow: "1px 1px 0 #ffd700" }}
                         >
                           {d.value || "--"}
                         </span>

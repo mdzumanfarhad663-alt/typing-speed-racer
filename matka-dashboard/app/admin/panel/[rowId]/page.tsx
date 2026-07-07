@@ -7,6 +7,7 @@ import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
 import { CsvImportButton } from "@/components/admin/CsvImportButton";
 import { chartSectionKey } from "@/lib/sectionConfig";
 import { useChartHistory } from "@/lib/useChartHistory";
+import { jodiColor } from "@/lib/redJodi";
 
 const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -28,7 +29,7 @@ function MiniDayCell({ d }: { d: PanelDay }) {
         <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{open[0]}</span><span>{open[1]}</span><span>{open[2]}</span>
         </div>
-        <div className="text-[11px] sm:text-base font-bold px-0.5" style={{ color: d.color || "#000" }}>{d.jodi || "--"}</div>
+        <div className="text-[11px] sm:text-base font-bold px-0.5" style={{ color: jodiColor(d.jodi, d.color || "#000") }}>{d.jodi || "--"}</div>
         <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{close[0]}</span><span>{close[1]}</span><span>{close[2]}</span>
         </div>

@@ -1,5 +1,6 @@
 import type { PanelDay, PanelEntry, Row, StyleSlot } from "@/lib/schema";
 import { toCss } from "@/lib/resolveStyle";
+import { jodiColor } from "@/lib/redJodi";
 import { RefreshButton } from "./RefreshButton";
 
 export type ChartDesign = { styles: Record<string, StyleSlot>; content: Record<string, string> };
@@ -11,14 +12,14 @@ function pad(s: string, len: number) {
 function DayCell({ d }: { d: PanelDay }) {
   const open = pad(d.open || "   ", 3);
   const close = pad(d.close || "   ", 3);
-  const jodiColor = d.color || "#000000";
+  const cellColor = jodiColor(d.jodi, d.color || "#000000");
   return (
     <td className="bg-white text-black align-middle p-0.5 sm:p-1.5" style={{ border: "1px solid #ddd" }}>
       <div className="flex items-center justify-center gap-0.5 sm:gap-1">
         <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{open[0]}</span><span>{open[1]}</span><span>{open[2]}</span>
         </div>
-        <div className="font-bold px-0.5" style={{ color: jodiColor, fontSize: "18px" }}>{d.jodi || "--"}</div>
+        <div className="font-bold px-0.5" style={{ color: cellColor, fontSize: "18px" }}>{d.jodi || "--"}</div>
         <div className="flex flex-col text-[6px] sm:text-[10px] leading-tight font-bold">
           <span>{close[0]}</span><span>{close[1]}</span><span>{close[2]}</span>
         </div>

@@ -7,6 +7,7 @@ import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
 import { CsvImportButton } from "@/components/admin/CsvImportButton";
 import { chartSectionKey } from "@/lib/sectionConfig";
 import { useChartHistory } from "@/lib/useChartHistory";
+import { jodiColor } from "@/lib/redJodi";
 
 const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -144,7 +145,7 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
                 </td>
                 {e.days.map((d, i) => (
                   <td key={i} className="bg-white text-center align-middle p-0.5 sm:p-1.5" style={{ border: "1px solid #ddd" }}>
-                    <span className="text-[11px] sm:text-lg font-bold italic" style={{ color: d.color || "#000", fontFamily: "Georgia, serif" }}>
+                    <span className="text-[11px] sm:text-lg font-bold italic" style={{ color: jodiColor(d.value, d.color || "#000"), fontFamily: "Georgia, serif" }}>
                       {d.value || "--"}
                     </span>
                   </td>
