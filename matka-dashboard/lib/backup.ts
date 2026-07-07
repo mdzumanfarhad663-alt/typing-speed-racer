@@ -1,8 +1,8 @@
 import { sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 
-const BACKUP_INTERVAL_MS = 60 * 60 * 1000; // one backup per hour
-const MAX_BACKUPS = 72; // keep ~3 days of hourly backups
+const BACKUP_INTERVAL_MS = 24 * 60 * 60 * 1000; // one backup per day
+const MAX_BACKUPS = 30; // keep ~30 days of daily backups
 
 // The backups table is self-provisioning (created on first use) so no separate
 // migration step is required on deploy.
@@ -116,7 +116,7 @@ export async function restoreBackup(id: string): Promise<void> {
   }
 }
 
-// Throttled hourly auto-backup — safe to call on admin requests.
+// Throttled daily auto-backup — safe to call on admin requests.
 let lastBackupAt = 0;
 let backing = false;
 export async function maybeHourlyBackup(): Promise<void> {
