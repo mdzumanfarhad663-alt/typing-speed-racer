@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { sql, ne, inArray } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 
 const BACKUP_INTERVAL_MS = 24 * 60 * 60 * 1000; // one backup per day
@@ -26,11 +26,16 @@ function chunk<T>(arr: T[], n: number): T[][] {
   return out;
 }
 
+// We back up ONLY the manual game pages (e.g. Silon Day, Silon Night) with their
+// panel/jodi chart data, plus all site design & content (section settings and
+// market timings). Auto-scraped source games are NOT backed up — they always
+// re-sync from the source site on their own.
 async function snapshot() {
-  const [rows, panelEntries, jodiEntries, marketTimings, sectionSettings] = await Promise.all([
-    db.select().from(schema.rows),
-    db.select().from(schema.panelEntries),
-    db.select().from(schema.jodiEntries),
+  const rows = await db.select().from(schema.rows).where(ne(schema.rows.source, "scraped"));
+  const ids = rows.map((r) => r.id);
+  const [panelEntries, jodiEntries, marketTimings, sectionSettings] = await Promise.all([
+    ids.length ? db.select().from(schema.panelEntries).where(inArray(schema.panelEntries.rowId, ids)) : Promise.resolve([]),
+    ids.length ? db.select().from(schema.jodiEntries).where(inArray(schema.jodiEntries.rowId, ids)) : Promise.resolve([]),
     db.select().from(schema.marketTimings),
     db.select().from(schema.sectionSettings),
   ]);
@@ -87,12 +92,11 @@ export async function restoreBackup(id: string): Promise<void> {
   if (!list[0]) throw new Error("not_found");
   const data = list[0].data;
 
-  // Wipe children first, then parents (rows), to respect FK order, then reinsert.
-  await db.delete(schema.panelEntries);
-  await db.delete(schema.jodiEntries);
+  // Replace ONLY the manual game rows (their panel/jodi entries cascade-delete),
+  // plus all design/content. Auto-scraped rows and their charts are left intact.
+  await db.delete(schema.rows).where(ne(schema.rows.source, "scraped"));
   await db.delete(schema.marketTimings);
   await db.delete(schema.sectionSettings);
-  await db.delete(schema.rows);
 
   if (data.rows?.length) {
     for (const part of chunk(data.rows, 100)) {

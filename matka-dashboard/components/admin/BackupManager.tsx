@@ -61,7 +61,7 @@ export function BackupManager() {
       <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
         <div>
           <h2 className="font-bold text-lg">Backups</h2>
-          <p className="text-sm text-gray-600">A backup is taken automatically every hour. Click Restore on any backup to recover all data.</p>
+          <p className="text-sm text-gray-600">Backs up your game pages (Silon Day, Silon Night) with their panel/jodi charts, plus all site design &amp; content — automatically once a day. Auto-scraped results are not included (they re-sync on their own). Click Restore to recover.</p>
         </div>
         <button onClick={backupNow} disabled={busy === "new"} className="bg-green-700 hover:bg-green-800 disabled:opacity-50 text-white px-4 py-2 rounded font-semibold whitespace-nowrap">
           {busy === "new" ? "Backing up…" : "⛃ Backup now"}
