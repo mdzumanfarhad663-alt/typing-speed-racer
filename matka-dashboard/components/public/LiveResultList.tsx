@@ -6,7 +6,7 @@ import { ResultCard } from "./ResultCard";
 export function LiveResultList({ items, resolve }: { items: Row[]; resolve: SectionResolver }) {
   const { styles, content } = resolve("live_result_list");
   return (
-    <section className="section-card my-4">
+    <section className="section-card my-4" style={{ border: "solid 3px #f39c12" }}>
       <div className="gradient-band" style={toCss(styles.header)}>
         <h2>
           <span className="mx-2">{"«««"}</span>

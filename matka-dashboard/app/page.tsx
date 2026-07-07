@@ -13,6 +13,7 @@ import { SattaMatkaInfo } from "@/components/public/SattaMatkaInfo";
 import { FaqSection } from "@/components/public/FaqSection";
 import { MainFooter } from "@/components/public/MainFooter";
 import { LiveResultList } from "@/components/public/LiveResultList";
+import { HomeRefreshButton } from "@/components/public/HomeRefreshButton";
 import type { PublicSectionsResponse } from "@/lib/types";
 import { makeResolver, type SectionSettingsMap } from "@/lib/resolveStyle";
 import type { MarketTiming } from "@/lib/schema";
@@ -120,6 +121,7 @@ export default function Home() {
       <SattaMatkaInfo resolve={resolve} marketTimings={marketTimings} />
       <FaqSection resolve={resolve} />
       <MainFooter resolve={resolve} />
+      <HomeRefreshButton />
     </main>
   );
 }
