@@ -76,6 +76,36 @@ export async function POST(req: Request) {
   return NextResponse.json({ entry: inserted });
 }
 
+// Bulk-restore all weeks of a chart from a snapshot (used by undo/redo in the admin editor).
+export async function PUT(req: Request) {
+  const denied = await guard();
+  if (denied) return denied;
+  const body = await req.json().catch(() => null);
+  if (!body?.rowId || !Array.isArray(body.entries)) {
+    return NextResponse.json({ error: "rowId and entries required" }, { status: 400 });
+  }
+
+  type Snap = { weekStart?: string; weekEnd?: string; days?: unknown; position?: number };
+  const values = (body.entries as Snap[])
+    .filter((e) => e.weekStart && e.weekEnd)
+    .map((e, i) => ({
+      rowId: body.rowId as string,
+      weekStart: e.weekStart as string,
+      weekEnd: e.weekEnd as string,
+      days: normalizeDays(e.days),
+      position: typeof e.position === "number" ? e.position : i,
+    }));
+
+  await db.delete(panelEntries).where(eq(panelEntries.rowId, body.rowId));
+  if (values.length > 0) {
+    const inserted = await db.insert(panelEntries).values(values).returning();
+    for (const en of inserted) {
+      await syncJodiFromPanel(en.rowId, en.weekStart, en.weekEnd, en.days);
+    }
+  }
+  return NextResponse.json({ ok: true, count: values.length });
+}
+
 // Delete ALL weeks of a chart. Requires the admin password even with a valid session.
 export async function DELETE(req: Request) {
   const denied = await guard();

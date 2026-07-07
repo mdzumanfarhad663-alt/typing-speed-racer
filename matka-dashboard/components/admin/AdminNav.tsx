@@ -7,9 +7,8 @@ const links = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/record", label: "Record" },
   { href: "/admin/live-results", label: "Live Result" },
-  { href: "/admin/lucky", label: "Lucky Number" },
   { href: "/admin/market-timings", label: "Market Timings" },
-  { href: "/admin/live-update", label: "Top Live Update" },
+  { href: "/admin/live-update", label: "Top Live Update", accent: true },
   { href: "/admin/result-box-design", label: "Result Box Design" },
   { href: "/admin/design", label: "Home Page Design" },
 ];
@@ -25,10 +24,16 @@ export function AdminNav() {
     router.refresh();
   }
 
-  const linkClass = (href: string) =>
-    pathname === href
+  const linkClass = (l: { href: string; accent?: boolean }) => {
+    if (l.accent) {
+      return pathname === l.href
+        ? "bg-red-600 text-white px-3 py-1.5 rounded-full text-sm font-bold whitespace-nowrap"
+        : "text-red-500 hover:text-white hover:bg-red-600 px-3 py-1.5 rounded-full text-sm font-bold whitespace-nowrap transition-colors";
+    }
+    return pathname === l.href
       ? "bg-blue-600 text-white px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap"
       : "text-gray-300 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors";
+  };
 
   return (
     <nav className="bg-gradient-to-r from-gray-900 to-gray-800 text-white px-4 py-2.5 md:px-6 shadow-md sticky top-0 z-50">
@@ -50,7 +55,7 @@ export function AdminNav() {
 
         <div className="hidden lg:flex items-center gap-1 flex-wrap">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className={linkClass(l.href)}>
+            <Link key={l.href} href={l.href} className={linkClass(l)}>
               {l.label}
             </Link>
           ))}
@@ -65,7 +70,7 @@ export function AdminNav() {
       {open && (
         <div className="lg:hidden flex flex-col gap-1 pt-3 pb-2">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className={linkClass(l.href)}>
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className={linkClass(l)}>
               {l.label}
             </Link>
           ))}

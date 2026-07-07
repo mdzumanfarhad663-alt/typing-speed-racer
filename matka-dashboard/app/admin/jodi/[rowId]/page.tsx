@@ -6,6 +6,7 @@ import { JodiEntryForm } from "@/components/admin/JodiEntryForm";
 import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
 import { CsvImportButton } from "@/components/admin/CsvImportButton";
 import { chartSectionKey } from "@/lib/sectionConfig";
+import { useChartHistory } from "@/lib/useChartHistory";
 
 const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -36,9 +37,21 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
 
   useEffect(() => { load(); }, [load]);
 
+  const restore = useCallback(async (snapshot: JodiEntry[]) => {
+    await fetch("/api/admin/jodi", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rowId: params.rowId, entries: snapshot }),
+    });
+    await load();
+  }, [params.rowId, load]);
+
+  const history = useChartHistory<JodiEntry>(restore);
+
   async function del(id: string) {
     if (!confirm("Delete this week?")) return;
-    await fetch(`/api/admin/jodi/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/admin/jodi/${id}`, { method: "DELETE" });
+    if (res.ok) history.remember(entries);
     load();
   }
 
@@ -56,7 +69,8 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
       body: JSON.stringify({ rowId: params.rowId, password }),
     });
     if (res.ok) {
-      alert("All weeks deleted.");
+      history.remember(entries);
+      alert("All weeks deleted. You can undo this with the Undo button.");
       load();
     } else {
       const j = await res.json().catch(() => ({}));
@@ -77,6 +91,8 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
         </div>
         {!adding && !editing && (
           <div className="flex gap-2">
+            <button onClick={() => history.undo(entries)} disabled={!history.canUndo} className="bg-amber-500 hover:bg-amber-600 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-2 rounded font-semibold">↶ Undo</button>
+            <button onClick={() => history.redo(entries)} disabled={!history.canRedo} className="bg-green-600 hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-2 rounded font-semibold">↷ Redo</button>
             <button onClick={deleteAll} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-semibold">All Delete</button>
             <button onClick={() => setAdding(true)} className="bg-black text-white px-4 py-2 rounded">+ Add week</button>
           </div>
@@ -90,7 +106,7 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
         <p className="text-xs text-gray-500 mb-2">
           Columns: Week Ending Date,MON,TUE,WED,THU,FRI,SAT,SUN — week as "DD/MM/YYYY to DD/MM/YYYY", each day as a 2-digit value (e.g. 91), or "Holiday/No data" / blank for no result.
         </p>
-        <CsvImportButton rowId={params.rowId} kind="jodi" onDone={load} />
+        <CsvImportButton rowId={params.rowId} kind="jodi" onDone={() => { history.remember(entries); load(); }} />
       </div>
 
       {(adding || editing) && (
@@ -98,7 +114,7 @@ export default function AdminJodiPage({ params }: { params: { rowId: string } })
           <JodiEntryForm
             rowId={params.rowId}
             initial={editing ?? undefined}
-            onSaved={() => { setAdding(false); setEditing(null); load(); }}
+            onSaved={() => { history.remember(entries); setAdding(false); setEditing(null); load(); }}
             onCancel={() => { setAdding(false); setEditing(null); }}
           />
         </div>
