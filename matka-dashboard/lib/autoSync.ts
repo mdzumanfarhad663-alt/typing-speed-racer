@@ -2,7 +2,7 @@ import { eq, and, or, ilike, notInArray } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { scrapeMainResults, scrapeMenu2Games, scrapeAnkData } from "@/lib/scraper";
 
-async function upsertLiveUpdateGame(r: { gameTitle: string; resultValue: string; sourceKey: string; timeRange?: string | null }, now: Date) {
+async function upsertLiveUpdateGame(r: { gameTitle: string; resultValue: string; sourceKey: string }, now: Date) {
   const existing = await db
     .select({ id: schema.rows.id })
     .from(schema.rows)
@@ -16,14 +16,14 @@ async function upsertLiveUpdateGame(r: { gameTitle: string; resultValue: string;
 
   if (existing.length > 0) {
     await db.update(schema.rows)
-      .set({ resultValue: r.resultValue, timeRange: r.timeRange ?? null, source: "scraped", sourceKey: r.sourceKey, updatedAt: now })
+      .set({ resultValue: r.resultValue, source: "scraped", sourceKey: r.sourceKey, updatedAt: now })
       .where(eq(schema.rows.id, existing[0].id));
   } else {
     const allRows = await db.select({ position: schema.rows.position }).from(schema.rows)
       .where(eq(schema.rows.section, "live_update")).orderBy(schema.rows.position);
     const nextPos = allRows.length > 0 ? allRows[allRows.length - 1].position + 1 : 0;
     await db.insert(schema.rows).values({
-      section: "live_update", title: r.gameTitle, resultValue: r.resultValue, timeRange: r.timeRange ?? null,
+      section: "live_update", title: r.gameTitle, resultValue: r.resultValue,
       color: "#0000ff", source: "scraped", sourceKey: r.sourceKey, position: nextPos, highlight: false,
     });
   }
@@ -90,13 +90,9 @@ export async function runFullSync(): Promise<{ ok: boolean; upserted: number; to
     } catch (err) { console.error("position sync error", results[idx].sourceKey, err); }
   }
 
-  // Upsert live_update games (menu2) — only scraped ones, manual ones are untouched.
-  // menu2 has no time, so borrow the time range from the matching main result by title.
-  const timeByTitle = new Map(results.map((r) => [r.gameTitle.trim().toLowerCase(), r.timeRange]));
+  // Upsert live_update games (menu2) — only scraped ones, manual ones are untouched
   for (const g of menu2Games) {
-    try {
-      await upsertLiveUpdateGame({ ...g, timeRange: timeByTitle.get(g.gameTitle.trim().toLowerCase()) ?? null }, now);
-    } catch (err) { console.error("live_update upsert error", err); }
+    try { await upsertLiveUpdateGame(g, now); } catch (err) { console.error("live_update upsert error", err); }
   }
 
   // Remove scraped live_update rows that are no longer in the source site's menu2
