@@ -43,7 +43,7 @@ export function ResultCard({ row, resolve }: { row: Row; resolve: SectionResolve
   const rightIsPanel = row.rightTag?.trim().toLowerCase() === "panel";
 
   return (
-    <div className={`flex items-center justify-between px-4 py-2.5 border-t border-gray-200 ${row.highlight ? "kalyan-row" : ""}`}>
+    <div className={`flex items-center justify-between px-4 py-2.5 border-t ${row.highlight ? "kalyan-row" : ""}`} style={{ borderTopColor: "rgb(104 108 114)" }}>
       <div className="w-20">
         {row.leftTag && (
           <TagSide
