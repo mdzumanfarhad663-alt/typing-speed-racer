@@ -37,8 +37,8 @@ function ColorField({ label, value, onChange }: { label: string; value: string; 
     <label className="block">
       <span className="text-xs font-semibold text-gray-700">{label}</span>
       <div className="flex items-center gap-2">
-        <input type="color" value={safeColor} onChange={(e) => onChange(e.target.value)} className="h-8 w-10 border border-gray-300 rounded" />
-        <input className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm" value={value} onChange={(e) => onChange(e.target.value)} />
+        <input type="color" value={safeColor} onChange={(e) => onChange(e.target.value)} className="h-8 w-10 shrink-0 border border-gray-300 rounded" />
+        <input className="flex-1 min-w-0 border border-gray-300 rounded px-2 py-1 text-sm" value={value} onChange={(e) => onChange(e.target.value)} />
       </div>
     </label>
   );
