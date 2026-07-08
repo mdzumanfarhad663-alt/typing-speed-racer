@@ -39,6 +39,20 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
+  async function saveResult(row: Row, value: string) {
+    if (value === (row.resultValue ?? "")) return;
+    setSavingId(row.id);
+    const res = await fetch(`/api/admin/rows/${row.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ resultValue: value }),
+    });
+    if (res.ok) {
+      setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, resultValue: value } : g)));
+    }
+    setSavingId(null);
+  }
+
   return (
     <div className="bg-white border border-gray-300 rounded p-6">
       <h2 className="font-bold text-lg mb-1">📡 Show in Live Update</h2>
@@ -52,18 +66,24 @@ export function LiveUpdateToggles() {
       ) : (
         <ul className="space-y-2">
           {games.map((g) => (
-            <li key={g.id}>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4"
-                  checked={g.section === "live_update"}
-                  disabled={savingId === g.id}
-                  onChange={(e) => toggle(g, e.target.checked)}
-                />
-                <span className="text-sm font-semibold" style={{ color: g.color }}>{g.title}</span>
-                {savingId === g.id && <span className="text-xs text-gray-400">saving…</span>}
-              </label>
+            <li key={g.id} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="h-4 w-4 shrink-0"
+                checked={g.section === "live_update"}
+                disabled={savingId === g.id}
+                onChange={(e) => toggle(g, e.target.checked)}
+              />
+              <span className="text-sm font-semibold flex-1 truncate" style={{ color: g.color }}>{g.title}</span>
+              <input
+                type="text"
+                defaultValue={g.resultValue ?? ""}
+                placeholder="000-00-000"
+                disabled={savingId === g.id}
+                className="w-32 border border-gray-300 rounded px-2 py-1 text-sm text-right font-semibold"
+                onBlur={(e) => saveResult(g, e.target.value.trim())}
+                onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
+              />
             </li>
           ))}
         </ul>
