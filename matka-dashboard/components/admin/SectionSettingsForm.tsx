@@ -46,7 +46,7 @@ function ColorField({ label, value, onChange }: { label: string; value: string; 
 
 function StyleSlotFields({ slot, onChange }: { slot: StyleSlot; onChange: (next: StyleSlot) => void }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white border border-gray-200 rounded p-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 bg-white border border-gray-200 rounded p-3 sm:p-4">
       <ColorField label="Background color" value={slot.backgroundColor || ""} onChange={(v) => onChange({ ...slot, backgroundColor: v })} />
       <ColorField label="Text color" value={slot.textColor || ""} onChange={(v) => onChange({ ...slot, textColor: v })} />
       <label className="block">
@@ -89,9 +89,9 @@ function StyleSlotFields({ slot, onChange }: { slot: StyleSlot; onChange: (next:
         <span className="text-xs font-semibold text-gray-700">Padding</span>
         <input className="w-full border border-gray-300 rounded px-2 py-1 text-sm" placeholder="e.g. 1rem" value={slot.padding || ""} onChange={(e) => onChange({ ...slot, padding: e.target.value })} />
       </label>
-      <div className="col-span-2 mt-2 pt-2 border-t border-gray-200">
+      <div className="md:col-span-2 mt-2 pt-2 border-t border-gray-200">
         <EditorHeading>Text Shadow</EditorHeading>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
           <ColorField label="Shadow color" value={slot.textShadowColor || ""} onChange={(v) => onChange({ ...slot, textShadowColor: v })} />
           <label className="block">
             <span className="text-xs font-semibold text-gray-700">Shadow blur (px)</span>
