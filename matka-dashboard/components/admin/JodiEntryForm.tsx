@@ -93,7 +93,8 @@ export function JodiEntryForm({
           <input type="date" value={weekEnd} onChange={(e) => setWeekEnd(e.target.value)} className="block border px-2 py-1 rounded" />
         </label>
       </div>
-      <div className="overflow-x-auto">
+      {/* Desktop: table */}
+      <div className="hidden md:block overflow-x-auto">
       <table className="text-sm border-collapse">
         <thead>
           <tr>
@@ -122,6 +123,27 @@ export function JodiEntryForm({
           ))}
         </tbody>
       </table>
+      </div>
+
+      {/* Mobile: one card per day */}
+      <div className="md:hidden space-y-3">
+        {days.map((d, i) => (
+          <div key={i} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-bold text-blue-700">{DAY_LABELS[i]}</span>
+              <span className="text-2xl font-bold italic" style={{ color: d.color || "#000" }}>{d.value || "--"}</span>
+            </div>
+            <label className="block text-xs font-semibold text-gray-600">Jodi value
+              <input value={d.value} onChange={(e) => update(i, "value", e.target.value)} className="mt-0.5 w-full border rounded px-2 py-2 text-lg font-bold" placeholder="91" maxLength={4} />
+            </label>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="text-xs font-semibold text-gray-600">Color</span>
+              <input type="color" value={d.color || "#000000"} onChange={(e) => update(i, "color", e.target.value)} className="w-10 h-8" />
+              <button type="button" onClick={() => update(i, "color", "#000000")} className="text-xs font-semibold text-white bg-black rounded px-3 py-1.5">black</button>
+              <button type="button" onClick={() => update(i, "color", "#d00000")} className="text-xs font-semibold text-white rounded px-3 py-1.5" style={{ background: "#d00000" }}>red</button>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="flex flex-wrap gap-2 mt-4">
         <button onClick={save} disabled={busy} className="bg-black text-white px-4 py-2 rounded disabled:opacity-50">{busy ? "Saving…" : "Save"}</button>
