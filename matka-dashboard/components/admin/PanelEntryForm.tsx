@@ -94,8 +94,7 @@ export function PanelEntryForm({
           <input type="date" value={weekEnd} onChange={(e) => setWeekEnd(e.target.value)} className="block border px-2 py-1 rounded" />
         </label>
       </div>
-      {/* Desktop: table */}
-      <div className="hidden md:block overflow-x-auto">
+      <div className="overflow-x-auto">
         <table className="text-sm border-collapse">
           <thead>
             <tr>
@@ -124,32 +123,6 @@ export function PanelEntryForm({
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Mobile: one card per day */}
-      <div className="md:hidden space-y-3">
-        {days.map((d, i) => (
-          <div key={i} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-            <div className="font-bold text-blue-700 mb-2">{DAY_LABELS[i]}</div>
-            <div className="grid grid-cols-3 gap-2">
-              <label className="text-xs font-semibold text-gray-600">Open Pana
-                <input value={d.open} onChange={(e) => update(i, "open", e.target.value)} className="mt-0.5 w-full border rounded px-2 py-1.5 text-sm" placeholder="128" maxLength={6} />
-              </label>
-              <label className="text-xs font-semibold text-gray-600">Jodi
-                <input value={d.jodi} onChange={(e) => update(i, "jodi", e.target.value)} className="mt-0.5 w-full border rounded px-2 py-1.5 text-sm font-bold" placeholder="91" maxLength={4} style={{ color: d.color || "#000" }} />
-              </label>
-              <label className="text-xs font-semibold text-gray-600">Close Pana
-                <input value={d.close} onChange={(e) => update(i, "close", e.target.value)} className="mt-0.5 w-full border rounded px-2 py-1.5 text-sm" placeholder="690" maxLength={6} />
-              </label>
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <span className="text-xs font-semibold text-gray-600">Jodi color</span>
-              <input type="color" value={d.color || "#000000"} onChange={(e) => update(i, "color", e.target.value)} className="w-10 h-8" />
-              <button type="button" onClick={() => update(i, "color", "#000000")} className="text-xs font-semibold text-white bg-black rounded px-3 py-1.5">black</button>
-              <button type="button" onClick={() => update(i, "color", "#d00000")} className="text-xs font-semibold text-white rounded px-3 py-1.5" style={{ background: "#d00000" }}>red</button>
-            </div>
-          </div>
-        ))}
       </div>
       <div className="flex flex-wrap gap-2 mt-4">
         <button onClick={save} disabled={busy} className="bg-black text-white px-4 py-2 rounded disabled:opacity-50">{busy ? "Saving…" : "Save"}</button>
