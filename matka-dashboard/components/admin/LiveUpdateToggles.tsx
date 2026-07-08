@@ -70,19 +70,19 @@ export function LiveUpdateToggles() {
               <label className="flex items-center justify-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="h-4 w-4 shrink-0"
+                  className="h-5 w-5 shrink-0"
                   checked={g.section === "live_update"}
                   disabled={savingId === g.id}
                   onChange={(e) => toggle(g, e.target.checked)}
                 />
-                <span className="text-sm font-bold" style={{ color: g.color }}>{g.title}</span>
+                <span className="text-base sm:text-lg font-bold" style={{ color: g.color }}>{g.title}</span>
               </label>
               <input
                 type="text"
                 defaultValue={g.resultValue ?? ""}
                 placeholder="000-00-000"
                 disabled={savingId === g.id}
-                className="w-40 border border-gray-300 rounded px-2 py-1 text-sm text-center font-bold tracking-wide"
+                className="w-full max-w-[15rem] border border-gray-300 rounded px-3 py-2 text-lg sm:text-xl text-center font-bold tracking-wide"
                 onBlur={(e) => saveResult(g, e.target.value.trim())}
                 onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
               />
