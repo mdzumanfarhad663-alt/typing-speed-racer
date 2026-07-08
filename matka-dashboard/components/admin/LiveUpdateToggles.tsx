@@ -54,36 +54,39 @@ export function LiveUpdateToggles() {
   }
 
   return (
-    <div className="bg-white border border-gray-300 rounded p-6">
-      <h2 className="font-bold text-lg mb-1">📡 Show in Live Update</h2>
-      <p className="text-sm text-gray-600 mb-3">
+    <div className="bg-white border border-gray-300 rounded-xl shadow-sm p-6">
+      <h2 className="font-bold text-lg mb-1 text-center">📡 Show in Live Update</h2>
+      <p className="text-xs text-gray-500 mb-4 text-center">
         Tick a game to show it in the Live Update list. Every game always shows in Live Matka Result.
       </p>
       {loading ? (
-        <div className="text-gray-500 text-sm py-2">Loading…</div>
+        <div className="text-gray-500 text-sm py-2 text-center">Loading…</div>
       ) : games.length === 0 ? (
-        <div className="text-gray-500 text-sm italic py-2">No manual games yet.</div>
+        <div className="text-gray-500 text-sm italic py-2 text-center">No manual games yet.</div>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-2.5">
           {games.map((g) => (
-            <li key={g.id} className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                className="h-4 w-4 shrink-0"
-                checked={g.section === "live_update"}
-                disabled={savingId === g.id}
-                onChange={(e) => toggle(g, e.target.checked)}
-              />
-              <span className="text-sm font-semibold flex-1 truncate" style={{ color: g.color }}>{g.title}</span>
+            <li key={g.id} className="flex flex-col items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-lg p-3">
+              <label className="flex items-center justify-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 shrink-0"
+                  checked={g.section === "live_update"}
+                  disabled={savingId === g.id}
+                  onChange={(e) => toggle(g, e.target.checked)}
+                />
+                <span className="text-sm font-bold" style={{ color: g.color }}>{g.title}</span>
+              </label>
               <input
                 type="text"
                 defaultValue={g.resultValue ?? ""}
                 placeholder="000-00-000"
                 disabled={savingId === g.id}
-                className="w-32 border border-gray-300 rounded px-2 py-1 text-sm text-right font-semibold"
+                className="w-40 border border-gray-300 rounded px-2 py-1 text-sm text-center font-bold tracking-wide"
                 onBlur={(e) => saveResult(g, e.target.value.trim())}
                 onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
               />
+              {savingId === g.id && <span className="text-[11px] text-gray-400">saving…</span>}
             </li>
           ))}
         </ul>
