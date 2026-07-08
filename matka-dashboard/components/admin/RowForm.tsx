@@ -61,7 +61,7 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
   return (
     <form onSubmit={save} className="bg-gray-50 border border-gray-300 rounded p-4 my-3 space-y-3">
       {error && <div className="bg-red-100 text-red-800 p-2 rounded text-sm">{error}</div>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
         <label className="block">
           <span className="text-xs font-semibold text-gray-700">Title *</span>
           <input className="w-full border border-gray-300 rounded px-2 py-1" value={title} onChange={(e) => setTitle(e.target.value)} required />
@@ -77,8 +77,8 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
         <label className="block">
           <span className="text-xs font-semibold text-gray-700">Color (title)</span>
           <div className="flex items-center gap-2">
-            <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="h-9 w-12 border border-gray-300 rounded" />
-            <input className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm" value={color} onChange={(e) => setColor(e.target.value)} />
+            <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="h-9 w-12 shrink-0 border border-gray-300 rounded" />
+            <input className="flex-1 min-w-0 border border-gray-300 rounded px-2 py-1 text-sm" value={color} onChange={(e) => setColor(e.target.value)} />
           </div>
         </label>
         {!isFreeZone && (
