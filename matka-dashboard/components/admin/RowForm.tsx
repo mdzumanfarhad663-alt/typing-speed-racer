@@ -93,7 +93,7 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
             </label>
             <label className="flex items-center gap-2 col-span-2">
               <input type="checkbox" checked={highlight} onChange={(e) => setHighlight(e.target.checked)} />
-              <span className="text-sm">Highlight row (yellow band, e.g. KALYAN MORNING)</span>
+              <span className="text-sm">Highlight row ( yellow band )</span>
             </label>
             <label className="flex items-center gap-2 col-span-2">
               <input type="checkbox" checked={showInLiveUpdate} onChange={(e) => setShowInLiveUpdate(e.target.checked)} />
