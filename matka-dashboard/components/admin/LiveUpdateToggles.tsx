@@ -2,6 +2,11 @@
 import { useEffect, useState } from "react";
 import type { Row } from "@/lib/types";
 
+// Admin-only display: show the value with spaces around the dashes
+// (e.g. "568 - 97 - 340"). The stored value / result box stays "568-97-340".
+const spaced = (v: string) => v.split("-").map((s) => s.trim()).filter(Boolean).join(" - ");
+const unspaced = (v: string) => v.replace(/\s+/g, "");
+
 // Dashboard panel: one checkbox per manual game to toggle whether it appears in
 // the 📡 Live Update band. Every game always shows in Live Matka Result.
 export function LiveUpdateToggles() {
@@ -79,11 +84,15 @@ export function LiveUpdateToggles() {
               </label>
               <input
                 type="text"
-                defaultValue={g.resultValue ?? ""}
-                placeholder="000-00-000"
+                defaultValue={spaced(g.resultValue ?? "")}
+                placeholder="000 - 00 - 000"
                 disabled={savingId === g.id}
                 className="w-full max-w-[15rem] border border-gray-300 rounded px-3 py-2 text-lg sm:text-xl text-center font-bold tracking-wide"
-                onBlur={(e) => saveResult(g, e.target.value.trim())}
+                onBlur={(e) => {
+                  const raw = unspaced(e.target.value);
+                  e.target.value = spaced(raw);
+                  saveResult(g, raw);
+                }}
                 onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
               />
               {savingId === g.id && <span className="text-[11px] text-gray-400">saving…</span>}
