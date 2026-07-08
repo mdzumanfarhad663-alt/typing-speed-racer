@@ -7,31 +7,10 @@ function fmt(iso: string) {
   return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short", hour12: true });
 }
 
-const DAY_MS = 24 * 60 * 60 * 1000;
-
-function fmtDur(ms: number) {
-  if (ms <= 0) return "due now";
-  const s = Math.floor(ms / 1000);
-  const h = Math.floor(s / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const sec = s % 60;
-  return `${h}h ${String(m).padStart(2, "0")}m ${String(sec).padStart(2, "0")}s`;
-}
-
 export function BackupManager() {
   const [backups, setBackups] = useState<BackupMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
-  const [nowTs, setNowTs] = useState(() => Date.now());
-
-  useEffect(() => {
-    const t = setInterval(() => setNowTs(Date.now()), 1000);
-    return () => clearInterval(t);
-  }, []);
-
-  const lastBackup = backups[0];
-  const nextAt = lastBackup ? new Date(lastBackup.createdAt).getTime() + DAY_MS : null;
-  const remaining = nextAt !== null ? nextAt - nowTs : null;
 
   const load = useCallback(async () => {
     const res = await fetch("/api/admin/backups", { cache: "no-store" });
@@ -41,8 +20,6 @@ export function BackupManager() {
 
   useEffect(() => {
     load();
-    const t = setInterval(load, 60_000); // refresh list + keep hourly backups flowing
-    return () => clearInterval(t);
   }, [load]);
 
   async function backupNow() {
@@ -82,26 +59,17 @@ export function BackupManager() {
       <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
         <div>
           <h2 className="font-bold text-lg">Backups</h2>
-          <p className="text-sm text-gray-600">Backs up your game pages (Silon Day, Silon Night) with their panel/jodi charts, plus all site design &amp; content — automatically once a day. Auto-scraped results are not included (they re-sync on their own). Click Restore to recover.</p>
+          <p className="text-sm text-gray-600">Backs up your game pages (Silon Day, Silon Night) with their panel/jodi charts, plus all site design &amp; content. Auto-scraped results are not included (they re-sync on their own). Click “Backup now” to save a restore point; click Restore to recover.</p>
         </div>
         <button onClick={backupNow} disabled={busy === "new"} className="bg-green-700 hover:bg-green-800 disabled:opacity-50 text-white px-4 py-2 rounded font-semibold whitespace-nowrap">
           {busy === "new" ? "Backing up…" : "⛃ Backup now"}
         </button>
       </div>
 
-      <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 bg-blue-50 border border-blue-200 rounded px-4 py-2 text-sm">
-        <span className="text-lg leading-none">⏱️</span>
-        <span>
-          Next daily backup in{" "}
-          <strong className="font-mono">{remaining !== null ? fmtDur(remaining) : "—"}</strong>
-        </span>
-        {lastBackup && <span className="text-gray-500">· last backup {fmt(lastBackup.createdAt)}</span>}
-      </div>
-
       {loading ? (
         <div className="text-gray-500 py-6">Loading…</div>
       ) : backups.length === 0 ? (
-        <div className="text-gray-500 py-6 italic">No backups yet. One will be created automatically within the hour, or click “Backup now”.</div>
+        <div className="text-gray-500 py-6 italic">No backups yet. Click “Backup now” to create one.</div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
