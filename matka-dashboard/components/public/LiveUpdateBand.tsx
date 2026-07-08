@@ -19,7 +19,8 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
       {items.map((row, i) => (
         <div
           key={row.id}
-          className={`flex flex-col items-center py-2.5 bg-white ${i < items.length - 1 ? "border-b border-gray-200" : ""}`}
+          className="flex flex-col items-center py-2.5 bg-white"
+          style={i < items.length - 1 ? { borderBottom: "1px solid rgb(104 108 114)" } : undefined}
         >
           <span className="font-bold text-xl" style={toCss(styles.nameText)}>{row.title}</span>
           <span className="font-bold text-2xl tracking-widest" style={toCss(styles.resultText)}>{row.resultValue}</span>
