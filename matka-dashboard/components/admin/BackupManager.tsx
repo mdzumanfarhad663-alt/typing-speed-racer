@@ -71,51 +71,37 @@ export function BackupManager() {
       ) : backups.length === 0 ? (
         <div className="text-gray-500 py-6 italic">No backups yet. Click “Backup now” to create one.</div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[420px] text-sm">
-            <thead className="bg-gray-100 text-left">
-              <tr>
-                <th className="px-3 py-2">Backup time</th>
-                <th className="px-3 py-2">Type</th>
-                <th className="px-3 py-2 hidden sm:table-cell">Games</th>
-                <th className="px-3 py-2 hidden sm:table-cell">Panel / Jodi weeks</th>
-                <th className="px-3 py-2 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {backups.map((b) => (
-                <tr key={b.id} className="border-b border-gray-200">
-                  <td className="px-3 py-2 font-semibold whitespace-nowrap">{fmt(b.createdAt)}</td>
-                  <td className="px-3 py-2">
-                    <span className={`text-xs px-2 py-0.5 rounded ${b.kind === "manual" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-600"}`}>
-                      {b.kind === "manual" ? "manual" : "auto"}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2 hidden sm:table-cell">{b.rows}</td>
-                  <td className="px-3 py-2 hidden sm:table-cell">{b.panel} / {b.jodi}</td>
-                  <td className="px-3 py-2 text-right">
-                    <div className="flex justify-end gap-1.5 sm:gap-2">
-                      <button
-                        onClick={() => restore(b.id, b.createdAt)}
-                        disabled={busy === b.id}
-                        className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold px-2.5 sm:px-4 py-1.5 rounded text-xs sm:text-sm whitespace-nowrap"
-                      >
-                        {busy === b.id ? "Working…" : "↺ Restore"}
-                      </button>
-                      <button
-                        onClick={() => remove(b.id, b.createdAt)}
-                        disabled={busy === b.id}
-                        className="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-white font-semibold px-2.5 sm:px-4 py-1.5 rounded text-xs sm:text-sm whitespace-nowrap"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ul className="space-y-2">
+          {backups.map((b) => (
+            <li key={b.id} className="border border-gray-200 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-semibold">{fmt(b.createdAt)}</span>
+                  <span className={`text-xs px-2 py-0.5 rounded ${b.kind === "manual" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-600"}`}>
+                    {b.kind === "manual" ? "manual" : "auto"}
+                  </span>
+                </div>
+                <div className="text-xs text-gray-500 mt-0.5">{b.rows} games · {b.panel} panel / {b.jodi} jodi weeks</div>
+              </div>
+              <div className="flex gap-2 shrink-0">
+                <button
+                  onClick={() => restore(b.id, b.createdAt)}
+                  disabled={busy === b.id}
+                  className="flex-1 sm:flex-none bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold px-4 py-1.5 rounded text-sm whitespace-nowrap"
+                >
+                  {busy === b.id ? "Working…" : "↺ Restore"}
+                </button>
+                <button
+                  onClick={() => remove(b.id, b.createdAt)}
+                  disabled={busy === b.id}
+                  className="flex-1 sm:flex-none bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-white font-semibold px-4 py-1.5 rounded text-sm whitespace-nowrap"
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
