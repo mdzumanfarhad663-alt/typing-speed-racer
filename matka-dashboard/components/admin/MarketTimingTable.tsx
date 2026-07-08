@@ -149,10 +149,10 @@ export function MarketTimingTable() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-3">
-        <h2 className="text-xl font-bold">All Matka Result — Market Timings</h2>
+      <div className="flex flex-wrap justify-between items-center gap-2 mb-3">
+        <h2 className="text-lg sm:text-xl font-bold">All Matka Result — Market Timings</h2>
         {!showForm && !editing && (
-          <button onClick={() => setShowForm(true)} className="bg-green-700 text-white px-4 py-2 rounded font-semibold">+ Add market</button>
+          <button onClick={() => setShowForm(true)} className="bg-green-700 text-white px-4 py-2 rounded font-semibold whitespace-nowrap">+ Add market</button>
         )}
       </div>
       {showForm && (
@@ -173,7 +173,8 @@ export function MarketTimingTable() {
       ) : items.length === 0 ? (
         <div className="text-gray-500 py-6 italic">No markets yet. Click "Add market" to create one.</div>
       ) : (
-        <table className="w-full bg-white border border-gray-200 rounded">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[560px] bg-white border border-gray-200 rounded text-sm">
           <thead className="bg-gray-100 text-left text-sm">
             <tr>
               <th className="px-2 py-2"></th>
@@ -194,6 +195,7 @@ export function MarketTimingTable() {
             </DndContext>
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

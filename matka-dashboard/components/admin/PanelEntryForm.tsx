@@ -124,7 +124,7 @@ export function PanelEntryForm({
           </tbody>
         </table>
       </div>
-      <div className="flex gap-2 mt-4">
+      <div className="flex flex-wrap gap-2 mt-4">
         <button onClick={save} disabled={busy} className="bg-black text-white px-4 py-2 rounded disabled:opacity-50">{busy ? "Saving…" : "Save"}</button>
         <button onClick={onCancel} className="border px-4 py-2 rounded">Cancel</button>
         <button type="button" onClick={undo} disabled={!canUndo} className="border px-4 py-2 rounded disabled:opacity-40">↶ Undo</button>

@@ -83,7 +83,7 @@ export function JodiEntryForm({
   return (
     <div className="border border-gray-300 rounded p-4 bg-white">
       <h3 className="font-bold mb-3">{initial ? "Edit week" : "Add week"}</h3>
-      <div className="flex gap-3 mb-4">
+      <div className="flex flex-wrap gap-3 mb-4">
         <label className="text-sm">
           Week start
           <input type="date" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} className="block border px-2 py-1 rounded" />
@@ -93,6 +93,7 @@ export function JodiEntryForm({
           <input type="date" value={weekEnd} onChange={(e) => setWeekEnd(e.target.value)} className="block border px-2 py-1 rounded" />
         </label>
       </div>
+      <div className="overflow-x-auto">
       <table className="text-sm border-collapse">
         <thead>
           <tr>
@@ -121,7 +122,8 @@ export function JodiEntryForm({
           ))}
         </tbody>
       </table>
-      <div className="flex gap-2 mt-4">
+      </div>
+      <div className="flex flex-wrap gap-2 mt-4">
         <button onClick={save} disabled={busy} className="bg-black text-white px-4 py-2 rounded disabled:opacity-50">{busy ? "Saving…" : "Save"}</button>
         <button onClick={onCancel} className="border px-4 py-2 rounded">Cancel</button>
         <button type="button" onClick={undo} disabled={!canUndo} className="border px-4 py-2 rounded disabled:opacity-40">↶ Undo</button>

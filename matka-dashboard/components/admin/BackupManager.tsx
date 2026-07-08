@@ -72,7 +72,7 @@ export function BackupManager() {
         <div className="text-gray-500 py-6 italic">No backups yet. Click “Backup now” to create one.</div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[420px] text-sm">
             <thead className="bg-gray-100 text-left">
               <tr>
                 <th className="px-3 py-2">Backup time</th>
@@ -94,18 +94,18 @@ export function BackupManager() {
                   <td className="px-3 py-2 hidden sm:table-cell">{b.rows}</td>
                   <td className="px-3 py-2 hidden sm:table-cell">{b.panel} / {b.jodi}</td>
                   <td className="px-3 py-2 text-right">
-                    <div className="flex justify-end gap-2">
+                    <div className="flex justify-end gap-1.5 sm:gap-2">
                       <button
                         onClick={() => restore(b.id, b.createdAt)}
                         disabled={busy === b.id}
-                        className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold px-4 py-1.5 rounded whitespace-nowrap"
+                        className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold px-2.5 sm:px-4 py-1.5 rounded text-xs sm:text-sm whitespace-nowrap"
                       >
                         {busy === b.id ? "Working…" : "↺ Restore"}
                       </button>
                       <button
                         onClick={() => remove(b.id, b.createdAt)}
                         disabled={busy === b.id}
-                        className="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-white font-semibold px-4 py-1.5 rounded whitespace-nowrap"
+                        className="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-white font-semibold px-2.5 sm:px-4 py-1.5 rounded text-xs sm:text-sm whitespace-nowrap"
                       >
                         Delete
                       </button>

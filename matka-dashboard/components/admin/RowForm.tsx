@@ -61,7 +61,7 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
   return (
     <form onSubmit={save} className="bg-gray-50 border border-gray-300 rounded p-4 my-3 space-y-3">
       {error && <div className="bg-red-100 text-red-800 p-2 rounded text-sm">{error}</div>}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <label className="block">
           <span className="text-xs font-semibold text-gray-700">Title *</span>
           <input className="w-full border border-gray-300 rounded px-2 py-1" value={title} onChange={(e) => setTitle(e.target.value)} required />

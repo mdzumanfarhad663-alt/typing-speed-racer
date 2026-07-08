@@ -113,7 +113,7 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
           <Link href={`/panel/${game.id}`} target="_blank" className="text-sm underline text-blue-600">View public panel page ↗</Link>
         </div>
         {!adding && !editing && (
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button onClick={() => history.undo(entries)} disabled={!history.canUndo} className="bg-amber-500 hover:bg-amber-600 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-2 rounded font-semibold">↶ Undo</button>
             <button onClick={() => history.redo(entries)} disabled={!history.canRedo} className="bg-green-600 hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-2 rounded font-semibold">↷ Redo</button>
             <button onClick={deleteAll} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-semibold">All Delete</button>
