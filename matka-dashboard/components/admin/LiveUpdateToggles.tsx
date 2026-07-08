@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { Row } from "@/lib/types";
+import { LoadingResult } from "@/components/public/LoadingResult";
 
 // Admin-only display: show the value with spaces around the dashes
 // (e.g. "568 - 97 - 340"). The stored value / result box stays "568-97-340".
@@ -44,6 +45,19 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
+  async function toggleLoading(row: Row, checked: boolean) {
+    setSavingId(row.id);
+    const res = await fetch(`/api/admin/rows/${row.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ resultLoading: checked }),
+    });
+    if (res.ok) {
+      setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, resultLoading: checked } : g)));
+    }
+    setSavingId(null);
+  }
+
   async function saveResult(row: Row, value: string) {
     if (value === (row.resultValue ?? "")) return;
     setSavingId(row.id);
@@ -82,6 +96,21 @@ export function LiveUpdateToggles() {
                 />
                 <span className="text-base sm:text-lg font-bold" style={{ color: g.color }}>{g.title}</span>
               </label>
+              <label className="flex items-center justify-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 shrink-0"
+                  checked={g.resultLoading}
+                  disabled={savingId === g.id}
+                  onChange={(e) => toggleLoading(g, e.target.checked)}
+                />
+                <LoadingResult />
+              </label>
+              {g.resultLoading ? (
+                <div className="w-full max-w-[15rem] border border-gray-300 rounded px-3 py-2 text-center bg-white">
+                  <LoadingResult />
+                </div>
+              ) : (
               <input
                 type="text"
                 defaultValue={spaced(g.resultValue ?? "")}
@@ -95,6 +124,7 @@ export function LiveUpdateToggles() {
                 }}
                 onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
               />
+              )}
               {savingId === g.id && <span className="text-[11px] text-gray-400">saving…</span>}
             </li>
           ))}

@@ -4,6 +4,7 @@ import { and, eq, max } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rows, type Section } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
+import { ensureRowsColumns } from "@/lib/ensureSchema";
 
 const VALID_SECTIONS: Section[] = ["lucky", "live_result", "free_zone", "live_update"];
 
@@ -19,6 +20,7 @@ async function guard() {
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   const denied = await guard();
   if (denied) return denied;
+  await ensureRowsColumns();
   const body = await req.json().catch(() => null);
   if (!body) return NextResponse.json({ error: "Invalid body" }, { status: 400 });
 
@@ -27,6 +29,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     if (k in body) patch[k] = body[k];
   }
   if ("highlight" in body) patch.highlight = Boolean(body.highlight);
+  if ("resultLoading" in body) patch.resultLoading = Boolean(body.resultLoading);
   if ("position" in body) patch.position = Number(body.position) || 0;
   if ("extraLines" in body) patch.extraLines = Array.isArray(body.extraLines) ? body.extraLines.map(String) : null;
 

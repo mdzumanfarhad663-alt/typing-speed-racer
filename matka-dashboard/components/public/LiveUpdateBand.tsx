@@ -1,6 +1,7 @@
 import type { Row } from "@/lib/types";
 import type { SectionResolver } from "@/lib/resolveStyle";
 import { toCss } from "@/lib/resolveStyle";
+import { LoadingResult } from "./LoadingResult";
 
 // Animated "NEW" badge GIF (matches the reference site's blinking badge).
 const NEW_BADGE_GIF =
@@ -23,7 +24,9 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
           style={i < items.length - 1 ? { borderBottom: "1px solid rgb(104 108 114)" } : undefined}
         >
           <span className="font-bold text-xl" style={toCss(styles.nameText)}>{row.title}</span>
-          <span className="font-bold text-2xl tracking-widest" style={toCss(styles.resultText)}>{row.resultValue}</span>
+          <span className="font-bold text-2xl tracking-widest" style={toCss(styles.resultText)}>
+            {row.resultLoading ? <LoadingResult /> : row.resultValue}
+          </span>
         </div>
       ))}
     </div>

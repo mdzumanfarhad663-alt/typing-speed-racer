@@ -3,12 +3,14 @@ import { asc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rows } from "@/lib/schema";
 import type { PublicSectionsResponse } from "@/lib/types";
+import { ensureRowsColumns } from "@/lib/ensureSchema";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function GET() {
   try {
+    await ensureRowsColumns();
     const all = await db.select().from(rows).orderBy(asc(rows.position), asc(rows.createdAt));
     const grouped: PublicSectionsResponse = { lucky: [], live_result: [], free_zone: [], live_update: [] };
 

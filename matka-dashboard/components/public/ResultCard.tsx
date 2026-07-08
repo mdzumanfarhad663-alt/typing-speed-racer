@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Row } from "@/lib/types";
 import type { SectionResolver } from "@/lib/resolveStyle";
 import { toCss } from "@/lib/resolveStyle";
+import { LoadingResult } from "./LoadingResult";
 
 function TagSide({ text, href, external }: { text: string; href?: string; external?: boolean }) {
   if (href && external) {
@@ -57,7 +58,9 @@ export function ResultCard({ row, resolve }: { row: Row; resolve: SectionResolve
         <div className="font-bold text-xl" style={{ color: row.color, ...toCss(styles.nameText) }}>
           {row.title}
         </div>
-        <div className="text-xl font-bold tracking-wide" style={toCss(styles.resultText)}>{row.resultValue}</div>
+        <div className="text-xl font-bold tracking-wide" style={toCss(styles.resultText)}>
+          {row.resultLoading ? <LoadingResult /> : row.resultValue}
+        </div>
         {row.timeRange && <div className="text-sm font-bold" style={toCss(styles.timeText)}>{row.timeRange}</div>}
       </div>
       <div className="w-20 text-right">

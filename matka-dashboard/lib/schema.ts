@@ -14,6 +14,7 @@ export const rows = pgTable("rows", {
   extraLines: text("extra_lines").array(),
   dateLabel: text("date_label"),
   highlight: boolean("highlight").notNull().default(false),
+  resultLoading: boolean("result_loading").notNull().default(false),
   position: integer("position").notNull().default(0),
   source: text("source").notNull().default("manual"), // "manual" | "scraped"
   sourceKey: text("source_key"), // stable slug for upsert, e.g. "KALYAN_MORNING"
