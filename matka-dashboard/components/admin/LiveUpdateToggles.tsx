@@ -106,11 +106,8 @@ export function LiveUpdateToggles() {
                 />
                 <LoadingResult />
               </label>
-              {g.resultLoading ? (
-                <div className="w-full max-w-[15rem] border border-gray-300 rounded px-3 py-2 text-center bg-white">
-                  <LoadingResult />
-                </div>
-              ) : (
+              {/* The dashboard always shows the editable real value, even when
+                  Loading is on — only the public result cell shows the animation. */}
               <input
                 type="text"
                 defaultValue={spaced(g.resultValue ?? "")}
@@ -124,7 +121,6 @@ export function LiveUpdateToggles() {
                 }}
                 onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
               />
-              )}
               {savingId === g.id && <span className="text-[11px] text-gray-400">saving…</span>}
             </li>
           ))}
