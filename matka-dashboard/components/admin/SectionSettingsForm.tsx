@@ -19,8 +19,8 @@ type SectionData = {
 export function EditorHeading({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className="text-2xl font-bold text-left uppercase"
-      style={{ color: "blue", paddingTop: "30px", paddingBottom: "10px" }}
+      className="text-lg sm:text-2xl font-bold text-left uppercase break-words pt-5 sm:pt-[30px] pb-2.5"
+      style={{ color: "blue" }}
     >
       {children}
     </div>
@@ -46,7 +46,7 @@ function ColorField({ label, value, onChange }: { label: string; value: string; 
 
 function StyleSlotFields({ slot, onChange }: { slot: StyleSlot; onChange: (next: StyleSlot) => void }) {
   return (
-    <div className="grid grid-cols-2 gap-3 bg-white border border-gray-200 rounded p-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white border border-gray-200 rounded p-3">
       <ColorField label="Background color" value={slot.backgroundColor || ""} onChange={(v) => onChange({ ...slot, backgroundColor: v })} />
       <ColorField label="Text color" value={slot.textColor || ""} onChange={(v) => onChange({ ...slot, textColor: v })} />
       <label className="block">
@@ -91,7 +91,7 @@ function StyleSlotFields({ slot, onChange }: { slot: StyleSlot; onChange: (next:
       </label>
       <div className="col-span-2 mt-2 pt-2 border-t border-gray-200">
         <EditorHeading>Text Shadow</EditorHeading>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <ColorField label="Shadow color" value={slot.textShadowColor || ""} onChange={(v) => onChange({ ...slot, textShadowColor: v })} />
           <label className="block">
             <span className="text-xs font-semibold text-gray-700">Shadow blur (px)</span>
@@ -165,8 +165,8 @@ function SortableChartLinkRow({
     opacity: isDragging ? 0.6 : 1,
   };
   return (
-    <div ref={setNodeRef} style={style} className="flex gap-2 items-start border border-gray-200 rounded p-2 bg-white">
-      <span className="cursor-grab text-gray-400 select-none mt-2 shrink-0" {...attributes} {...listeners}>⋮⋮</span>
+    <div ref={setNodeRef} style={style} className="flex flex-col sm:flex-row gap-2 sm:items-start border border-gray-200 rounded p-2 bg-white">
+      <span className="hidden sm:inline cursor-grab text-gray-400 select-none mt-2 shrink-0" {...attributes} {...listeners}>⋮⋮</span>
       <input
         className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm"
         placeholder="Link name"
@@ -312,7 +312,7 @@ export function SectionSettingsForm({ config, data, onSaved }: { config: Section
         </div>
       ))}
 
-      <div className="flex gap-2 justify-end pt-2 border-t">
+      <div className="sticky bottom-0 bg-gray-50 flex flex-wrap gap-2 justify-end pt-2 pb-1 border-t">
         <button type="button" onClick={reset} disabled={busy} className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50">Reset to default</button>
         <button type="button" onClick={save} disabled={busy} className="px-4 py-2 rounded bg-black text-white disabled:opacity-50">
           {busy ? "Saving…" : "Save changes"}

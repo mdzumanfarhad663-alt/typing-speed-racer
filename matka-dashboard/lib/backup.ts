@@ -126,19 +126,33 @@ export async function restoreBackup(id: string): Promise<void> {
 }
 
 // Throttled daily auto-backup — safe to call on admin requests.
-let lastBackupAt = 0;
+// The throttle is anchored to the last auto-backup's created_at in the DB, not
+// an in-memory timestamp: on serverless (Vercel) each cold start would reset an
+// in-memory value to 0 and fire a fresh backup on every new instance.
 let backing = false;
 export async function maybeHourlyBackup(): Promise<void> {
-  if (backing || Date.now() - lastBackupAt < BACKUP_INTERVAL_MS) return;
+  // Auto-backup is disabled. Backups are created only via the manual
+  // "Backup now" button. Re-enable by removing this early return.
+  return;
+  // eslint-disable-next-line no-unreachable
+  if (backing) return;
   backing = true;
   try {
+    await ensureTable();
+    // How long since the most recent auto-backup? (null => never)
+    const res = await db.execute(sql`
+      SELECT created_at FROM db_backups WHERE kind = 'auto' ORDER BY created_at DESC LIMIT 1
+    `);
+    const list = ((res as unknown as { rows?: unknown[] }).rows ?? (res as unknown as unknown[])) as Record<string, unknown>[];
+    const last = list[0]?.created_at ? new Date(list[0].created_at as string).getTime() : 0;
+    if (Date.now() - last < BACKUP_INTERVAL_MS) return;
+
     // Only auto-backup when there is data worth saving.
     const [{ n }] = await db.select({ n: sql<number>`count(*)` }).from(schema.rows);
     if (Number(n) > 0) await createBackup("auto");
   } catch (err) {
     console.error("[backup] auto-backup failed", err);
   } finally {
-    lastBackupAt = Date.now();
     backing = false;
   }
 }
