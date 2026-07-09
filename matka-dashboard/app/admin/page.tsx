@@ -1,12 +1,6 @@
-import Link from "next/link";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { ScrapeButton } from "@/components/admin/ScrapeButton";
 import { LiveUpdateToggles } from "@/components/admin/LiveUpdateToggles";
-
-const sections = [
-  { href: "/admin/live-update", title: "📡 Top Live Update", desc: "Manage the Live Update band. Games added here also appear in Live Matka Result automatically." },
-  { href: "/admin/live-results", title: "Live Matka Result", desc: "Main list of result cards with Jodi/Panel tags." },
-];
 
 export default function AdminHome() {
   return (
@@ -25,13 +19,6 @@ export default function AdminHome() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-4">
-          {sections.map((s) => (
-            <Link key={s.href} href={s.href} className="bg-white border border-gray-300 rounded p-6 hover:shadow-md hover:border-black transition">
-              <h2 className="font-bold text-lg mb-2">{s.title}</h2>
-              <p className="text-sm text-gray-600">{s.desc}</p>
-              <div className="mt-4 text-blue-700 underline text-sm">Manage rows →</div>
-            </Link>
-          ))}
           <LiveUpdateToggles />
         </div>
       </div>
