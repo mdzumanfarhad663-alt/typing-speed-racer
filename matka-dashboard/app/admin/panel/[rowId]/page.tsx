@@ -5,6 +5,7 @@ import type { PanelDay, PanelEntry, Row } from "@/lib/schema";
 import { PanelEntryForm } from "@/components/admin/PanelEntryForm";
 import { ChartDesignPanel } from "@/components/admin/ChartDesignPanel";
 import { CsvImportButton } from "@/components/admin/CsvImportButton";
+import { CsvExportButton } from "@/components/admin/CsvExportButton";
 import { chartSectionKey } from "@/lib/sectionConfig";
 import { useChartHistory } from "@/lib/useChartHistory";
 import { jodiColor } from "@/lib/redJodi";
@@ -124,12 +125,21 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
 
       <ChartDesignPanel sectionKey={chartSectionKey("panel", params.rowId)} />
 
-      <div className="bg-white border border-gray-200 rounded p-4 mb-6">
-        <div className="text-xs font-bold text-gray-500 uppercase mb-2">Import weeks from CSV</div>
-        <p className="text-xs text-gray-500 mb-2">
-          Columns: Week Ending Date,MON,TUE,WED,THU,FRI,SAT,SUN — week as "DD/MM/YYYY to DD/MM/YYYY", each day as open-jodi-close (e.g. 128-91-690), or "Holiday/No data" / blank for no result.
-        </p>
-        <CsvImportButton rowId={params.rowId} kind="panel" onDone={() => { history.remember(entries); load(); }} />
+      <div className="bg-white border border-gray-200 rounded p-4 mb-6 space-y-4">
+        <div>
+          <div className="text-xs font-bold text-gray-500 uppercase mb-2">Import weeks from CSV</div>
+          <p className="text-xs text-gray-500 mb-2">
+            Columns: Week Ending Date,MON,TUE,WED,THU,FRI,SAT,SUN — week as "DD/MM/YYYY to DD/MM/YYYY", each day as open-jodi-close (e.g. 128-91-690), or "Holiday/No data" / blank for no result.
+          </p>
+          <CsvImportButton rowId={params.rowId} kind="panel" onDone={() => { history.remember(entries); load(); }} />
+        </div>
+        <div className="pt-3 border-t border-gray-100">
+          <div className="text-xs font-bold text-gray-500 uppercase mb-2">Export weeks to CSV</div>
+          <p className="text-xs text-gray-500 mb-2">
+            Downloads all {entries.length} week{entries.length === 1 ? "" : "s"} of this chart in the same format used for import.
+          </p>
+          <CsvExportButton entries={entries} kind="panel" fileName={`${game.title.toLowerCase().replace(/\s+/g, "-")}-panel-chart.csv`} />
+        </div>
       </div>
 
       {(adding || editing) && (
