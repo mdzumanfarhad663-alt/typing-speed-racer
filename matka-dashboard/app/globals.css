@@ -36,10 +36,7 @@ html, body {
   font-weight: 700;
   font-size: 18px;
   font-family: 'Open Sans', sans-serif;
-  border: orange solid 3px;
-  margin-bottom: 5px;
   text-shadow: 1px 1px #d8b947;
-  border-radius: 4px;
   text-align: center;
   font-style: italic;
   padding: 1px;
@@ -49,8 +46,6 @@ html, body {
   color: #000;
   font-weight: 700;
   font-size: 17px;
-  border: solid 3px orange;
-  border-radius: 4px;
   font-style: italic;
   text-align: center;
   text-shadow: 1px 1px 0 pink, 1px 5px 5px #aba8a8;

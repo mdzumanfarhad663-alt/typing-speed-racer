@@ -11,14 +11,21 @@ export function LuckyBand({ ankData, resolve }: { items: Row[]; ankData: AnkData
   const leftValue = content.ankValue || ankData?.ank || "";
   const rightValue = content.finalAnkValue || ankData?.finalAnk || "";
 
+  const titleStyle = toCss(styles.titleBand);
+  // One shared outer border (from the title band's border settings) wraps the
+  // whole section; the title's own border becomes just a bottom divider line
+  // so the heading and the Ank row read as a single box, not two.
+  const { borderColor, borderWidth, borderStyle, ...titleInner } = titleStyle;
+  const outerBorder = { borderColor: borderColor ?? "orange", borderWidth: borderWidth ?? "3px", borderStyle: borderStyle ?? "solid" };
+
   return (
-    <section className="my-4">
-      <div className="lucky-band-title" style={toCss(styles.titleBand)}>
+    <section className="my-4 overflow-hidden rounded" style={outerBorder}>
+      <div className="lucky-band-title" style={{ ...titleInner, border: "none", borderBottom: `${borderWidth ?? "3px"} ${borderStyle ?? "solid"} ${borderColor ?? "orange"}` }}>
         <h2>{content.heading}</h2>
       </div>
 
       {(leftValue || rightValue) && (
-        <table className="lucky-ank-box w-full border-collapse" style={toCss(styles.ankBox)}>
+        <table className="lucky-ank-box w-full border-collapse" style={{ ...toCss(styles.ankBox), border: "none" }}>
           <thead>
             <tr>
               <th className="py-2" style={{ ...toCss(styles.ankNameText), ...toCss(styles.ankLeftTitle) }}>{content.ankLabel}</th>
