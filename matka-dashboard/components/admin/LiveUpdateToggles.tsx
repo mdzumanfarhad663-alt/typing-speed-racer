@@ -99,36 +99,38 @@ export function LiveUpdateToggles() {
         <ul className="space-y-2.5">
           {games.map((g) => (
             <li key={g.id} className="flex flex-col items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-lg p-3">
-              <label className="flex items-center justify-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="h-5 w-5 shrink-0"
-                  checked={g.section === "live_update"}
-                  disabled={savingId === g.id}
-                  onChange={(e) => toggle(g, e.target.checked)}
-                />
-                <span className="text-base sm:text-lg font-bold" style={{ color: g.color }}>{g.title}</span>
-              </label>
-              <label className="flex items-center justify-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 shrink-0"
-                  checked={g.resultLoading}
-                  disabled={savingId === g.id}
-                  onChange={(e) => toggleLoading(g, e.target.checked)}
-                />
-                <LoadingResult />
-              </label>
-              <label className="flex items-center justify-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 shrink-0"
-                  checked={g.highlight}
-                  disabled={savingId === g.id}
-                  onChange={(e) => toggleHighlight(g, e.target.checked)}
-                />
-                <span className="text-sm font-semibold text-amber-700">Highlight row (yellow band)</span>
-              </label>
+              <div className="w-full max-w-[15rem] space-y-1.5">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="h-5 w-5 shrink-0"
+                    checked={g.section === "live_update"}
+                    disabled={savingId === g.id}
+                    onChange={(e) => toggle(g, e.target.checked)}
+                  />
+                  <span className="text-base sm:text-lg font-bold" style={{ color: g.color }}>{g.title}</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 shrink-0"
+                    checked={g.resultLoading}
+                    disabled={savingId === g.id}
+                    onChange={(e) => toggleLoading(g, e.target.checked)}
+                  />
+                  <LoadingResult />
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 shrink-0"
+                    checked={g.highlight}
+                    disabled={savingId === g.id}
+                    onChange={(e) => toggleHighlight(g, e.target.checked)}
+                  />
+                  <span className="text-sm font-semibold text-amber-700">Highlight row (yellow band)</span>
+                </label>
+              </div>
               {/* The dashboard always shows the editable real value, even when
                   Loading is on — only the public result cell shows the animation. */}
               <input
