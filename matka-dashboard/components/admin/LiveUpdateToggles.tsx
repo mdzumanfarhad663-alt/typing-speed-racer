@@ -58,6 +58,19 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
+  async function toggleHighlight(row: Row, checked: boolean) {
+    setSavingId(row.id);
+    const res = await fetch(`/api/admin/rows/${row.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ highlight: checked }),
+    });
+    if (res.ok) {
+      setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, highlight: checked } : g)));
+    }
+    setSavingId(null);
+  }
+
   async function saveResult(row: Row, value: string) {
     if (value === (row.resultValue ?? "")) return;
     setSavingId(row.id);
@@ -105,6 +118,16 @@ export function LiveUpdateToggles() {
                   onChange={(e) => toggleLoading(g, e.target.checked)}
                 />
                 <LoadingResult />
+              </label>
+              <label className="flex items-center justify-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 shrink-0"
+                  checked={g.highlight}
+                  disabled={savingId === g.id}
+                  onChange={(e) => toggleHighlight(g, e.target.checked)}
+                />
+                <span className="text-sm font-semibold text-amber-700">Highlight row (yellow band)</span>
               </label>
               {/* The dashboard always shows the editable real value, even when
                   Loading is on — only the public result cell shows the animation. */}
