@@ -91,18 +91,18 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
               <span className="text-xs font-semibold text-gray-700">Right Tag</span>
               <input className="w-full border border-gray-300 rounded px-2 py-1" placeholder="Panel" value={rightTag} onChange={(e) => setRightTag(e.target.value)} />
             </label>
-            <label className="flex items-center gap-2 col-span-2">
+            <label className="flex items-center gap-2 md:col-span-2">
               <input type="checkbox" checked={highlight} onChange={(e) => setHighlight(e.target.checked)} />
               <span className="text-sm">Highlight row ( yellow band )</span>
             </label>
-            <label className="flex items-center gap-2 col-span-2">
+            <label className="flex items-center gap-2 md:col-span-2">
               <input type="checkbox" checked={showInLiveUpdate} onChange={(e) => setShowInLiveUpdate(e.target.checked)} />
               <span className="text-sm">Show in 📡 Live Update list (always shows in Live Matka Result)</span>
             </label>
           </>
         )}
         {isFreeZone && (
-          <label className="block col-span-2">
+          <label className="block md:col-span-2">
             <span className="text-xs font-semibold text-gray-700">Date Label (shows once at top of section if set)</span>
             <input className="w-full border border-gray-300 rounded px-2 py-1" placeholder="Date : 27-06-2026" value={dateLabel} onChange={(e) => setDateLabel(e.target.value)} />
           </label>
