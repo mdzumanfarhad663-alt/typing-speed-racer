@@ -130,9 +130,10 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
 
       {/* Contact card */}
       <div
-        className="mx-auto text-center py-6 px-6"
+        className="mx-auto text-center pt-6 px-6"
         style={{
           maxWidth: "28rem",
+          paddingBottom: "1rem",
           borderRadius: 12,
           borderTop: "4px solid #d32f2f",
           boxShadow: "0 8px 20px rgba(0,0,0,0.5)",
