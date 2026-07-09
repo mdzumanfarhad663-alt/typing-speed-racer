@@ -54,7 +54,11 @@ export async function createBackup(kind: "auto" | "manual" = "manual") {
   `);
 }
 
-export type BackupMeta = { id: string; createdAt: string; kind: string; rows: number; panel: number; jodi: number };
+export type BackupMeta = {
+  id: string; createdAt: string; kind: string;
+  rows: number; panel: number; jodi: number;
+  sections: number; markets: number;
+};
 
 export async function listBackups(): Promise<BackupMeta[]> {
   await ensureTable();
@@ -63,6 +67,8 @@ export async function listBackups(): Promise<BackupMeta[]> {
       COALESCE(jsonb_array_length(data->'rows'), 0) AS rows,
       COALESCE(jsonb_array_length(data->'panelEntries'), 0) AS panel,
       COALESCE(jsonb_array_length(data->'jodiEntries'), 0) AS jodi,
+      COALESCE(jsonb_array_length(data->'sectionSettings'), 0) AS sections,
+      COALESCE(jsonb_array_length(data->'marketTimings'), 0) AS markets,
       kind
     FROM db_backups ORDER BY created_at DESC
   `);
@@ -74,6 +80,8 @@ export async function listBackups(): Promise<BackupMeta[]> {
     rows: Number(r.rows),
     panel: Number(r.panel),
     jodi: Number(r.jodi),
+    sections: Number(r.sections),
+    markets: Number(r.markets),
   }));
 }
 

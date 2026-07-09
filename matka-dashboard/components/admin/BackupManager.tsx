@@ -59,7 +59,14 @@ export function BackupManager() {
       <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
         <div>
           <h2 className="font-bold text-lg">Backups</h2>
-          <p className="text-sm text-gray-600">Backs up your game pages (Silon Day, Silon Night) with their panel/jodi charts, plus all site design &amp; content. Auto-scraped results are not included (they re-sync on their own). Click “Backup now” to save a restore point; click Restore to recover.</p>
+          <p className="text-sm text-gray-600">
+            Saves your game pages (Silon Day, Silon Night) with their panel/jodi chart data, plus the
+            <strong> entire site's design &amp; content</strong> — colors, fonts, borders, text, and layout
+            for every section (hero, live update band, lucky numbers, announcements, promos, footer, FAQ,
+            market timings, and each game's chart-page design). Auto-scraped results aren't included — they
+            re-sync automatically from the source site. The website's code and responsive layout aren't part
+            of this backup either — that's already safely version-controlled in your GitHub repository.
+          </p>
         </div>
         <button onClick={backupNow} disabled={busy === "new"} className="bg-green-700 hover:bg-green-800 disabled:opacity-50 text-white px-4 py-2 rounded font-semibold whitespace-nowrap">
           {busy === "new" ? "Backing up…" : "⛃ Backup now"}
@@ -81,7 +88,9 @@ export function BackupManager() {
                     {b.kind === "manual" ? "manual" : "auto"}
                   </span>
                 </div>
-                <div className="text-xs text-gray-500 mt-0.5">{b.rows} games · {b.panel} panel / {b.jodi} jodi weeks</div>
+                <div className="text-xs text-gray-500 mt-0.5">
+                  {b.rows} games · {b.panel} panel / {b.jodi} jodi weeks · {b.sections} design sections · {b.markets} markets
+                </div>
               </div>
               <div className="flex gap-2 shrink-0">
                 <button
