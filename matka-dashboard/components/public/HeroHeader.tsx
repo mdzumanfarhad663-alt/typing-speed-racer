@@ -1,6 +1,5 @@
 import type { SectionResolver } from "@/lib/resolveStyle";
 import { toCss } from "@/lib/resolveStyle";
-import { LiveClock } from "./LiveClock";
 
 // Brand/keyword phrases that should always render bold inside the SEO paragraph,
 // regardless of what the admin edits the surrounding text to.
@@ -25,8 +24,7 @@ export function HeroHeader({ resolve }: { resolve: SectionResolver }) {
   const { styles, content } = resolve("hero_header");
   return (
     <>
-      <section className="header-box my-4 relative">
-        <LiveClock />
+      <section className="header-box my-4">
         <div className="text-center py-4 px-4" style={toCss(styles.box1)}>
           <div className="text-base sm:text-lg">{content.line1}</div>
           <div className="text-base sm:text-lg">{content.line2}</div>
