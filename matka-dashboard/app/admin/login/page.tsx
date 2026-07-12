@@ -72,7 +72,7 @@ function LoginForm() {
         />
       </label>
       <label className="block mb-5">
-        <span className="text-sm font-semibold text-gray-700">Password</span>
+        <span className="text-sm font-semibold text-gray-700">Secret Access Key</span>
         <input
           type="password"
           value={password}
