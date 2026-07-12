@@ -36,8 +36,21 @@ function LoginForm() {
       className="bg-white/95 backdrop-blur border border-white/20 rounded-2xl p-8 w-full max-w-sm shadow-2xl"
     >
       <div className="flex flex-col items-center mb-6">
-        <div className="h-14 w-14 rounded-full bg-gradient-to-b from-blue-600 to-blue-800 flex items-center justify-center text-2xl shadow-lg shadow-blue-900/30 mb-3">
-          🔒
+        <div className="relative h-16 w-16 flex items-center justify-center mb-3">
+          <span className="absolute inset-0 rounded-full bg-blue-500/40 animate-ping" />
+          <span className="absolute inset-1 rounded-full bg-blue-500/30 animate-pulse" />
+          <div className="relative h-14 w-14 rounded-full bg-gradient-to-b from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-900/40">
+            <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Z"
+                fill="#facc15"
+                stroke="#eab308"
+                strokeWidth="0.5"
+              />
+              <rect x="9" y="11" width="6" height="5" rx="1" fill="#1e3a8a" />
+              <path d="M10 11V9.5a2 2 0 1 1 4 0V11" stroke="#1e3a8a" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+            </svg>
+          </div>
         </div>
         <h1 className="text-2xl font-bold text-center">
           <span className="text-blue-700">Satta Matka</span> Admin Login
