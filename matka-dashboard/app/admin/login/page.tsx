@@ -1,6 +1,7 @@
 "use client";
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { TechBackground } from "@/components/admin/TechBackground";
 
 function LoginForm() {
   const router = useRouter();
@@ -96,10 +97,13 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-950 to-black px-4">
-      <Suspense fallback={<div className="text-gray-300">Loading…</div>}>
-        <LoginForm />
-      </Suspense>
+    <main className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-950 to-black px-4 overflow-hidden">
+      <TechBackground />
+      <div className="relative z-10 w-full max-w-sm">
+        <Suspense fallback={<div className="text-gray-300">Loading…</div>}>
+          <LoginForm />
+        </Suspense>
+      </div>
     </main>
   );
 }
