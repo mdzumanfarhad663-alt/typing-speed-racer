@@ -61,7 +61,10 @@ function LoginForm() {
       {error && <div className="bg-red-100 border border-red-300 text-red-800 p-2 rounded mb-4 text-sm">{error}</div>}
 
       <label className="block mb-3">
-        <span className="text-sm font-semibold text-gray-700">Email</span>
+        <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-700">
+          Secret IP
+          <span className="text-[10px] font-mono font-bold tracking-wide bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded">🔐 encrypted</span>
+        </span>
         <input
           type="email"
           value={email}
@@ -87,7 +90,7 @@ function LoginForm() {
         disabled={busy}
         className="w-full bg-gradient-to-b from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white font-semibold py-2.5 rounded-lg shadow-md shadow-blue-900/30 disabled:opacity-50 transition"
       >
-        {busy ? "Signing in…" : "Sign in"}
+        {busy ? "Accessing…" : "Access"}
       </button>
     </form>
   );
