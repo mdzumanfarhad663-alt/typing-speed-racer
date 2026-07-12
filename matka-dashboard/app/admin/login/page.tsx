@@ -55,7 +55,6 @@ function LoginForm() {
         <h1 className="text-xl sm:text-2xl font-bold text-center">
           <span className="text-blue-700">Satta Matka</span> Admin Login
         </h1>
-        <p className="text-xs text-gray-500 mt-1 text-center">Sign in to manage the site</p>
       </div>
 
       {error && <div className="bg-red-100 border border-red-300 text-red-800 p-2 rounded mb-4 text-sm">{error}</div>}
@@ -78,7 +77,7 @@ function LoginForm() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="10 password"
+          placeholder="**********"
           className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
           required
           autoComplete="current-password"
