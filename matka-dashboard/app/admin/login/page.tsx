@@ -54,7 +54,7 @@ function LoginForm() {
           </div>
         </div>
         <h1 className="text-xl sm:text-2xl font-bold text-center">
-          <span className="text-blue-700">Satta Matka</span> Admin Login
+          <span className="text-blue-700">Satta Matka</span> Maintenance
         </h1>
       </div>
 
