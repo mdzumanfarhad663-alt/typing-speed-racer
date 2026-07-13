@@ -34,7 +34,7 @@ function LoginForm() {
   return (
     <form
       onSubmit={submit}
-      className="bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl p-6 sm:p-8 w-full max-w-sm shadow-2xl"
+      className="bg-transparent border border-white/40 rounded-2xl p-6 sm:p-8 w-full max-w-sm shadow-2xl"
     >
       <div className="flex flex-col items-center mb-5 sm:mb-6">
         <div className="relative h-14 w-14 sm:h-16 sm:w-16 flex items-center justify-center mb-3">
@@ -53,15 +53,18 @@ function LoginForm() {
             </svg>
           </div>
         </div>
-        <h1 className="text-xl sm:text-2xl font-bold text-center">
-          <span className="text-blue-700">Satta Matka</span> Maintenance
+        <h1
+          className="text-xl sm:text-2xl font-bold text-center text-white"
+          style={{ WebkitTextStroke: "1px white", textShadow: "0 0 6px rgba(255,255,255,0.5)" }}
+        >
+          <span className="text-blue-300">Satta Matka</span> Maintenance
         </h1>
       </div>
 
       {error && <div className="bg-red-100 border border-red-300 text-red-800 p-2 rounded mb-4 text-sm">{error}</div>}
 
       <label className="block mb-3">
-        <span className="text-sm font-semibold text-gray-700">Secret IP</span>
+        <span className="text-sm font-semibold text-white">Secret IP</span>
         <input
           type="email"
           value={email}
@@ -73,7 +76,7 @@ function LoginForm() {
         />
       </label>
       <label className="block mb-5">
-        <span className="text-sm font-semibold text-gray-700">Secret Access Key</span>
+        <span className="text-sm font-semibold text-white">Secret Access Key</span>
         <input
           type="password"
           value={password}
