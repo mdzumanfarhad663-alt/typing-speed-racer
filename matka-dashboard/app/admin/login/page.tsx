@@ -34,7 +34,7 @@ function LoginForm() {
   return (
     <form
       onSubmit={submit}
-      className="bg-transparent border-4 rounded-2xl p-6 sm:p-8 w-full max-w-sm shadow-2xl"
+      className="bg-transparent border-2 rounded-2xl p-6 sm:p-8 w-full max-w-sm shadow-2xl"
       style={{ borderColor: "hsl(0deg 0% 100%)" }}
     >
       <div className="flex flex-col items-center mb-5 sm:mb-6">
