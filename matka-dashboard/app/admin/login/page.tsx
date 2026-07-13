@@ -54,7 +54,7 @@ function LoginForm() {
           </div>
         </div>
         <h1 className="text-xl sm:text-2xl font-bold text-center text-white">
-          <span className="text-blue-300">Satta Matka</span> Maintenance
+          <span style={{ color: "rgb(0 120 255)" }}>Satta Matka</span> Maintenance
         </h1>
       </div>
 
