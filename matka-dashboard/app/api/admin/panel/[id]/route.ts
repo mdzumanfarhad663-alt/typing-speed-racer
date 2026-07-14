@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { panelEntries, type PanelDay } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
 import { syncJodiFromPanel } from "@/lib/syncJodi";
+import { normalizeResult } from "@/lib/pannaFix";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,9 +15,9 @@ function normalizeDays(raw: unknown): PanelDay[] {
   for (let i = 0; i < 7; i++) {
     const d = (raw[i] || {}) as PanelDay;
     arr.push({
-      open: String(d.open || "").slice(0, 6),
+      open: normalizeResult(String(d.open || "").slice(0, 6)),
       jodi: String(d.jodi || "").slice(0, 4),
-      close: String(d.close || "").slice(0, 6),
+      close: normalizeResult(String(d.close || "").slice(0, 6)),
       color: typeof d.color === "string" && d.color.startsWith("#") ? d.color : "#000000",
     });
   }

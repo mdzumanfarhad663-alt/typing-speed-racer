@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { PanelDay, PanelEntry } from "@/lib/schema";
+import { normalizeResult } from "@/lib/pannaFix";
 
 const DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -109,11 +110,11 @@ export function PanelEntryForm({
             {days.map((d, i) => (
               <tr key={i}>
                 <td className="border px-2 py-1 font-bold">{DAY_LABELS[i]}</td>
-                <td className="border px-2 py-1"><input value={d.open} onChange={(e) => update(i, "open", e.target.value)} className="w-20 border rounded px-1" placeholder="128" maxLength={6} /></td>
+                <td className="border px-2 py-1"><input value={d.open} onChange={(e) => update(i, "open", e.target.value)} onBlur={(e) => { const v = normalizeResult(e.target.value); if (v !== e.target.value) update(i, "open", v); }} className="w-20 border rounded px-1" placeholder="128" maxLength={6} /></td>
                 <td className="border px-2 py-1">
                   <input value={d.jodi} onChange={(e) => update(i, "jodi", e.target.value)} className="w-16 border rounded px-1 font-bold" placeholder="91" maxLength={4} style={{ color: d.color || "#000" }} />
                 </td>
-                <td className="border px-2 py-1"><input value={d.close} onChange={(e) => update(i, "close", e.target.value)} className="w-20 border rounded px-1" placeholder="690" maxLength={6} /></td>
+                <td className="border px-2 py-1"><input value={d.close} onChange={(e) => update(i, "close", e.target.value)} onBlur={(e) => { const v = normalizeResult(e.target.value); if (v !== e.target.value) update(i, "close", v); }} className="w-20 border rounded px-1" placeholder="690" maxLength={6} /></td>
                 <td className="border px-2 py-1 whitespace-nowrap">
                   <input type="color" value={d.color || "#000000"} onChange={(e) => update(i, "color", e.target.value)} className="w-10 h-7 align-middle" />
                   <button type="button" onClick={() => update(i, "color", "#000000")} className="text-xs font-semibold text-white bg-black rounded px-2 py-1 ml-1">black</button>
