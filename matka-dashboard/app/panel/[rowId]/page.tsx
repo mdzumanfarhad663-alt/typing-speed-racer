@@ -2,6 +2,7 @@ import { asc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { panelEntries, rows, sectionSettings } from "@/lib/schema";
 import { PanelChart } from "@/components/public/PanelChart";
+import { AutoRefresh } from "@/components/public/AutoRefresh";
 import { chartSectionKey } from "@/lib/sectionConfig";
 import { resolveSection } from "@/lib/resolveStyle";
 import { notFound } from "next/navigation";
@@ -22,5 +23,10 @@ export default async function PanelPage({ params }: { params: { rowId: string } 
   const [live] = await db.select().from(sectionSettings).where(eq(sectionSettings.sectionKey, key)).limit(1);
   const design = resolveSection(key, live);
 
-  return <PanelChart game={game} entries={entries} design={design} />;
+  return (
+    <>
+      <AutoRefresh />
+      <PanelChart game={game} entries={entries} design={design} />
+    </>
+  );
 }
