@@ -18,15 +18,28 @@ export async function GET() {
       if (r.section in grouped) grouped[r.section as keyof PublicSectionsResponse].push(r);
     }
 
+    // Same game entered twice (e.g. manual + scraped, or differing case/spacing)
+    // must show only once: keep the first occurrence per normalized title.
+    const normTitle = (t: string) => t.toLowerCase().replace(/\s+/g, " ").trim();
+    const dedupe = (list: typeof grouped.live_result) => {
+      const seen = new Set<string>();
+      return list.filter((r) => {
+        const key = normTitle(r.title);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    };
+    grouped.live_result = dedupe(grouped.live_result);
+    grouped.live_update = dedupe(grouped.live_update);
+
     // Any game in live_update that is NOT already in live_result (matched by title)
     // gets injected at the top of live_result so it shows in both sections.
-    const liveResultTitles = new Set(
-      grouped.live_result.map((r) => r.title.toLowerCase().trim())
-    );
+    const liveResultTitles = new Set(grouped.live_result.map((r) => normTitle(r.title)));
     for (const r of grouped.live_update) {
-      if (!liveResultTitles.has(r.title.toLowerCase().trim())) {
+      if (!liveResultTitles.has(normTitle(r.title))) {
         grouped.live_result.unshift(r); // add at top
-        liveResultTitles.add(r.title.toLowerCase().trim());
+        liveResultTitles.add(normTitle(r.title));
       }
     }
 
