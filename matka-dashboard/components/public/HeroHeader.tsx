@@ -24,7 +24,7 @@ export function HeroHeader({ resolve }: { resolve: SectionResolver }) {
   const { styles, content } = resolve("hero_header");
   return (
     <>
-      <section className="header-box my-4">
+      <section className="header-box mt-1 mb-4">
         <div className="text-center py-4 px-4" style={toCss(styles.box1)}>
           <div className="text-base sm:text-lg">{content.line1}</div>
           <div className="text-base sm:text-lg">{content.line2}</div>

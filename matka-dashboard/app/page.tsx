@@ -102,7 +102,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen pb-12 px-2 sm:px-4" style={{ background: "#f5f5f0" }}>
-      <header className="bg-black text-white text-center py-2 text-xs" />
       {error && (
         <div className="bg-yellow-100 border-y border-yellow-400 text-center py-2 text-sm">
           {error === "db_unavailable" ? "Database not configured yet." : "Network error"}
