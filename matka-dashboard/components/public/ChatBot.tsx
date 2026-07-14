@@ -231,7 +231,7 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
         >
           {/* Header with avatar + language switcher */}
           <div className="px-3 py-2.5 flex items-center gap-2.5" style={{ background: "linear-gradient(135deg, #1d4ed8, #7c3aed)" }}>
-            <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-lg shrink-0">🤖</div>
+            <img src="/sm-logo.svg" alt="SM" className="w-9 h-9 rounded-full shrink-0 border-2 border-white/40 bg-white" />
             <div className="flex-1 min-w-0">
               <div className="text-white font-bold text-sm leading-tight">{s.header}</div>
               <div className="text-blue-100 text-[11px] flex items-center gap-1">
@@ -259,9 +259,7 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
             {msgs.map((m, i) => (
               <div key={i} className={`cb-msg flex items-end gap-1.5 ${m.from === "user" ? "justify-end" : "justify-start"}`}>
                 {m.from === "bot" && (
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] shrink-0 text-white" style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}>
-                    🤖
-                  </div>
+                  <img src="/sm-logo.svg" alt="" className="w-6 h-6 rounded-full shrink-0" />
                 )}
                 <div
                   className={`px-3.5 py-2 text-[13px] leading-relaxed whitespace-pre-line max-w-[82%] ${
@@ -277,9 +275,7 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
             ))}
             {typing && (
               <div className="cb-msg flex items-end gap-1.5 justify-start">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] shrink-0 text-white" style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}>
-                  🤖
-                </div>
+                <img src="/sm-logo.svg" alt="" className="w-6 h-6 rounded-full shrink-0" />
                 <div className="cb-typing cb-bubble-bot bg-white border border-indigo-50 rounded-2xl rounded-bl-md px-3.5 py-2.5 flex gap-1 items-center">
                   <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 inline-block" />
                   <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 inline-block" />
