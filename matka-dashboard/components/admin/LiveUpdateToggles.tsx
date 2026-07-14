@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import type { Row } from "@/lib/types";
 import { LoadingResult } from "@/components/public/LoadingResult";
+import { normalizeResult } from "@/lib/pannaFix";
 
 // Admin-only display: show the value with spaces around the dashes
 // (e.g. "568 - 97 - 340"). The stored value / result box stays "568-97-340".
@@ -140,7 +141,8 @@ export function LiveUpdateToggles() {
                 disabled={savingId === g.id}
                 className="w-full max-w-[15rem] border border-gray-300 rounded px-3 py-2 text-lg sm:text-xl text-center font-bold tracking-wide"
                 onBlur={(e) => {
-                  const raw = unspaced(e.target.value);
+                  // Panna auto-correction (matches the server): 321-00-871 → 123-66-178
+                  const raw = normalizeResult(unspaced(e.target.value));
                   e.target.value = spaced(raw);
                   saveResult(g, raw);
                 }}
