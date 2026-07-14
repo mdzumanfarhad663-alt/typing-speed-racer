@@ -16,11 +16,12 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([WELCOME]);
   const [input, setInput] = useState("");
+  const [typing, setTyping] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight, behavior: "smooth" });
-  }, [msgs, open]);
+  }, [msgs, open, typing]);
 
   function answer(q: string): string {
     const t = q.toLowerCase().trim();
@@ -89,31 +90,95 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
     if (!q) return;
     setInput("");
     setMsgs((m) => [...m, { from: "user", text: q }]);
-    // Small delay so the reply feels like a chat
-    setTimeout(() => setMsgs((m) => [...m, { from: "bot", text: answer(q) }]), 400);
+    // Typing indicator so the reply feels like a live chat
+    setTyping(true);
+    setTimeout(() => {
+      setTyping(false);
+      setMsgs((m) => [...m, { from: "bot", text: answer(q) }]);
+    }, 900);
   }
 
   return (
     <>
+      <style>{`
+        @keyframes cb-pulse-ring {
+          0% { transform: scale(1); opacity: 0.6; }
+          80% { transform: scale(1.8); opacity: 0; }
+          100% { transform: scale(1.8); opacity: 0; }
+        }
+        @keyframes cb-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        @keyframes cb-dot {
+          0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+          30% { transform: translateY(-4px); opacity: 1; }
+        }
+        @keyframes cb-slide-up {
+          from { transform: translateY(16px) scale(0.96); opacity: 0; }
+          to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes cb-msg-in {
+          from { transform: translateY(8px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        .cb-fab { animation: cb-float 3s ease-in-out infinite; }
+        .cb-fab:hover { animation-play-state: paused; }
+        .cb-ring { animation: cb-pulse-ring 2s ease-out infinite; }
+        .cb-panel { animation: cb-slide-up 0.25s ease-out; }
+        .cb-msg { animation: cb-msg-in 0.25s ease-out; }
+        .cb-typing span { animation: cb-dot 1.2s infinite; }
+        .cb-typing span:nth-child(2) { animation-delay: 0.15s; }
+        .cb-typing span:nth-child(3) { animation-delay: 0.3s; }
+      `}</style>
+
       {/* Floating toggle button (bottom-left; refresh button owns bottom-right) */}
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label="Chat with us"
         style={{ position: "fixed", bottom: "20px", left: "10px", zIndex: 60 }}
-        className="rounded-full bg-blue-700 text-white shadow-lg w-14 h-14 text-2xl flex items-center justify-center hover:bg-blue-800"
+        className="cb-fab w-14 h-14 rounded-full flex items-center justify-center shadow-xl text-white"
       >
-        {open ? "✕" : "💬"}
+        {/* Pulsing ring behind the icon */}
+        <span className="cb-ring absolute inset-0 rounded-full bg-blue-500" aria-hidden />
+        <span
+          className="absolute inset-0 rounded-full"
+          style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
+          aria-hidden
+        />
+        <span className="relative">
+          {open ? (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          ) : (
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 3C6.9 3 3 6.5 3 10.8c0 2.4 1.2 4.5 3.2 5.9-.1.8-.5 2-1.6 3.1-.2.2 0 .6.3.6 2 0 3.6-.9 4.5-1.6.8.2 1.7.3 2.6.3 5.1 0 9-3.5 9-7.8S17.1 3 12 3z" />
+              <circle cx="8.5" cy="11" r="1.1" fill="#fff" />
+              <circle cx="12" cy="11" r="1.1" fill="#fff" />
+              <circle cx="15.5" cy="11" r="1.1" fill="#fff" />
+            </svg>
+          )}
+        </span>
+        {/* Online dot */}
+        {!open && <span className="absolute top-0.5 right-0.5 w-3 h-3 rounded-full bg-green-400 border-2 border-white" aria-hidden />}
       </button>
 
       {open && (
         <div
           style={{ position: "fixed", bottom: "84px", left: "10px", zIndex: 60 }}
-          className="w-[92vw] max-w-xs bg-white border border-gray-300 rounded-xl shadow-2xl flex flex-col overflow-hidden"
+          className="cb-panel w-[92vw] max-w-xs bg-white border border-gray-300 rounded-xl shadow-2xl flex flex-col overflow-hidden"
         >
-          <div className="bg-blue-700 text-white px-3 py-2 text-sm font-bold">💬 Site Assistant — ask me anything</div>
+          <div className="text-white px-3 py-2 text-sm font-bold flex items-center gap-2" style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}>
+            <span className="relative flex w-2.5 h-2.5">
+              <span className="cb-ring absolute inline-flex h-full w-full rounded-full bg-green-300" />
+              <span className="relative inline-flex rounded-full w-2.5 h-2.5 bg-green-400" />
+            </span>
+            Live Chat — Site Assistant
+          </div>
           <div ref={bodyRef} className="h-72 overflow-y-auto p-2 space-y-2 bg-gray-50">
             {msgs.map((m, i) => (
-              <div key={i} className={`flex ${m.from === "user" ? "justify-end" : "justify-start"}`}>
+              <div key={i} className={`cb-msg flex ${m.from === "user" ? "justify-end" : "justify-start"}`}>
                 <div
                   className={`px-3 py-1.5 rounded-lg text-sm whitespace-pre-line max-w-[85%] ${
                     m.from === "user" ? "bg-blue-600 text-white" : "bg-white border border-gray-200 text-gray-800"
@@ -123,6 +188,15 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
                 </div>
               </div>
             ))}
+            {typing && (
+              <div className="cb-msg flex justify-start">
+                <div className="cb-typing bg-white border border-gray-200 rounded-lg px-3 py-2 flex gap-1 items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 inline-block" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 inline-block" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 inline-block" />
+                </div>
+              </div>
+            )}
           </div>
           <div className="flex flex-wrap gap-1 px-2 py-1.5 bg-gray-50 border-t border-gray-200">
             {QUICK.map((q) => (
