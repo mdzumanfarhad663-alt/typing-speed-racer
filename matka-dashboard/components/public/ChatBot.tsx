@@ -202,7 +202,7 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label="Chat with us"
-        style={{ position: "fixed", bottom: "20px", left: "10px", zIndex: 60 }}
+        style={{ position: "fixed", bottom: "2px", left: "10px", zIndex: 60 }}
         className="cb-fab w-11 h-11 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-xl text-white"
       >
         <span className="cb-ring absolute inset-0 rounded-full bg-blue-500" aria-hidden />
@@ -227,7 +227,7 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
       {open && (
         <div
           style={{ position: "fixed", left: "10px", zIndex: 60 }}
-          className="cb-panel bottom-[72px] sm:bottom-[84px] w-[94vw] max-w-sm bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-indigo-100"
+          className="cb-panel bottom-[54px] sm:bottom-[66px] w-[94vw] max-w-sm bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-indigo-100"
         >
           {/* Header with avatar + language switcher */}
           <div className="px-3 py-2.5 flex items-center gap-2.5" style={{ background: "linear-gradient(135deg, #1d4ed8, #7c3aed)" }}>
