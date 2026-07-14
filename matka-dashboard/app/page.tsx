@@ -14,6 +14,7 @@ import { FaqSection } from "@/components/public/FaqSection";
 import { MainFooter } from "@/components/public/MainFooter";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { HomeRefreshButton } from "@/components/public/HomeRefreshButton";
+import { ChatBot } from "@/components/public/ChatBot";
 import type { PublicSectionsResponse } from "@/lib/types";
 import { makeResolver, type SectionSettingsMap } from "@/lib/resolveStyle";
 import type { MarketTiming } from "@/lib/schema";
@@ -122,6 +123,7 @@ export default function Home() {
       <FaqSection resolve={resolve} />
       <MainFooter resolve={resolve} />
       <HomeRefreshButton />
+      <ChatBot games={[...data.live_result, ...data.live_update]} timings={marketTimings} ank={ankData} />
     </main>
   );
 }
