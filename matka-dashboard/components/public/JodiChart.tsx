@@ -29,7 +29,7 @@ function GameHeader({
           {game.title.toUpperCase()}
         </h2>
         <div className="mt-1" style={{ fontWeight: 700, fontSize: "23px", letterSpacing: "1pt", fontFamily: "Georgia, serif" }}>
-          {game.resultLoading ? <LoadingResult /> : game.resultValue}
+          {game.resultLoading ? <LoadingResult color="black" /> : game.resultValue}
         </div>
         <div className="mt-3">
           <RefreshButton />
