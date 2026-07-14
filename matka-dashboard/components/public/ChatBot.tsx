@@ -202,7 +202,7 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label="Chat with us"
-        style={{ position: "fixed", bottom: "3px", left: "10px", zIndex: 60 }}
+        style={{ position: "fixed", bottom: "5px", left: "10px", zIndex: 60 }}
         className="cb-fab w-11 h-11 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-xl text-white"
       >
         <span className="cb-ring absolute inset-0 rounded-full bg-blue-500" aria-hidden />
