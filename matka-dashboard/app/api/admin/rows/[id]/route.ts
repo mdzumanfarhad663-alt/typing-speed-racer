@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { rows, type Section } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
 import { ensureRowsColumns } from "@/lib/ensureSchema";
+import { normalizeResult } from "@/lib/pannaFix";
 
 const VALID_SECTIONS: Section[] = ["lucky", "live_result", "free_zone", "live_update"];
 
@@ -28,6 +29,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   for (const k of ["title", "resultValue", "timeRange", "leftTag", "rightTag", "color", "dateLabel"] as const) {
     if (k in body) patch[k] = body[k];
   }
+  if (typeof patch.resultValue === "string") patch.resultValue = normalizeResult(patch.resultValue);
   if ("highlight" in body) patch.highlight = Boolean(body.highlight);
   if ("resultLoading" in body) patch.resultLoading = Boolean(body.resultLoading);
   if ("position" in body) patch.position = Number(body.position) || 0;

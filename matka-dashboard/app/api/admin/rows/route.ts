@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { rows, type Section } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
 import { ensureRowsColumns } from "@/lib/ensureSchema";
+import { normalizeResult } from "@/lib/pannaFix";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
     .values({
       section: body.section,
       title: String(body.title).slice(0, 200),
-      resultValue: String(body.resultValue ?? ""),
+      resultValue: normalizeResult(String(body.resultValue ?? "")),
       timeRange: body.timeRange ?? null,
       leftTag: body.leftTag ?? null,
       rightTag: body.rightTag ?? null,
