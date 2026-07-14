@@ -59,7 +59,11 @@ export function ResultCard({ row, resolve }: { row: Row; resolve: SectionResolve
           {row.title}
         </div>
         <div className="text-xl font-bold tracking-wide" style={toCss(styles.resultText)}>
-          {row.resultLoading ? <LoadingResult /> : row.resultValue}
+          {row.resultLoading ? (
+            <LoadingResult color="black" textShadow="1px 1px 0 pink, 1px 5px 5px #aba8a8" />
+          ) : (
+            row.resultValue
+          )}
         </div>
         {row.timeRange && <div className="text-sm font-bold" style={toCss(styles.timeText)}>{row.timeRange}</div>}
       </div>

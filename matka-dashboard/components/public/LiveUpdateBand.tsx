@@ -25,7 +25,11 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
         >
           <span className="font-bold text-xl" style={toCss(styles.nameText)}>{row.title}</span>
           <span className="font-bold text-2xl tracking-widest" style={toCss(styles.resultText)}>
-            {row.resultLoading ? <LoadingResult /> : row.resultValue}
+            {row.resultLoading ? (
+              <LoadingResult color="rgb(0, 0, 255)" textShadow="1px 1px 0 pink, 1px 5px 5px #aba8a8" />
+            ) : (
+              row.resultValue
+            )}
           </span>
         </div>
       ))}
