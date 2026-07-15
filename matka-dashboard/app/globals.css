@@ -7,6 +7,12 @@ html, body {
   font-style: italic;
 }
 
+/* Anchor jumps (Go to Top / Go to Bottom on chart pages) scroll smoothly
+   instead of jumping instantly. */
+html {
+  scroll-behavior: smooth;
+}
+
 .section-card {
   background: #fff;
   border-top: 1px solid #ddd;
