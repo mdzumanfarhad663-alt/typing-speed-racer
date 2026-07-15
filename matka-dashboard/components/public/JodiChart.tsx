@@ -132,8 +132,14 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
 
         <GameHeader game={game} design={design} anchorId="bottom" jumpHref="#top" jumpLabel={content.goToTopLabel} />
 
-        <div className="text-center py-3" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>
-          <a href="/" className="underline font-bold text-sm" style={{ color: toCss(styles.footerBar).color }}>{content.backLabel}</a>
+        <div className="text-center py-4" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>
+          <a
+            href="/"
+            className="inline-block bg-white font-bold italic text-sm px-5 py-2 rounded-lg border-2 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+            style={{ borderColor: "#fbbf24", color: "#ff2600" }}
+          >
+            {content.backLabel}
+          </a>
         </div>
       </div>
     </main>
