@@ -97,8 +97,9 @@ export default function Home() {
   }, []);
 
   const resolve = makeResolver(settings);
-  // Admin toggle (💬 Live Chat Bot card): hidden only when explicitly turned off.
+  // Admin toggles (💬 Live Chat Bot card): hidden only when explicitly turned off.
   const chatEnabled = settings["chatbot"]?.content?.enabled !== "false";
+  const refreshEnabled = settings["chatbot"]?.content?.refreshEnabled !== "false";
 
   return (
     <main className="min-h-screen pb-12 px-2 sm:px-4" style={{ background: "#f5f5f0" }}>
@@ -119,7 +120,7 @@ export default function Home() {
       <SattaMatkaInfo resolve={resolve} marketTimings={marketTimings} />
       <FaqSection resolve={resolve} />
       <MainFooter resolve={resolve} />
-      <HomeRefreshButton />
+      {refreshEnabled && <HomeRefreshButton />}
       {chatEnabled && <ChatBot games={[...data.live_result, ...data.live_update]} timings={marketTimings} ank={ankData} />}
     </main>
   );

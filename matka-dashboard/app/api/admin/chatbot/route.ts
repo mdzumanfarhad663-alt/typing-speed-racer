@@ -7,9 +7,10 @@ import { getSession } from "@/lib/auth";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Live chat visibility toggle, stored in section_settings under the
-// "chatbot" key (content.enabled = "true" | "false"). The public home page
-// reads it through /api/public/section-settings.
+// Home-page widget visibility toggles (live chat + refresh button), stored in
+// section_settings under the "chatbot" key (content.enabled / content.refreshEnabled
+// = "true" | "false"). The public home page reads them through
+// /api/public/section-settings.
 const KEY = "chatbot";
 
 async function guard() {
@@ -22,26 +23,35 @@ export async function GET() {
   const denied = await guard();
   if (denied) return denied;
   const [row] = await db.select().from(sectionSettings).where(eq(sectionSettings.sectionKey, KEY)).limit(1);
-  const enabled = (row?.content as Record<string, string> | undefined)?.enabled !== "false";
-  return NextResponse.json({ enabled });
+  const content = row?.content as Record<string, string> | undefined;
+  return NextResponse.json({
+    enabled: content?.enabled !== "false",
+    refreshEnabled: content?.refreshEnabled !== "false",
+  });
 }
 
 export async function PATCH(req: Request) {
   const denied = await guard();
   if (denied) return denied;
   const body = await req.json().catch(() => null);
-  if (!body || typeof body.enabled !== "boolean") {
+  if (!body || (typeof body.enabled !== "boolean" && typeof body.refreshEnabled !== "boolean")) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
-  const content = { enabled: String(body.enabled) };
+  const content: Record<string, string> = {};
+  if (typeof body.enabled === "boolean") content.enabled = String(body.enabled);
+  if (typeof body.refreshEnabled === "boolean") content.refreshEnabled = String(body.refreshEnabled);
   const [existing] = await db.select().from(sectionSettings).where(eq(sectionSettings.sectionKey, KEY)).limit(1);
+  const merged = { ...((existing?.content as Record<string, string>) ?? {}), ...content };
   if (existing) {
     await db
       .update(sectionSettings)
-      .set({ content: { ...(existing.content as Record<string, string>), ...content }, updatedAt: new Date() })
+      .set({ content: merged, updatedAt: new Date() })
       .where(eq(sectionSettings.sectionKey, KEY));
   } else {
-    await db.insert(sectionSettings).values({ sectionKey: KEY, styles: {}, content });
+    await db.insert(sectionSettings).values({ sectionKey: KEY, styles: {}, content: merged });
   }
-  return NextResponse.json({ enabled: body.enabled });
+  return NextResponse.json({
+    enabled: merged.enabled !== "false",
+    refreshEnabled: merged.refreshEnabled !== "false",
+  });
 }
