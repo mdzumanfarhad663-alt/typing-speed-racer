@@ -86,73 +86,104 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
+  function Switch({ on, busy, onToggle }: { on: boolean; busy: boolean; onToggle: () => void }) {
+    return (
+      <button
+        onClick={onToggle}
+        disabled={busy}
+        role="switch"
+        aria-checked={on}
+        className={`relative w-12 h-7 rounded-full shrink-0 transition-colors duration-200 disabled:opacity-60 ${
+          on ? "bg-green-500" : "bg-gray-300"
+        }`}
+      >
+        <span
+          className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-md transition-all duration-200 ${
+            on ? "left-[22px]" : "left-0.5"
+          }`}
+        />
+      </button>
+    );
+  }
+
   return (
-    <div className="bg-white border border-gray-300 rounded-xl shadow-sm p-6">
-      <h2 className="font-bold text-lg mb-1 text-center">📡 Show in Live Update</h2>
-      <p className="text-xs text-gray-500 mb-4 text-center">
-        Tick a game to show it in the Live Update list. Every game always shows in Live Matka Result.
-      </p>
-      {loading ? (
-        <div className="text-gray-500 text-sm py-2 text-center">Loading…</div>
-      ) : games.length === 0 ? (
-        <div className="text-gray-500 text-sm italic py-2 text-center">No manual games yet.</div>
-      ) : (
-        <ul className="space-y-2.5">
-          {games.map((g) => (
-            <li key={g.id} className="flex flex-col items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-lg p-3">
-              <div className="w-full max-w-[15rem] space-y-1.5">
-                <label className="flex items-center gap-2 cursor-pointer">
+    <div className="bg-white border border-gray-300 rounded-xl shadow-sm overflow-hidden">
+      <div className="px-5 py-3 text-center" style={{ background: "linear-gradient(135deg, #1d4ed8, #7c3aed)" }}>
+        <h2 className="font-bold text-base text-white">📡 Show in Live Update</h2>
+        <p className="text-[11px] text-blue-100">
+          Turn a game on to show it in the Live Update list. Every game always shows in Live Matka Result.
+        </p>
+      </div>
+      <div className="p-4">
+        {loading ? (
+          <div className="text-gray-500 text-sm py-4 text-center">Loading…</div>
+        ) : games.length === 0 ? (
+          <div className="text-gray-500 text-sm italic py-4 text-center">No manual games yet.</div>
+        ) : (
+          <ul className="space-y-3">
+            {games.map((g) => {
+              const on = g.section === "live_update";
+              const busy = savingId === g.id;
+              return (
+                <li
+                  key={g.id}
+                  className={`rounded-xl border p-3 space-y-2.5 transition-colors ${
+                    on ? "border-green-200 bg-green-50/60" : "border-gray-200 bg-gray-50"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-base font-bold truncate" style={{ color: g.color }}>{g.title}</div>
+                      <div className={`text-[11px] font-medium ${on ? "text-green-600" : "text-gray-400"}`}>
+                        {busy ? "Saving…" : on ? "Showing in Live Update" : "Only in Live Matka Result"}
+                      </div>
+                    </div>
+                    <Switch on={on} busy={busy} onToggle={() => toggle(g, !on)} />
+                  </div>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+                    <label className="flex items-center gap-1.5 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 shrink-0 accent-blue-600"
+                        checked={g.resultLoading}
+                        disabled={busy}
+                        onChange={(e) => toggleLoading(g, e.target.checked)}
+                      />
+                      <LoadingResult />
+                    </label>
+                    <label className="flex items-center gap-1.5 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 shrink-0 accent-amber-500"
+                        checked={g.highlight}
+                        disabled={busy}
+                        onChange={(e) => toggleHighlight(g, e.target.checked)}
+                      />
+                      <span className="text-xs font-semibold text-amber-700">Highlight (yellow band)</span>
+                    </label>
+                  </div>
+                  {/* The dashboard always shows the editable real value, even when
+                      Loading is on — only the public result cell shows the animation. */}
                   <input
-                    type="checkbox"
-                    className="h-5 w-5 shrink-0"
-                    checked={g.section === "live_update"}
-                    disabled={savingId === g.id}
-                    onChange={(e) => toggle(g, e.target.checked)}
+                    type="text"
+                    defaultValue={spaced(g.resultValue ?? "")}
+                    placeholder="000 - 00 - 000"
+                    disabled={busy}
+                    className="w-full border border-gray-300 bg-white rounded-lg px-3 py-2 text-lg text-center font-bold tracking-wide focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    onBlur={(e) => {
+                      // Panna auto-correction (matches the server): 321-00-871 → 123-66-178
+                      const raw = normalizeResult(unspaced(e.target.value));
+                      e.target.value = spaced(raw);
+                      saveResult(g, raw);
+                    }}
+                    onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
                   />
-                  <span className="text-base sm:text-lg font-bold" style={{ color: g.color }}>{g.title}</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 shrink-0"
-                    checked={g.resultLoading}
-                    disabled={savingId === g.id}
-                    onChange={(e) => toggleLoading(g, e.target.checked)}
-                  />
-                  <LoadingResult />
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 shrink-0"
-                    checked={g.highlight}
-                    disabled={savingId === g.id}
-                    onChange={(e) => toggleHighlight(g, e.target.checked)}
-                  />
-                  <span className="text-sm font-semibold text-amber-700">Highlight row (yellow band)</span>
-                </label>
-              </div>
-              {/* The dashboard always shows the editable real value, even when
-                  Loading is on — only the public result cell shows the animation. */}
-              <input
-                type="text"
-                defaultValue={spaced(g.resultValue ?? "")}
-                placeholder="000 - 00 - 000"
-                disabled={savingId === g.id}
-                className="w-full max-w-[15rem] border border-gray-300 rounded px-3 py-2 text-lg sm:text-xl text-center font-bold tracking-wide"
-                onBlur={(e) => {
-                  // Panna auto-correction (matches the server): 321-00-871 → 123-66-178
-                  const raw = normalizeResult(unspaced(e.target.value));
-                  e.target.value = spaced(raw);
-                  saveResult(g, raw);
-                }}
-                onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
-              />
-              {savingId === g.id && <span className="text-[11px] text-gray-400">saving…</span>}
-            </li>
-          ))}
-        </ul>
-      )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
