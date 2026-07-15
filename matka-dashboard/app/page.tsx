@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { HeroHeader } from "@/components/public/HeroHeader";
 import { AnnouncementBox } from "@/components/public/AnnouncementBox";
 import { LuckyBand } from "@/components/public/LuckyBand";
@@ -21,6 +21,32 @@ import type { MarketTiming } from "@/lib/schema";
 const EMPTY: PublicSectionsResponse = { lucky: [], live_result: [], free_zone: [], live_update: [] };
 type AnkData = { ank: string; finalAnk: string } | null;
 
+// Snapshot of the last successfully loaded page state. Restored before first
+// paint on reload so the page never flashes the default design/empty results
+// while the fresh data downloads.
+const CACHE_KEY = "homeCache.v1";
+type HomeCache = {
+  data?: PublicSectionsResponse;
+  settings?: SectionSettingsMap;
+  ankData?: AnkData;
+  marketTimings?: MarketTiming[];
+};
+
+function readCache(): HomeCache | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    return raw ? (JSON.parse(raw) as HomeCache) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCache(patch: Partial<HomeCache>) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ ...(readCache() ?? {}), ...patch }));
+  } catch { /* storage full/blocked — cache is best-effort */ }
+}
+
 export default function Home() {
   const [data, setData] = useState<PublicSectionsResponse>(EMPTY);
   const [ankData, setAnkData] = useState<AnkData>(null);
@@ -28,6 +54,17 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [settings, setSettings] = useState<SectionSettingsMap>({});
   const [marketTimings, setMarketTimings] = useState<MarketTiming[]>([]);
+
+  // Restore the last snapshot before the browser paints, so a reload shows the
+  // admin-designed page immediately instead of the default look.
+  useLayoutEffect(() => {
+    const cache = readCache();
+    if (!cache) return;
+    if (cache.data) setData(cache.data);
+    if (cache.settings) setSettings(cache.settings);
+    if (cache.ankData) setAnkData(cache.ankData);
+    if (cache.marketTimings) setMarketTimings(cache.marketTimings);
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -37,12 +74,14 @@ export default function Home() {
         const res = await fetch("/api/public/sections", { cache: "no-store" });
         const json = (await res.json()) as PublicSectionsResponse & { error?: string };
         if (!alive) return;
-        setData({
+        const next = {
           lucky: json.lucky || [],
           live_result: json.live_result || [],
           free_zone: json.free_zone || [],
           live_update: json.live_update || [],
-        });
+        };
+        setData(next);
+        if (!json.error) writeCache({ data: next });
         setLastUpdated(Date.now());
         setError(json.error ?? null);
       } catch {
@@ -61,7 +100,7 @@ export default function Home() {
       try {
         const res = await fetch("/api/public/ank", { cache: "no-store" });
         const json = await res.json();
-        if (alive && (json.ank || json.finalAnk)) setAnkData(json);
+        if (alive && (json.ank || json.finalAnk)) { setAnkData(json); writeCache({ ankData: json }); }
       } catch { /* silent */ }
     }
 
@@ -69,7 +108,7 @@ export default function Home() {
       try {
         const res = await fetch("/api/public/section-settings", { cache: "no-store" });
         const json = await res.json();
-        if (alive) setSettings(json);
+        if (alive) { setSettings(json); writeCache({ settings: json }); }
       } catch { /* silent — components fall back to defaults */ }
     }
 
@@ -77,7 +116,7 @@ export default function Home() {
       try {
         const res = await fetch("/api/public/market-timings", { cache: "no-store" });
         const json = await res.json();
-        if (alive) setMarketTimings(json.marketTimings || []);
+        if (alive) { setMarketTimings(json.marketTimings || []); writeCache({ marketTimings: json.marketTimings || [] }); }
       } catch { /* silent — falls back to defaults */ }
     }
 
