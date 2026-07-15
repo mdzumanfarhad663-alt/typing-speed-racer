@@ -67,7 +67,7 @@ function GameHeader({
     </div>
   );
   const jumpPill = (
-    <div className="bg-black text-center" style={{ padding: "10px 0" }}>
+    <div className="bg-black text-center" style={{ padding: "10px 0", ...(jumpFirst ? { marginTop: "-10px" } : { marginBottom: "-10px" }) }}>
       <a
         href={jumpHref}
         className="inline-block font-bold"
@@ -133,7 +133,7 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
             {content.emptyMessage}
           </div>
         ) : (
-          <div className="bg-black p-1 sm:p-2 mx-auto" style={{ maxWidth: "605px" }}>
+          <div className="bg-black p-1 sm:p-2 mx-auto" style={{ maxWidth: "605px", marginTop: "-4px" }}>
             <table className="w-full table-fixed border-collapse bg-white" style={{ textShadow: "1px 1px 0 gold", ...toCss(styles.tableBorder) }}>
               <thead>
                 <tr>

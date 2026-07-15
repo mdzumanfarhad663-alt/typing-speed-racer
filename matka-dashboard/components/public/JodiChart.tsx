@@ -38,7 +38,7 @@ function GameHeader({
     </div>
   );
   const jumpPill = (
-    <div className="bg-black text-center" style={{ padding: "10px 0" }}>
+    <div className="bg-black text-center" style={{ padding: "10px 0", ...(jumpFirst ? { marginTop: "-10px" } : { marginBottom: "-10px" }) }}>
       <a
         href={jumpHref}
         className="inline-block font-bold"
@@ -105,7 +105,7 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
         ) : (
           <div
             className="bg-black p-1 sm:p-2 mx-auto"
-            style={{ width: "316px", maxWidth: "100%", paddingTop: "10px", paddingBottom: "10px" }}
+            style={{ width: "316px", maxWidth: "100%", paddingTop: "10px", paddingBottom: "10px", marginTop: "-4px" }}
           >
             <table
               className="w-full table-fixed bg-white"
