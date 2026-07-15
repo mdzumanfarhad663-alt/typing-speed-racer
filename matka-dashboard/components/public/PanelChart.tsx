@@ -40,53 +40,70 @@ function GameHeader({
   anchorId,
   jumpHref,
   jumpLabel,
+  jumpFirst = false,
 }: {
   game: Row;
   design: ChartDesign;
   anchorId: string;
   jumpHref: string;
   jumpLabel: string;
+  jumpFirst?: boolean;
 }) {
   const { styles } = design;
+  const resultBox = (
+    <div className="text-black text-center py-4 sm:py-6 px-4" style={toCss(styles.resultBox)}>
+      <h2
+        className="font-bold"
+        style={{ fontSize: "25px", fontStyle: "italic", textShadow: "1px 1px #8bc34a", fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif", color: "blue" }}
+      >
+        {game.title.toUpperCase()}
+      </h2>
+      <div className="mt-1" style={{ fontWeight: 700, fontSize: "23px", letterSpacing: "1pt", fontFamily: "Georgia, serif" }}>
+        {game.resultLoading ? <LoadingResult color="black" /> : game.resultValue}
+      </div>
+      <div className="mt-3">
+        <RefreshButton />
+      </div>
+    </div>
+  );
+  const jumpPill = (
+    <div className="bg-black text-center py-2">
+      <a
+        href={jumpHref}
+        className="inline-block font-bold"
+        style={{
+          borderRadius: 4,
+          borderLeft: "5px solid gold",
+          borderRight: "5px solid gold",
+          borderTop: "2px solid gold",
+          borderBottom: "2px solid gold",
+          fontStyle: "italic",
+          fontSize: "large",
+          textShadow: "1px 1px gold",
+          fontFamily: "Trebuchet MS, sans-serif",
+          marginTop: "10px",
+          marginBottom: "5px",
+          padding: "5px 8px",
+          ...toCss(styles.goToPill),
+        }}
+      >
+        {jumpLabel}
+      </a>
+    </div>
+  );
   return (
     <div id={anchorId}>
-      <div className="text-black text-center py-4 sm:py-6 px-4" style={toCss(styles.resultBox)}>
-        <h2
-          className="font-bold"
-          style={{ fontSize: "25px", fontStyle: "italic", textShadow: "1px 1px #8bc34a", fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif", color: "blue" }}
-        >
-          {game.title.toUpperCase()}
-        </h2>
-        <div className="mt-1" style={{ fontWeight: 700, fontSize: "23px", letterSpacing: "1pt", fontFamily: "Georgia, serif" }}>
-          {game.resultLoading ? <LoadingResult color="black" /> : game.resultValue}
-        </div>
-        <div className="mt-3">
-          <RefreshButton />
-        </div>
-      </div>
-      <div className="bg-black text-center py-2">
-        <a
-          href={jumpHref}
-          className="inline-block font-bold"
-          style={{
-            borderRadius: 4,
-            borderLeft: "5px solid gold",
-            borderRight: "5px solid gold",
-            borderTop: "2px solid gold",
-            borderBottom: "2px solid gold",
-            fontStyle: "italic",
-            fontSize: "large",
-            textShadow: "1px 1px gold",
-            fontFamily: "Trebuchet MS, sans-serif",
-            marginTop: "10px",
-            marginBottom: "5px",
-            padding: "5px 8px",
-            ...toCss(styles.goToPill),
-          }}
-        >
-          {jumpLabel}
-        </a>
-      </div>
+      {jumpFirst ? (
+        <>
+          {jumpPill}
+          {resultBox}
+        </>
+      ) : (
+        <>
+          {resultBox}
+          {jumpPill}
+        </>
+      )}
     </div>
   );
 }
@@ -148,7 +165,7 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
           </div>
         )}
 
-        <GameHeader game={game} design={design} anchorId="bottom" jumpHref="#top" jumpLabel={content.goToTopLabel} />
+        <GameHeader game={game} design={design} anchorId="bottom" jumpHref="#top" jumpLabel={content.goToTopLabel} jumpFirst />
 
         <div className="text-center py-4" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>
           <a
