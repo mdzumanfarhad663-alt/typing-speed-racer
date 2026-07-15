@@ -2,7 +2,9 @@
 import { useState } from "react";
 
 // Fixed refresh button shown at the bottom of the homepage on all devices.
-// Pulls the latest results from the source site, then reloads the page.
+// Pulls the latest results from the source site, then tells the page to
+// re-read its data in place (no full reload — reloading briefly flashed the
+// default design before the admin styles loaded).
 export function HomeRefreshButton() {
   const [busy, setBusy] = useState(false);
 
@@ -11,8 +13,9 @@ export function HomeRefreshButton() {
     setBusy(true);
     try {
       await fetch("/api/public/refresh", { cache: "no-store" });
-    } catch { /* ignore — reload anyway */ }
-    window.location.reload();
+    } catch { /* ignore — still re-read whatever we have */ }
+    window.dispatchEvent(new Event("home:refresh"));
+    setBusy(false);
   }
 
   return (
