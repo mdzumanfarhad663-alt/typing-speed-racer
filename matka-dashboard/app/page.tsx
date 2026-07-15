@@ -93,11 +93,7 @@ export default function Home() {
     const ankTimer = setInterval(loadAnk, 120_000); // refresh ank every 2 min
     const settingsTimer = setInterval(loadSettings, 3000);
     const marketTimer = setInterval(loadMarketTimings, 30_000);
-    // Refresh button: re-read everything in place instead of reloading the page
-    // (a full reload flashes the default design before admin styles load).
-    const onManualRefresh = () => { load(); loadAnk(); loadSettings(); loadMarketTimings(); };
-    window.addEventListener("home:refresh", onManualRefresh);
-    return () => { alive = false; clearInterval(refreshTimer); clearInterval(t); clearInterval(ankTimer); clearInterval(settingsTimer); clearInterval(marketTimer); window.removeEventListener("home:refresh", onManualRefresh); };
+    return () => { alive = false; clearInterval(refreshTimer); clearInterval(t); clearInterval(ankTimer); clearInterval(settingsTimer); clearInterval(marketTimer); };
   }, []);
 
   const resolve = makeResolver(settings);
