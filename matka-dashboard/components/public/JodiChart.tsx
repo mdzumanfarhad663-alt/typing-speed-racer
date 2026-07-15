@@ -52,8 +52,6 @@ function GameHeader({
           fontSize: "large",
           textShadow: "1px 1px gold",
           fontFamily: "Trebuchet MS, sans-serif",
-          marginTop: "10px",
-          marginBottom: "5px",
           padding: "5px 8px",
           ...toCss(styles.goToPill),
         }}
