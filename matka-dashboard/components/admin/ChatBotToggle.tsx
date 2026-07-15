@@ -39,53 +39,89 @@ export function ChatBotToggle() {
     }
   }
 
-  function Switch({ on, busy, onToggle }: { on: boolean; busy: boolean; onToggle: () => void }) {
+  function ToggleRow({
+    icon,
+    title,
+    desc,
+    on,
+    busy,
+    onToggle,
+  }: {
+    icon: string;
+    title: string;
+    desc: string;
+    on: boolean;
+    busy: boolean;
+    onToggle: () => void;
+  }) {
     return (
-      <button
-        onClick={onToggle}
-        disabled={busy}
-        role="switch"
-        aria-checked={on}
-        className={`relative w-16 h-8 rounded-full transition-colors duration-200 disabled:opacity-60 ${
-          on ? "bg-green-500" : "bg-gray-300"
+      <div
+        className={`flex items-center gap-3 rounded-xl border p-3 transition-colors ${
+          on ? "border-green-200 bg-green-50/60" : "border-gray-200 bg-gray-50"
         }`}
       >
-        <span
-          className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow transition-all duration-200 ${
-            on ? "left-9" : "left-1"
+        <div
+          className={`w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0 ${
+            on ? "bg-green-100" : "bg-gray-200"
           }`}
-        />
-      </button>
+        >
+          {icon}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-bold text-gray-800">{title}</div>
+          <div className={`text-[11px] font-medium ${on ? "text-green-600" : "text-gray-400"}`}>
+            {busy ? "Saving…" : on ? "Visible on home page" : desc}
+          </div>
+        </div>
+        <button
+          onClick={onToggle}
+          disabled={busy}
+          role="switch"
+          aria-checked={on}
+          className={`relative w-12 h-7 rounded-full shrink-0 transition-colors duration-200 disabled:opacity-60 ${
+            on ? "bg-green-500" : "bg-gray-300"
+          }`}
+        >
+          <span
+            className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-md transition-all duration-200 ${
+              on ? "left-[22px]" : "left-0.5"
+            }`}
+          />
+        </button>
+      </div>
     );
   }
 
   return (
-    <div className="bg-white border border-gray-300 rounded-xl shadow-sm p-6">
-      <h2 className="font-bold text-lg mb-1 text-center">💬 Live Chat Bot</h2>
-      <p className="text-xs text-gray-500 mb-4 text-center">
-        Show or hide home page widgets.
-      </p>
-      {enabled === null ? (
-        <div className="text-gray-500 text-sm py-2 text-center">Loading…</div>
-      ) : (
-        <div className="space-y-5">
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-sm font-bold text-gray-700">💬 Live Chat</span>
-            <Switch on={enabled} busy={saving === "chat"} onToggle={() => save({ enabled: !enabled }, "chat")} />
-            <span className={`text-sm font-semibold ${enabled ? "text-green-600" : "text-gray-500"}`}>
-              {saving === "chat" ? "Saving…" : enabled ? "Visible on home page" : "Hidden from home page"}
-            </span>
+    <div className="bg-white border border-gray-300 rounded-xl shadow-sm overflow-hidden">
+      <div className="px-5 py-3 text-center" style={{ background: "linear-gradient(135deg, #1d4ed8, #7c3aed)" }}>
+        <h2 className="font-bold text-base text-white">🏠 Home Page Widgets</h2>
+        <p className="text-[11px] text-blue-100">Show or hide widgets on the public home page</p>
+      </div>
+      <div className="p-4">
+        {enabled === null ? (
+          <div className="text-gray-500 text-sm py-4 text-center">Loading…</div>
+        ) : (
+          <div className="space-y-3">
+            <ToggleRow
+              icon="💬"
+              title="Live Chat Bot"
+              desc="Hidden from home page"
+              on={enabled}
+              busy={saving === "chat"}
+              onToggle={() => save({ enabled: !enabled }, "chat")}
+            />
+            <ToggleRow
+              icon="🔄"
+              title="Refresh Button"
+              desc="Hidden from home page"
+              on={refreshEnabled}
+              busy={saving === "refresh"}
+              onToggle={() => save({ refreshEnabled: !refreshEnabled }, "refresh")}
+            />
           </div>
-          <div className="border-t border-gray-200" />
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-sm font-bold text-gray-700">🔄 Refresh Button</span>
-            <Switch on={refreshEnabled} busy={saving === "refresh"} onToggle={() => save({ refreshEnabled: !refreshEnabled }, "refresh")} />
-            <span className={`text-sm font-semibold ${refreshEnabled ? "text-green-600" : "text-gray-500"}`}>
-              {saving === "refresh" ? "Saving…" : refreshEnabled ? "Visible on home page" : "Hidden from home page"}
-            </span>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
