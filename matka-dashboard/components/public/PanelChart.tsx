@@ -67,7 +67,7 @@ function GameHeader({
     </div>
   );
   const jumpPill = (
-    <div className="bg-black text-center py-2">
+    <div className="bg-black text-center" style={{ padding: "10px 0" }}>
       <a
         href={jumpHref}
         className="inline-block font-bold"
@@ -81,7 +81,7 @@ function GameHeader({
           fontSize: "large",
           textShadow: "1px 1px gold",
           fontFamily: "Trebuchet MS, sans-serif",
-          padding: "5px 8px 0",
+          padding: "5px 8px",
           ...toCss(styles.goToPill),
         }}
       >
