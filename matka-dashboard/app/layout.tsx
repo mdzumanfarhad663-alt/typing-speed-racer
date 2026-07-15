@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Satta Matka-Dpboss | India",
+  title: "Satta Matka-Dpboss | Indian Markets",
   description: "Live Satta Matka results, jodi and panel charts — SattaMatka-Dpboss.in and SattaMatkaDpboss.Mobi",
 };
 
