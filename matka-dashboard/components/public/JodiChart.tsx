@@ -150,10 +150,18 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
         <div className="text-center py-4" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>
           <a
             href="/"
-            className="inline-block bg-white font-bold italic text-sm px-5 py-2 rounded-lg border-2 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
-            style={{ borderColor: "#fbbf24", color: "#ff2600" }}
+            className="group inline-flex items-center gap-2 font-bold italic text-sm px-6 py-2.5 rounded-full transition-all hover:-translate-y-0.5"
+            style={{
+              background: "linear-gradient(180deg, #fff8e1, #ffe082)",
+              color: "#7b1fa2",
+              border: "2px solid #d4af37",
+              boxShadow: "0 0 12px rgba(255, 215, 0, 0.45), 0 4px 10px rgba(0,0,0,0.4), inset 0 1px 0 #ffffff",
+              textShadow: "0 1px 0 #fff",
+              letterSpacing: "0.5px",
+            }}
           >
-            {content.backLabel}
+            <span className="transition-transform group-hover:-translate-x-1">←</span>
+            <span>{content.backLabel.replace(/^←\s*/, "")}</span>
           </a>
         </div>
       </div>
