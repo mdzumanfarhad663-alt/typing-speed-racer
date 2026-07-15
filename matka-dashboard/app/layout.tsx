@@ -2,8 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Matka Production System",
-  description: "Live game result dashboard",
+  title: "SattaMatka-Dpboss | Satta Matka Live Result",
+  description: "Live Satta Matka results, jodi and panel charts — SattaMatka-Dpboss.in and SattaMatkaDpboss.Mobi",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

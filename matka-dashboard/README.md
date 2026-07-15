@@ -1,4 +1,4 @@
-# Matka Production System — Game Result Dashboard
+# SattaMatka-Dpboss — Game Result Dashboard
 
 Production-ready Next.js 14 app that displays game results in three styled sections (Lucky Number band, Live Matka Result list, Open-to-Close Free Game Zone) with an admin panel for CRUD + drag-reorder.
 
