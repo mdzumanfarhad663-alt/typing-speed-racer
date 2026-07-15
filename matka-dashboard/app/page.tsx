@@ -24,7 +24,7 @@ type AnkData = { ank: string; finalAnk: string } | null;
 // Snapshot of the last successfully loaded page state. Restored before first
 // paint on reload so the page never flashes the default design/empty results
 // while the fresh data downloads.
-const CACHE_KEY = "homeCache.v1";
+const CACHE_KEY = "homeCache.v2";
 type HomeCache = {
   data?: PublicSectionsResponse;
   settings?: SectionSettingsMap;
@@ -55,13 +55,19 @@ export default function Home() {
   const [settings, setSettings] = useState<SectionSettingsMap>({});
   const [marketTimings, setMarketTimings] = useState<MarketTiming[]>([]);
 
+  // The page renders nothing until the design is known — either restored from
+  // the snapshot or freshly downloaded. This is what prevents the reload flash
+  // of the default design.
+  const [designReady, setDesignReady] = useState(false);
+
   // Restore the last snapshot before the browser paints, so a reload shows the
   // admin-designed page immediately instead of the default look.
   useLayoutEffect(() => {
+    try { localStorage.removeItem("homeCache.v1"); } catch { /* old key cleanup */ }
     const cache = readCache();
     if (!cache) return;
     if (cache.data) setData(cache.data);
-    if (cache.settings) setSettings(cache.settings);
+    if (cache.settings) { setSettings(cache.settings); setDesignReady(true); }
     if (cache.ankData) setAnkData(cache.ankData);
     if (cache.marketTimings) setMarketTimings(cache.marketTimings);
   }, []);
@@ -110,6 +116,7 @@ export default function Home() {
         const json = await res.json();
         if (alive) { setSettings(json); writeCache({ settings: json }); }
       } catch { /* silent — components fall back to defaults */ }
+      if (alive) setDesignReady(true); // even on failure: render defaults rather than never
     }
 
     async function loadMarketTimings() {
@@ -139,6 +146,12 @@ export default function Home() {
   // Admin toggles (💬 Live Chat Bot card): hidden only when explicitly turned off.
   const chatEnabled = settings["chatbot"]?.content?.enabled !== "false";
   const refreshEnabled = settings["chatbot"]?.content?.refreshEnabled !== "false";
+
+  // Hold the first paint until the design is known (snapshot or server) so a
+  // reload never flashes the default look — just the plain page background.
+  if (!designReady) {
+    return <main className="min-h-screen" style={{ background: "#f5f5f0" }} />;
+  }
 
   return (
     <main className="min-h-screen pb-12 px-2 sm:px-4" style={{ background: "#f5f5f0" }}>
