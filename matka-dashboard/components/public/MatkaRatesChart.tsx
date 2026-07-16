@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { DEFAULT_MATKA_RATES, rateAmount } from "@/lib/matkaRates";
+import { DEFAULT_MATKA_RATE_ROWS, rateAmount, type MatkaRateRow } from "@/lib/matkaRates";
 
 // Static "Matka Rates Chart" section: what each game variation pays per 1/-.
 // Viewer-side translate toggle: English (default), Hindi, Bangla.
@@ -17,7 +17,7 @@ const T = {
       </>
     ),
     headers: ["Game Type", "Rate", "Payout"],
-    games: ["Singles (Ank)", "Jodi (Pair/Bracket)", "Single Pana (SP)", "Double Pana (DP)", "Triple Pana (TP)", "Half Sangam", "Sangam"],
+    names: {} as Record<string, string>,
     payout: (n: string) => `You get ${n}/- for every 1/- played`,
     halfSangamSuffix: " (A and B pay the same)",
     note: "Pana note: the result pana is always exactly one of SP, DP or TP — never two or all three. You are paid as per the rate of that pana type.",
@@ -32,7 +32,15 @@ const T = {
       </>
     ),
     headers: ["गेम का प्रकार", "रेट", "भुगतान"],
-    games: ["सिंगल्स (अंक)", "जोड़ी (पेयर/ब्रैकेट)", "सिंगल पन्ना (SP)", "डबल पन्ना (DP)", "ट्रिपल पन्ना (TP)", "हाफ संगम", "संगम"],
+    names: {
+      "Singles (Ank)": "सिंगल्स (अंक)",
+      "Jodi (Pair/Bracket)": "जोड़ी (पेयर/ब्रैकेट)",
+      "Single Pana (SP)": "सिंगल पन्ना (SP)",
+      "Double Pana (DP)": "डबल पन्ना (DP)",
+      "Triple Pana (TP)": "ट्रिपल पन्ना (TP)",
+      "Half Sangam": "हाफ संगम",
+      "Sangam": "संगम",
+    } as Record<string, string>,
     payout: (n: string) => `हर 1/- पर ${n}/- मिलते हैं`,
     halfSangamSuffix: " (A और B की रेट समान)",
     note: "पन्ना नोट: रिज़ल्ट पन्ना हमेशा SP, DP या TP में से सिर्फ एक होता है — दो या तीनों कभी नहीं। भुगतान उसी पन्ना प्रकार की रेट से होता है।",
@@ -46,7 +54,15 @@ const T = {
       </>
     ),
     headers: ["গেমের ধরন", "রেট", "পেআউট"],
-    games: ["সিঙ্গেলস (অঙ্ক)", "জোড়ি (পেয়ার/ব্র্যাকেট)", "সিঙ্গেল পান্না (SP)", "ডাবল পান্না (DP)", "ট্রিপল পান্না (TP)", "হাফ সঙ্গম", "সঙ্গম"],
+    names: {
+      "Singles (Ank)": "সিঙ্গেলস (অঙ্ক)",
+      "Jodi (Pair/Bracket)": "জোড়ি (পেয়ার/ব্র্যাকেট)",
+      "Single Pana (SP)": "সিঙ্গেল পান্না (SP)",
+      "Double Pana (DP)": "ডাবল পান্না (DP)",
+      "Triple Pana (TP)": "ট্রিপল পান্না (TP)",
+      "Half Sangam": "হাফ সঙ্গম",
+      "Sangam": "সঙ্গম",
+    } as Record<string, string>,
     payout: (n: string) => `প্রতি 1/- এ ${n}/- পাবেন`,
     halfSangamSuffix: " (A ও B একই রেট)",
     note: "পান্না নোট: রেজাল্ট পান্না সবসময় SP, DP বা TP-এর মধ্যে ঠিক একটিই হয় — কখনো দুটি বা তিনটি নয়। সেই পান্না ধরনের রেট অনুযায়ীই পেমেন্ট হয়।",
@@ -59,13 +75,14 @@ const LANGS: { code: Lang; label: string }[] = [
   { code: "bn", label: "বাংলা" },
 ];
 
-export function MatkaRatesChart({ rates = DEFAULT_MATKA_RATES }: { rates?: string[] }) {
+export function MatkaRatesChart({ rateRows = DEFAULT_MATKA_RATE_ROWS }: { rateRows?: MatkaRateRow[] }) {
   const [lang, setLang] = useState<Lang>("en");
   const t = T[lang];
-  const rows = t.games.map((game, i) => {
-    const rate = rates[i] ?? DEFAULT_MATKA_RATES[i];
-    const isHalfSangam = i === 5;
-    return [game, rate, t.payout(rateAmount(rate)) + (isHalfSangam ? t.halfSangamSuffix : "")] as const;
+  const rows = rateRows.map((r) => {
+    // Default game names translate; custom admin-added names show as typed.
+    const game = t.names[r.game] ?? r.game;
+    const isHalfSangam = /half\s*sangam/i.test(r.game);
+    return [game, r.rate, t.payout(rateAmount(r.rate)) + (isHalfSangam ? t.halfSangamSuffix : "")] as const;
   });
   return (
     <section className="header-box my-4">

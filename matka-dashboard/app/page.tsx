@@ -11,7 +11,7 @@ import { ChartRecords } from "@/components/public/ChartRecords";
 import { SattaMatkaInfo } from "@/components/public/SattaMatkaInfo";
 import { FaqSection } from "@/components/public/FaqSection";
 import { MatkaRatesChart } from "@/components/public/MatkaRatesChart";
-import { parseRates } from "@/lib/matkaRates";
+import { parseRateRows } from "@/lib/matkaRates";
 import { MainFooter } from "@/components/public/MainFooter";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { HomeRefreshButton } from "@/components/public/HomeRefreshButton";
@@ -172,7 +172,7 @@ export default function Home() {
       <TopGuessers resolve={resolve} />
       <ChartRecords resolve={resolve} />
       <SattaMatkaInfo resolve={resolve} marketTimings={marketTimings} />
-      <MatkaRatesChart rates={parseRates(settings["matka_rates"]?.content?.rates)} />
+      <MatkaRatesChart rateRows={parseRateRows(settings["matka_rates"]?.content)} />
       <FaqSection resolve={resolve} />
       <MainFooter resolve={resolve} />
       {refreshEnabled && <HomeRefreshButton />}

@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { DEFAULT_MATKA_RATES, MATKA_RATE_GAMES } from "@/lib/matkaRates";
+import type { MatkaRateRow } from "@/lib/matkaRates";
 
-// Dashboard card: edit the rates shown in the homepage Matka Rates Chart.
+// Home Page Design editor: edit, add and delete the rows shown in the
+// homepage Matka Rates Chart.
 export function MatkaRatesEditor() {
-  const [rates, setRates] = useState<string[] | null>(null);
+  const [rows, setRows] = useState<MatkaRateRow[] | null>(null);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -12,24 +13,28 @@ export function MatkaRatesEditor() {
     (async () => {
       try {
         const res = await fetch("/api/admin/matka-rates", { cache: "no-store" });
-        if (res.ok) setRates((await res.json()).rates);
+        if (res.ok) setRows((await res.json()).rows);
       } catch { /* leave loading */ }
     })();
   }, []);
 
+  function update(i: number, patch: Partial<MatkaRateRow>) {
+    setRows((rs) => rs!.map((r, j) => (j === i ? { ...r, ...patch } : r)));
+  }
+
   async function save() {
-    if (!rates || saving) return;
+    if (!rows || saving) return;
     setSaving(true);
     setMsg(null);
     try {
       const res = await fetch("/api/admin/matka-rates", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rates }),
+        body: JSON.stringify({ rows }),
       });
       const j = await res.json().catch(() => ({}));
       if (res.ok) {
-        setRates(j.rates);
+        setRows(j.rows);
         setMsg({ ok: true, text: "✓ Saved — home page updates within a few seconds" });
       } else {
         setMsg({ ok: false, text: j.error || "Save failed" });
@@ -40,44 +45,60 @@ export function MatkaRatesEditor() {
     }
   }
 
+  if (rows === null) return <div className="text-gray-500 text-sm py-4 text-center">Loading…</div>;
+
   return (
-    <div className="bg-white border border-gray-300 rounded-xl shadow-sm overflow-hidden">
-      <div className="px-5 py-3 text-center" style={{ background: "linear-gradient(135deg, #1d4ed8, #7c3aed)" }}>
-        <h2 className="font-bold text-base text-white">💰 Matka Rates Chart</h2>
-        <p className="text-[11px] text-blue-100">Edit the rates shown on the home page</p>
+    <div className="space-y-2">
+      <div className="flex gap-2 text-[11px] font-bold text-gray-500 uppercase px-1">
+        <span className="flex-1">Game name</span>
+        <span className="w-24 text-center">Rate</span>
+        <span className="w-8" />
       </div>
-      <div className="p-4">
-        {rates === null ? (
-          <div className="text-gray-500 text-sm py-4 text-center">Loading…</div>
-        ) : (
-          <div className="space-y-2">
-            {MATKA_RATE_GAMES.map((game, i) => (
-              <label key={game} className="flex items-center gap-2">
-                <span className="flex-1 text-sm font-bold text-blue-800 truncate">{game}</span>
-                <input
-                  value={rates[i]}
-                  onChange={(e) => setRates(rates.map((r, j) => (j === i ? e.target.value : r)))}
-                  placeholder={DEFAULT_MATKA_RATES[i]}
-                  className="w-24 border border-gray-300 rounded-lg px-2 py-1.5 text-center font-bold text-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-                />
-              </label>
-            ))}
-            {msg && (
-              <div className={`text-xs font-semibold text-center py-1 ${msg.ok ? "text-green-600" : "text-red-600"}`}>
-                {msg.text}
-              </div>
-            )}
-            <button
-              onClick={save}
-              disabled={saving}
-              className="w-full mt-1 bg-black text-white font-semibold rounded-lg py-2 disabled:opacity-50"
-            >
-              {saving ? "Saving…" : "Save rates"}
-            </button>
-            <p className="text-[10px] text-gray-400 text-center">Format: 1:number (e.g. 1:90)</p>
-          </div>
-        )}
-      </div>
+      {rows.map((r, i) => (
+        <div key={i} className="flex items-center gap-2">
+          <input
+            value={r.game}
+            onChange={(e) => update(i, { game: e.target.value })}
+            placeholder="Game name"
+            className="flex-1 border border-gray-300 rounded-lg px-2 py-1.5 font-bold text-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+          />
+          <input
+            value={r.rate}
+            onChange={(e) => update(i, { rate: e.target.value })}
+            placeholder="1:90"
+            className="w-24 border border-gray-300 rounded-lg px-2 py-1.5 text-center font-bold text-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+          />
+          <button
+            type="button"
+            onClick={() => setRows(rows.filter((_, j) => j !== i))}
+            disabled={rows.length === 1}
+            title="Delete row"
+            className="w-8 h-8 shrink-0 rounded-lg bg-red-600 hover:bg-red-700 disabled:opacity-30 text-white font-bold"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={() => setRows([...rows, { game: "", rate: "1:" }])}
+        className="w-full border-2 border-dashed border-indigo-300 text-indigo-700 font-semibold rounded-lg py-1.5 hover:bg-indigo-50"
+      >
+        + Add new row
+      </button>
+      {msg && (
+        <div className={`text-xs font-semibold text-center py-1 ${msg.ok ? "text-green-600" : "text-red-600"}`}>
+          {msg.text}
+        </div>
+      )}
+      <button
+        onClick={save}
+        disabled={saving}
+        className="w-full bg-black text-white font-semibold rounded-lg py-2 disabled:opacity-50"
+      >
+        {saving ? "Saving…" : "Save rates"}
+      </button>
+      <p className="text-[10px] text-gray-400 text-center">Rate format: 1:number (e.g. 1:90)</p>
     </div>
   );
 }
