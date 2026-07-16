@@ -149,7 +149,7 @@ export function RowTable({ section, title, manualOnly }: { section: Section; tit
           section={section}
           initial={editing}
           onCancel={() => setEditing(null)}
-          onSaved={(row) => { history.remember(items); setItems(items.map((i) => (i.id === row.id ? row : i))); setEditing(null); }}
+          onSaved={(row) => { history.remember(items); setItems(items.map((i) => (i.id === row.id ? row : i))); setEditing(row); }}
         />
       )}
       {loading ? (

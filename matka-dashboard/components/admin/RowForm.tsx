@@ -27,11 +27,13 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
   const [extraLines, setExtraLines] = useState<string[]>(initial?.extraLines || []);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
     setError(null);
+    setSaved(false);
     const effectiveSection = isGame ? (showInLiveUpdate ? "live_update" : "live_result") : section;
     const payload = {
       section: effectiveSection,
@@ -55,12 +57,20 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
       return;
     }
     const { row } = await res.json();
+    // Editing keeps the form open (the parent re-passes the row), so show a
+    // brief confirmation; the server may have auto-corrected the result value.
+    if (initial?.id) {
+      setResultValue(row.resultValue ?? "");
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    }
     onSaved(row);
   }
 
   return (
     <form onSubmit={save} className="bg-gray-50 border border-gray-300 rounded p-4 my-3 space-y-3">
       {error && <div className="bg-red-100 text-red-800 p-2 rounded text-sm">{error}</div>}
+      {saved && <div className="bg-green-100 text-green-800 p-2 rounded text-sm font-semibold">✓ Saved</div>}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
         <label className="block">
           <span className="text-xs font-semibold text-gray-700">Title *</span>
