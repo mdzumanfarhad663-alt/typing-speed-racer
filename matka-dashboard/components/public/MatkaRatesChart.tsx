@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { DEFAULT_MATKA_RATES, rateAmount } from "@/lib/matkaRates";
 
 // Static "Matka Rates Chart" section: what each game variation pays per 1/-.
 // Viewer-side translate toggle: English (default), Hindi, Bangla.
@@ -16,15 +17,9 @@ const T = {
       </>
     ),
     headers: ["Game Type", "Rate", "Payout"],
-    rows: [
-      ["Singles (Ank)", "1:9", "You get 9/- for every 1/- played"],
-      ["Jodi (Pair/Bracket)", "1:90", "You get 90/- for every 1/- played"],
-      ["Single Pana (SP)", "1:140", "You get 140/- for every 1/- played"],
-      ["Double Pana (DP)", "1:280", "You get 280/- for every 1/- played"],
-      ["Triple Pana (TP)", "1:600", "You get 600/- for every 1/- played"],
-      ["Half Sangam", "1:1400", "You get 1400/- for every 1/- played (A and B pay the same)"],
-      ["Sangam", "1:15000", "You get 15000/- for every 1/- played"],
-    ],
+    games: ["Singles (Ank)", "Jodi (Pair/Bracket)", "Single Pana (SP)", "Double Pana (DP)", "Triple Pana (TP)", "Half Sangam", "Sangam"],
+    payout: (n: string) => `You get ${n}/- for every 1/- played`,
+    halfSangamSuffix: " (A and B pay the same)",
     note: "Pana note: the result pana is always exactly one of SP, DP or TP — never two or all three. You are paid as per the rate of that pana type.",
   },
   hi: {
@@ -37,15 +32,9 @@ const T = {
       </>
     ),
     headers: ["गेम का प्रकार", "रेट", "भुगतान"],
-    rows: [
-      ["सिंगल्स (अंक)", "1:9", "हर 1/- पर 9/- मिलते हैं"],
-      ["जोड़ी (पेयर/ब्रैकेट)", "1:90", "हर 1/- पर 90/- मिलते हैं"],
-      ["सिंगल पन्ना (SP)", "1:140", "हर 1/- पर 140/- मिलते हैं"],
-      ["डबल पन्ना (DP)", "1:280", "हर 1/- पर 280/- मिलते हैं"],
-      ["ट्रिपल पन्ना (TP)", "1:600", "हर 1/- पर 600/- मिलते हैं"],
-      ["हाफ संगम", "1:1400", "हर 1/- पर 1400/- मिलते हैं (A और B की रेट समान)"],
-      ["संगम", "1:15000", "हर 1/- पर 15000/- मिलते हैं"],
-    ],
+    games: ["सिंगल्स (अंक)", "जोड़ी (पेयर/ब्रैकेट)", "सिंगल पन्ना (SP)", "डबल पन्ना (DP)", "ट्रिपल पन्ना (TP)", "हाफ संगम", "संगम"],
+    payout: (n: string) => `हर 1/- पर ${n}/- मिलते हैं`,
+    halfSangamSuffix: " (A और B की रेट समान)",
     note: "पन्ना नोट: रिज़ल्ट पन्ना हमेशा SP, DP या TP में से सिर्फ एक होता है — दो या तीनों कभी नहीं। भुगतान उसी पन्ना प्रकार की रेट से होता है।",
   },
   bn: {
@@ -57,15 +46,9 @@ const T = {
       </>
     ),
     headers: ["গেমের ধরন", "রেট", "পেআউট"],
-    rows: [
-      ["সিঙ্গেলস (অঙ্ক)", "1:9", "প্রতি 1/- এ 9/- পাবেন"],
-      ["জোড়ি (পেয়ার/ব্র্যাকেট)", "1:90", "প্রতি 1/- এ 90/- পাবেন"],
-      ["সিঙ্গেল পান্না (SP)", "1:140", "প্রতি 1/- এ 140/- পাবেন"],
-      ["ডাবল পান্না (DP)", "1:280", "প্রতি 1/- এ 280/- পাবেন"],
-      ["ট্রিপল পান্না (TP)", "1:600", "প্রতি 1/- এ 600/- পাবেন"],
-      ["হাফ সঙ্গম", "1:1400", "প্রতি 1/- এ 1400/- পাবেন (A ও B একই রেট)"],
-      ["সঙ্গম", "1:15000", "প্রতি 1/- এ 15000/- পাবেন"],
-    ],
+    games: ["সিঙ্গেলস (অঙ্ক)", "জোড়ি (পেয়ার/ব্র্যাকেট)", "সিঙ্গেল পান্না (SP)", "ডাবল পান্না (DP)", "ট্রিপল পান্না (TP)", "হাফ সঙ্গম", "সঙ্গম"],
+    payout: (n: string) => `প্রতি 1/- এ ${n}/- পাবেন`,
+    halfSangamSuffix: " (A ও B একই রেট)",
     note: "পান্না নোট: রেজাল্ট পান্না সবসময় SP, DP বা TP-এর মধ্যে ঠিক একটিই হয় — কখনো দুটি বা তিনটি নয়। সেই পান্না ধরনের রেট অনুযায়ীই পেমেন্ট হয়।",
   },
 } as const;
@@ -76,9 +59,14 @@ const LANGS: { code: Lang; label: string }[] = [
   { code: "bn", label: "বাংলা" },
 ];
 
-export function MatkaRatesChart() {
+export function MatkaRatesChart({ rates = DEFAULT_MATKA_RATES }: { rates?: string[] }) {
   const [lang, setLang] = useState<Lang>("en");
   const t = T[lang];
+  const rows = t.games.map((game, i) => {
+    const rate = rates[i] ?? DEFAULT_MATKA_RATES[i];
+    const isHalfSangam = i === 5;
+    return [game, rate, t.payout(rateAmount(rate)) + (isHalfSangam ? t.halfSangamSuffix : "")] as const;
+  });
   return (
     <section className="header-box my-4">
       <div className="py-4 px-2 sm:px-6 text-center">
@@ -111,7 +99,7 @@ export function MatkaRatesChart() {
               </tr>
             </thead>
             <tbody>
-              {t.rows.map((r, i) => (
+              {rows.map((r, i) => (
                 <tr key={r[0]} style={{ background: i % 2 ? "#f5fffa" : "#ffffff" }}>
                   <td className="border border-gray-400 px-2 py-2 font-bold text-left sm:text-center" style={{ color: "#0000ff" }}>{r[0]}</td>
                   <td className="border border-gray-400 px-2 py-2 font-bold whitespace-nowrap" style={{ color: "#ff0000" }}>{r[1]}</td>
