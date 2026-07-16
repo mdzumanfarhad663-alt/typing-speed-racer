@@ -21,6 +21,34 @@ function fmtDate(s: string) {
   return `${d}/${m}/${y}`;
 }
 
+// Same gold jump pill as the public chart pages (smooth scroll via global CSS).
+function JumpPill({ href, label }: { href: string; label: string }) {
+  return (
+    <div className="text-center py-2">
+      <a
+        href={href}
+        className="inline-block font-bold"
+        style={{
+          borderRadius: 4,
+          borderLeft: "5px solid gold",
+          borderRight: "5px solid gold",
+          borderTop: "2px solid gold",
+          borderBottom: "2px solid gold",
+          fontStyle: "italic",
+          fontSize: "large",
+          textShadow: "1px 1px gold",
+          fontFamily: "Trebuchet MS, sans-serif",
+          padding: "5px 8px",
+          background: "#000",
+          color: "#fff",
+        }}
+      >
+        {label}
+      </a>
+    </div>
+  );
+}
+
 function MiniDayCell({ d }: { d: PanelDay }) {
   const open = pad(d.open || "   ", 3);
   const close = pad(d.close || "   ", 3);
@@ -153,7 +181,9 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
         </div>
       )}
 
-      <div className="bg-white p-1" style={{ border: "4px solid #893bff" }}>
+      <JumpPill href="#chart-bottom" label="Go to Bottom" />
+
+      <div id="chart-top" className="bg-white p-1" style={{ border: "4px solid #893bff" }}>
         <table className="w-full table-fixed border-collapse bg-white text-sm">
           <thead>
             <tr>
@@ -186,6 +216,10 @@ export default function AdminPanelPage({ params }: { params: { rowId: string } }
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div id="chart-bottom">
+        <JumpPill href="#chart-top" label="Go to Top" />
       </div>
     </main>
   );
