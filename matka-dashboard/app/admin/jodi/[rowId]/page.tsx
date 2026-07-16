@@ -9,6 +9,7 @@ import { CsvExportButton } from "@/components/admin/CsvExportButton";
 import { chartSectionKey } from "@/lib/sectionConfig";
 import { useChartHistory } from "@/lib/useChartHistory";
 import { jodiColor } from "@/lib/redJodi";
+import { JumpLink } from "@/components/public/JumpLink";
 
 const DAY_LABELS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -21,8 +22,8 @@ function fmtDate(s: string) {
 function JumpPill({ href, label }: { href: string; label: string }) {
   return (
     <div className="text-center py-2">
-      <a
-        href={href}
+      <JumpLink
+        targetId={href.replace(/^#/, "")}
         className="inline-block font-bold"
         style={{
           borderRadius: 4,
@@ -40,7 +41,7 @@ function JumpPill({ href, label }: { href: string; label: string }) {
         }}
       >
         {label}
-      </a>
+      </JumpLink>
     </div>
   );
 }

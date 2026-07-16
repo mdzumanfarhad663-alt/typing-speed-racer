@@ -3,6 +3,7 @@ import { toCss } from "@/lib/resolveStyle";
 import { jodiColor } from "@/lib/redJodi";
 import { RefreshButton } from "./RefreshButton";
 import { LoadingResult } from "./LoadingResult";
+import { JumpLink } from "./JumpLink";
 
 export type ChartDesign = { styles: Record<string, StyleSlot>; content: Record<string, string> };
 
@@ -68,8 +69,8 @@ function GameHeader({
   );
   const jumpPill = (
     <div className="bg-black text-center" style={{ padding: "10px 0", ...(jumpFirst ? { marginTop: "-10px" } : { marginBottom: "-10px" }) }}>
-      <a
-        href={jumpHref}
+      <JumpLink
+        targetId={jumpHref.replace(/^#/, "")}
         className="inline-block font-bold"
         style={{
           borderRadius: 4,
@@ -86,7 +87,7 @@ function GameHeader({
         }}
       >
         {jumpLabel}
-      </a>
+      </JumpLink>
     </div>
   );
   return (

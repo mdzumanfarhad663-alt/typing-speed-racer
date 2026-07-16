@@ -4,6 +4,7 @@ import { jodiColor } from "@/lib/redJodi";
 import type { ChartDesign } from "./PanelChart";
 import { RefreshButton } from "./RefreshButton";
 import { LoadingResult } from "./LoadingResult";
+import { JumpLink } from "./JumpLink";
 
 function GameHeader({
   game,
@@ -39,8 +40,8 @@ function GameHeader({
   );
   const jumpPill = (
     <div className="bg-black text-center" style={{ padding: "10px 0", ...(jumpFirst ? { marginTop: "-10px" } : { marginBottom: "-10px" }) }}>
-      <a
-        href={jumpHref}
+      <JumpLink
+        targetId={jumpHref.replace(/^#/, "")}
         className="inline-block font-bold"
         style={{
           borderRadius: 4,
@@ -57,7 +58,7 @@ function GameHeader({
         }}
       >
         {jumpLabel}
-      </a>
+      </JumpLink>
     </div>
   );
   return (
