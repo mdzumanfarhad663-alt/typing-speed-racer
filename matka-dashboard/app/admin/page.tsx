@@ -2,7 +2,6 @@ import { AdminNav } from "@/components/admin/AdminNav";
 import { ScrapeButton } from "@/components/admin/ScrapeButton";
 import { LiveUpdateToggles } from "@/components/admin/LiveUpdateToggles";
 import { ChatBotToggle } from "@/components/admin/ChatBotToggle";
-import { MatkaRatesEditor } from "@/components/admin/MatkaRatesEditor";
 
 export default function AdminHome() {
   return (
@@ -23,7 +22,6 @@ export default function AdminHome() {
         <div className="grid md:grid-cols-3 gap-4">
           <LiveUpdateToggles />
           <ChatBotToggle />
-          <MatkaRatesEditor />
         </div>
       </div>
     </main>

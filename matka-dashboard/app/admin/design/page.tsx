@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { SectionSettingsForm } from "@/components/admin/SectionSettingsForm";
+import { MatkaRatesEditor } from "@/components/admin/MatkaRatesEditor";
 import { SECTION_CONFIG } from "@/lib/sectionConfig";
 import type { StyleSlot } from "@/lib/schema";
 
@@ -62,6 +63,23 @@ export default function DesignAdmin() {
             </div>
           );
         })}
+
+        {/* Rates for the homepage Matka Rates Chart section */}
+        <div className="bg-white border border-gray-300 rounded mb-3">
+          <button
+            type="button"
+            onClick={() => setOpenKey(openKey === "matka_rates" ? null : "matka_rates")}
+            className="w-full text-left px-4 py-3 font-semibold flex justify-between items-center"
+          >
+            Matka Rates Chart
+            <span className="text-gray-400">{openKey === "matka_rates" ? "▲" : "▼"}</span>
+          </button>
+          {openKey === "matka_rates" && (
+            <div className="px-4 pb-4 border-t border-gray-100 pt-4">
+              <MatkaRatesEditor />
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );
