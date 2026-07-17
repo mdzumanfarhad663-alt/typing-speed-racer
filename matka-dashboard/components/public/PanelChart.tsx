@@ -183,7 +183,7 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
             }}
           >
             <span className="transition-transform group-hover:-translate-x-1">←</span>
-            <span>{content.backLabel.replace(/^←\s*/, "")}</span>
+            <span>Back to Homepage</span>
           </a>
         </div>
       </div>

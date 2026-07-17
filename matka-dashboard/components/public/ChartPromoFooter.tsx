@@ -31,7 +31,7 @@ export function ChartPromoFooter() {
             boxShadow: "0 3px 6px rgba(0,0,0,0.4)",
           }}
         >
-          🔗 Online Matka Play (Direct)
+          🔗 Online Matka Play (Direct) 🎮
         </a>
         <div className="mt-3 text-xs sm:text-sm font-bold" style={{ color: "#ffd700" }}>
           या फिर, अपने इलाके के किसी भरोसेमंद एजेंट के साथ दांव लगाएं।
