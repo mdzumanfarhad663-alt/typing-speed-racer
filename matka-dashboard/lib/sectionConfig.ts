@@ -353,7 +353,7 @@ function buildChartConfig(kind: ChartKind, key: string): SectionConfigEntry {
       type: "textarea",
       default: kind === "panel" ? "No panel data yet. Admin can add weekly entries from the admin panel." : "No jodi data yet. Admin can add weekly entries from the admin panel.",
     },
-    { key: "backLabel", label: "\"Back to dashboard\" label", type: "text", default: "← Back to dashboard" },
+    { key: "backLabel", label: "\"Back to dashboard\" label", type: "text", default: "← Back to Homepage" },
     { key: "seoHeading", label: "SEO heading (after game name)", type: "text", default: "Matka Panel Chart – Complete Panna Record" },
   ];
 
