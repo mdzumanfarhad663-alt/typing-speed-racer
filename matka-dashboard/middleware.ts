@@ -1,3 +1,4 @@
+// Redeploy trigger: fixes a stuck /admin edge middleware build.
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
