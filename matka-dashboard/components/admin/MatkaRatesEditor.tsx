@@ -60,13 +60,13 @@ export function MatkaRatesEditor() {
             value={r.game}
             onChange={(e) => update(i, { game: e.target.value })}
             placeholder="Game name"
-            className="flex-1 min-w-0 border border-gray-300 rounded-lg px-2 py-1.5 font-bold text-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+            className="flex-1 border border-gray-300 rounded-lg px-2 py-1.5 font-bold text-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-300"
           />
           <input
             value={r.rate}
             onChange={(e) => update(i, { rate: e.target.value })}
             placeholder="1:90"
-            className="w-20 sm:w-24 shrink-0 border border-gray-300 rounded-lg px-2 py-1.5 text-center font-bold text-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+            className="w-24 border border-gray-300 rounded-lg px-2 py-1.5 text-center font-bold text-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-300"
           />
           <button
             type="button"
