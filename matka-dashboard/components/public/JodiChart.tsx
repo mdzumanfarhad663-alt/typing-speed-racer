@@ -5,6 +5,7 @@ import type { ChartDesign } from "./PanelChart";
 import { RefreshButton } from "./RefreshButton";
 import { LoadingResult } from "./LoadingResult";
 import { JumpLink } from "./JumpLink";
+import { ChartPromoFooter } from "./ChartPromoFooter";
 
 function GameHeader({
   game,
@@ -147,6 +148,8 @@ export function JodiChart({ game, entries, design }: { game: Row; entries: JodiE
         )}
 
         <GameHeader game={game} design={design} anchorId="bottom" jumpHref="#top" jumpLabel={content.goToTopLabel} jumpFirst />
+
+        <ChartPromoFooter />
 
         <div className="text-center py-4" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>
           <a

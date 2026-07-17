@@ -4,6 +4,7 @@ import { jodiColor } from "@/lib/redJodi";
 import { RefreshButton } from "./RefreshButton";
 import { LoadingResult } from "./LoadingResult";
 import { JumpLink } from "./JumpLink";
+import { ChartPromoFooter } from "./ChartPromoFooter";
 
 export type ChartDesign = { styles: Record<string, StyleSlot>; content: Record<string, string> };
 
@@ -165,6 +166,8 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
         )}
 
         <GameHeader game={game} design={design} anchorId="bottom" jumpHref="#top" jumpLabel={content.goToTopLabel} jumpFirst />
+
+        <ChartPromoFooter />
 
         <div className="text-center py-4" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>
           <a
