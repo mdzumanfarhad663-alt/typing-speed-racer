@@ -79,7 +79,7 @@ function GameHeader({
   );
 }
 
-export function JodiChart({ game, entries, design, promoDesign }: { game: Row; entries: JodiEntry[]; design: ChartDesign; promoDesign?: ChartDesign }) {
+export function JodiChart({ game, entries, design }: { game: Row; entries: JodiEntry[]; design: ChartDesign }) {
   const { styles, content } = design;
 
   return (
@@ -149,7 +149,7 @@ export function JodiChart({ game, entries, design, promoDesign }: { game: Row; e
 
         <GameHeader game={game} design={design} anchorId="bottom" jumpHref="#top" jumpLabel={content.goToTopLabel} jumpFirst />
 
-        <ChartPromoFooter promoDesign={promoDesign} />
+        <ChartPromoFooter />
 
         <div className="text-center py-4" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>
           <a
