@@ -44,44 +44,6 @@ export function ChartPromoFooter() {
         </div>
       </div>
 
-      {/* Booking / call promo */}
-      <div className="text-center py-5 px-4 bg-white" style={{ border: "2px solid #ff2fa0" }}>
-        <div className="font-bold text-sm sm:text-base mb-2" style={{ color: "#d0021b" }}>
-          [ 45 बुकिंग चालू | बुकिंग चालू 45 ]
-        </div>
-        <div className="font-bold text-sm sm:text-base leading-relaxed text-black">
-          कल्याण बाजार बम्पर धमाका अचूक जोड़ी पर कमाओ लाखों 100% फिक्स 1 जोड़ी 2 पत्ती सिर्फ एक दिन में- पूरा लॉस कवर होगा मनी बैक गारंटी एडवांस चार्ज 2500/- मात्र
-        </div>
-        <a href="tel:08829959562" className="block font-bold text-base sm:text-lg mt-2" style={{ color: "#1155cc" }}>
-          कॉल : 08829959562
-        </a>
-        <a href="tel:08829959562" className="block font-bold text-base sm:text-lg" style={{ color: "#1155cc" }}>
-          कॉल : 08829959562
-        </a>
-        <hr className="my-3 border-gray-300" />
-        <div className="font-bold text-sm sm:text-base">
-          <span style={{ color: "#d0021b" }}>Note :-</span> <span className="text-black">Don't Call For Trail Help</span>
-        </div>
-      </div>
-
-      {/* Thin keyword bar */}
-      <div className="text-center py-1.5 text-xs italic" style={{ background: "#f5fffa", border: "1px solid #b6e3d4", color: "#333" }}>
-        sattamataka143
-      </div>
-
-      {/* WhatsApp button */}
-      <div className="text-center py-3 px-4" style={{ background: "#000" }}>
-        <a
-          href="https://sattamatkadpboss.mobi"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block font-bold text-sm sm:text-base px-5 py-2 rounded-lg text-white"
-          style={{ background: "linear-gradient(180deg, #4caf1f, #1a5c0a)", border: "1px solid #0a3d00" }}
-        >
-          Join our WhatsApp channel for fast Result
-        </a>
-      </div>
-
       {/* Nav links */}
       <div className="text-center py-2.5 px-2 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1" style={{ background: "#fff9b0" }}>
         {NAV_LINKS.map((link, i) => (
@@ -102,20 +64,19 @@ export function ChartPromoFooter() {
 
       {/* Footer identity box */}
       <div className="text-center py-5 px-4" style={{ background: "#fff9b0", borderTop: "1px solid #e0d68a" }}>
+        <div className="font-bold text-lg sm:text-xl" style={{ color: "#d0021b" }}>SattaMatka-Dpboss.In</div>
         <div className="font-bold text-lg sm:text-xl" style={{ color: "#d0021b" }}>SattaMatkaDpboss.Mobi</div>
         <div className="font-bold text-sm sm:text-base text-black mt-1">ALL RIGHTS RESERVED (2012-2026)</div>
         <div className="font-bold text-sm sm:text-base text-black mt-2">SITE OWNER:-</div>
         <div className="font-bold text-sm sm:text-base underline text-black">PRO. BIG BOSS SIR</div>
-        <a href="tel:08829959562" className="block font-bold text-xl sm:text-2xl mt-2" style={{ color: "#1155cc" }}>
-          08829959562
-        </a>
+        <div className="block font-bold text-xl sm:text-2xl mt-2" style={{ color: "#1155cc" }}>
+          SURYA BHAI
+        </div>
         <a
-          href="https://sattamatkadpboss.mobi"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="https://sattamatka-ten.vercel.app/"
           className="block text-xs sm:text-sm italic text-black mt-1 hover:underline"
         >
-          https://sattamatkadpboss.mobi
+          https://sattamatka-dpboss.in
         </a>
       </div>
     </div>
