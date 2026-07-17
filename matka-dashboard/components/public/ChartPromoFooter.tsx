@@ -58,17 +58,17 @@ export function ChartPromoFooter() {
 
       {/* Footer identity box */}
       <div className="text-center py-5 px-4" style={{ background: "#fff9b0", borderTop: "1px solid #e0d68a" }}>
-        <div className="font-bold text-lg sm:text-xl" style={{ color: "#d0021b" }}>SattaMatka-Dpboss.In</div>
-        <div className="font-bold text-lg sm:text-xl" style={{ color: "#d0021b" }}>SattaMatkaDpboss.Mobi</div>
-        <div className="font-bold text-sm sm:text-base text-black mt-1">ALL RIGHTS RESERVED (2012-2026)</div>
-        <div className="font-bold text-sm sm:text-base text-black mt-2">SITE OWNER:-</div>
-        <div className="font-bold text-sm sm:text-base underline text-black">PRO. BIG BOSS SIR</div>
-        <div className="block font-bold text-xl sm:text-2xl mt-2" style={{ color: "#1155cc" }}>
+        <div className="font-bold text-xl sm:text-2xl" style={{ color: "#d0021b" }}>SattaMatka-Dpboss.In</div>
+        <div className="font-bold text-xl sm:text-2xl" style={{ color: "#d0021b" }}>SattaMatkaDpboss.Mobi</div>
+        <div className="font-bold text-base sm:text-lg text-black mt-1">ALL RIGHTS RESERVED (2012-2026)</div>
+        <div className="font-bold text-base sm:text-lg text-black mt-2">SITE OWNER:-</div>
+        <div className="font-bold text-base sm:text-lg underline text-black">PRO. BIG BOSS SIR</div>
+        <div className="block font-bold text-2xl sm:text-3xl mt-2" style={{ color: "#1155cc" }}>
           SURYA BHAI
         </div>
         <a
           href="https://sattamatka-ten.vercel.app/"
-          className="flex items-center justify-center gap-1 text-xs sm:text-sm italic text-black mt-1 hover:underline"
+          className="flex items-center justify-center gap-1 text-sm sm:text-base italic text-black mt-1 hover:underline"
         >
           https://sattamatka-dpboss.in
           <img src="https://sattamatkadpboss.mobi/icon/137.gif" alt="" width={16} height={16} />

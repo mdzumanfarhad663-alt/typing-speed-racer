@@ -16,12 +16,12 @@ function Accordion({ items, bulletStyle }: { items: FAQItem[]; bulletStyle?: boo
             style={{ background: "#fff" }}
             onClick={() => setOpen(open === i ? null : i)}
           >
-            {bulletStyle && <span className="mt-0.5 text-sm">•</span>}
+            {bulletStyle && <span className="mt-0.5 text-base">•</span>}
             <span
               className="flex-1 font-bold"
               style={{
                 color: bulletStyle ? "#000" : "#d70544",
-                fontSize: bulletStyle ? "0.85rem" : "0.95rem",
+                fontSize: bulletStyle ? "1.05rem" : "1.15rem",
                 textTransform: bulletStyle ? "none" : "uppercase",
               }}
             >
@@ -33,12 +33,12 @@ function Accordion({ items, bulletStyle }: { items: FAQItem[]; bulletStyle?: boo
               )}
             </span>
             {bulletStyle && (
-              <span className="text-gray-400 text-xs mt-0.5">{open === i ? "▲" : "▼"}</span>
+              <span className="text-gray-400 text-sm mt-0.5">{open === i ? "▲" : "▼"}</span>
             )}
           </div>
           {open === i && (
             <div
-              className="px-4 py-3 text-sm"
+              className="px-4 py-3 text-base"
               style={{
                 background: "#f9f9f9",
                 borderTop: "1px solid #eee",
@@ -74,7 +74,7 @@ export function FaqSection({ resolve }: { resolve: SectionResolver }) {
           className="text-center py-3 px-4"
           style={{ borderTop: "1px solid #000", borderBottom: "1px solid #000", ...toCss(styles.header) }}
         >
-          <span className="font-bold text-sm sm:text-base" style={{ letterSpacing: "1px" }}>
+          <span className="font-bold text-base sm:text-lg" style={{ letterSpacing: "1px" }}>
             {content.headerLabel}
           </span>
         </div>
@@ -90,7 +90,7 @@ export function FaqSection({ resolve }: { resolve: SectionResolver }) {
 
       {/* Section 4 — plain text + nav links */}
       <div
-        className="my-4 px-4 py-4 text-sm"
+        className="my-4 px-4 py-4 text-base"
         style={{ background: "#fff", color: "#000", lineHeight: 1.8 }}
       >
         <p className="font-bold mb-3 text-center whitespace-pre-wrap" style={{ color: "#00008b" }}>
