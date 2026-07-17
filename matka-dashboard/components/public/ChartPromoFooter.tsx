@@ -1,3 +1,13 @@
+"use client";
+import { toCss } from "@/lib/resolveStyle";
+import type { ChartDesign } from "./PanelChart";
+
+const PROMO_DEFAULTS = {
+  hindiText: "अब मटका खेलना हुआ आसान ! घर बैठे मटका खेलो अब मोबाइल एप्लीकेशन पे और जीतो ढेर सारी धनराशि। अभी डाउनलोड करो।",
+  buttonLabel: "Play Online Matka",
+  trustedLabel: "India's Biggest & Most Trusted",
+};
+
 const NAV_LINKS: { label: string; color: string; href: string }[] = [
   { label: "Home", color: "#0a7d1f", href: "/" },
   { label: "Matka Guessing", color: "#7b1113", href: "https://sattamatkadpboss.mobi/satta-matka-guessing-forum.php" },
@@ -8,39 +18,34 @@ const NAV_LINKS: { label: string; color: string; href: string }[] = [
   { label: "Sitemap", color: "#d0021b", href: "https://sattamatkadpboss.mobi/sitemap_index.xml" },
 ];
 
-// Promo + booking + footer stack shown under every panel/jodi chart page,
-// matching the reference site's layout below the result box.
-export function ChartPromoFooter() {
+// Promo + footer stack shown under every panel/jodi chart page. The promo box
+// reuses the same "Promo Block" design/content as the home page (editable
+// from Home Page Design → Promo Block) so both stay in sync.
+export function ChartPromoFooter({ promoDesign }: { promoDesign?: ChartDesign }) {
+  const styles = promoDesign?.styles ?? {};
+  const content = { ...PROMO_DEFAULTS, ...(promoDesign?.content ?? {}) };
   return (
     <div style={{ fontFamily: "Times New Roman, serif" }}>
-      {/* Pink/red app promo */}
-      <div
-        className="text-center py-5 px-4"
-        style={{ background: "linear-gradient(180deg, #e2144e 0%, #7a0f1f 100%)", border: "3px solid #7a0f1f" }}
-      >
-        <div className="text-white font-bold text-sm sm:text-base leading-relaxed mb-3" style={{ textShadow: "1px 1px 2px #000" }}>
-          <div>अब सभी मटका बाजार खेलो ऑनलाइन ऐप पर</div>
-          <div>रोज खेलो रोज कमाओ अभी डाउनलोड करो</div>
-        </div>
-        <a
-          href="https://sattamatkadpboss.mobi"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block font-bold text-base sm:text-lg px-6 py-2 rounded-lg"
-          style={{
-            background: "linear-gradient(180deg, #ffe082, #c98a1c)",
-            border: "2px solid #7a4a00",
-            color: "#3a1a00",
-            boxShadow: "0 3px 6px rgba(0,0,0,0.4)",
-          }}
+      {/* Promo block (same design as the home page) */}
+      <div className="py-5 px-4 text-center" style={toCss(styles.panel)}>
+        <div
+          className="text-base sm:text-lg font-bold mb-4 leading-relaxed italic"
+          style={{ color: "#ffffff", fontFamily: "Arial, sans-serif" }}
         >
-          🔗 Online Matka Play (Direct)
-        </a>
-        <div className="mt-3 text-xs sm:text-sm font-bold" style={{ color: "#ffd700" }}>
-          ~ Kalyan Official App ~
+          {content.hindiText}
         </div>
-        <div className="text-xs sm:text-sm font-bold" style={{ color: "#ffd700" }}>
-          Super Fast deposit and withdrawal
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="inline-block font-bold text-base px-3 py-1 rounded-full mb-3 cursor-pointer italic"
+          style={{ boxShadow: "0 0 15px #000", ...toCss(styles.button) }}
+        >
+          {content.buttonLabel}
+        </button>
+        <div
+          className="text-base sm:text-lg font-bold italic"
+          style={{ textShadow: "1px 1px 0px #000", ...toCss(styles.trustedText) }}
+        >
+          {content.trustedLabel}
         </div>
       </div>
 

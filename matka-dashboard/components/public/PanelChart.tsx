@@ -108,7 +108,7 @@ function GameHeader({
   );
 }
 
-export function PanelChart({ game, entries, design }: { game: Row; entries: PanelEntry[]; design: ChartDesign }) {
+export function PanelChart({ game, entries, design, promoDesign }: { game: Row; entries: PanelEntry[]; design: ChartDesign; promoDesign?: ChartDesign }) {
   const { styles, content } = design;
   const dayLabels = (content.dayLabels || "MON,TUE,WED,THU,FRI,SAT,SUN").split(",").map((s) => s.trim());
 
@@ -167,7 +167,7 @@ export function PanelChart({ game, entries, design }: { game: Row; entries: Pane
 
         <GameHeader game={game} design={design} anchorId="bottom" jumpHref="#top" jumpLabel={content.goToTopLabel} jumpFirst />
 
-        <ChartPromoFooter />
+        <ChartPromoFooter promoDesign={promoDesign} />
 
         <div className="text-center py-4" style={{ borderTop: "none", ...toCss(styles.footerBar) }}>
           <a

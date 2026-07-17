@@ -23,10 +23,13 @@ export default async function JodiPage({ params }: { params: { rowId: string } }
   const [live] = await db.select().from(sectionSettings).where(eq(sectionSettings.sectionKey, key)).limit(1);
   const design = resolveSection(key, live);
 
+  const [promoLive] = await db.select().from(sectionSettings).where(eq(sectionSettings.sectionKey, "promo_block")).limit(1);
+  const promoDesign = resolveSection("promo_block", promoLive);
+
   return (
     <>
       <AutoRefresh />
-      <JodiChart game={game} entries={entries} design={design} />
+      <JodiChart game={game} entries={entries} design={design} promoDesign={promoDesign} />
     </>
   );
 }
