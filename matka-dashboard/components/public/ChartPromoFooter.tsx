@@ -74,9 +74,10 @@ export function ChartPromoFooter() {
         </div>
         <a
           href="https://sattamatka-ten.vercel.app/"
-          className="block text-xs sm:text-sm italic text-black mt-1 hover:underline"
+          className="flex items-center justify-center gap-1 text-xs sm:text-sm italic text-black mt-1 hover:underline"
         >
           https://sattamatka-dpboss.in
+          <img src="https://sattamatkadpboss.mobi/icon/137.gif" alt="" width={16} height={16} />
         </a>
       </div>
     </div>
