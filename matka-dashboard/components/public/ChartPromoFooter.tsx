@@ -19,13 +19,10 @@ export function ChartPromoFooter() {
         style={{ background: "linear-gradient(180deg, #e2144e 0%, #7a0f1f 100%)", border: "3px solid #7a0f1f" }}
       >
         <div className="text-white font-bold text-sm sm:text-base leading-relaxed mb-3" style={{ textShadow: "1px 1px 2px #000" }}>
-          <div>अब सभी मटका बाजार खेलो ऑनलाइन ऐप पर</div>
-          <div>रोज खेलो रोज कमाओ अभी डाउनलोड करो</div>
+          अब मटका खेलना हुआ आसान ! घर बैठे मटका खेलो अब मोबाइल एप्लीकेशन पे और जीतो ढेर सारी धनराशि। अभी डाउनलोड करो।
         </div>
         <a
-          href="https://sattamatkadpboss.mobi"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/"
           className="inline-block font-bold text-base sm:text-lg px-6 py-2 rounded-lg"
           style={{
             background: "linear-gradient(180deg, #ffe082, #c98a1c)",
@@ -36,12 +33,6 @@ export function ChartPromoFooter() {
         >
           🔗 Online Matka Play (Direct)
         </a>
-        <div className="mt-3 text-xs sm:text-sm font-bold" style={{ color: "#ffd700" }}>
-          ~ Kalyan Official App ~
-        </div>
-        <div className="text-xs sm:text-sm font-bold" style={{ color: "#ffd700" }}>
-          Super Fast deposit and withdrawal
-        </div>
       </div>
 
       {/* Nav links */}
