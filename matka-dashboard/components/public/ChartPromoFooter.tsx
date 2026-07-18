@@ -66,12 +66,16 @@ export function ChartPromoFooter() {
         <div className="block font-bold text-2xl sm:text-3xl mt-2" style={{ color: "#1155cc" }}>
           SURYA BHAI
         </div>
+        <style>{`
+          @keyframes cpf-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+          .cpf-blink-dot { animation: cpf-blink 1s steps(1) infinite; }
+        `}</style>
         <a
           href="https://sattamatka-ten.vercel.app/"
           className="flex items-center justify-center gap-1 text-sm sm:text-base italic text-black mt-1 hover:underline"
         >
           https://sattamatka-dpboss.in
-          <img src="/red-dot.svg" alt="" width={12} height={12} className="rounded-full" />
+          <img src="/red-dot.svg" alt="" width={12} height={12} className="rounded-full cpf-blink-dot" />
         </a>
       </div>
     </div>
