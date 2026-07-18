@@ -67,15 +67,25 @@ export function ChartPromoFooter() {
           SURYA BHAI
         </div>
         <style>{`
-          @keyframes cpf-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-          .cpf-blink-dot { animation: cpf-blink 1s steps(1) infinite; }
+          @keyframes cpf-live-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255,0,0,0.55); }
+            70% { box-shadow: 0 0 0 6px rgba(255,0,0,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,0,0,0); }
+          }
+          .cpf-live-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #ff8a8a, #e00000 60%, #a80000);
+            animation: cpf-live-pulse 1.4s ease-out infinite;
+          }
         `}</style>
         <a
           href="https://sattamatka-ten.vercel.app/"
-          className="flex items-center justify-center gap-1 text-sm sm:text-base italic text-black mt-1 hover:underline"
+          className="flex items-center justify-center gap-1.5 text-sm sm:text-base italic text-black mt-1 hover:underline"
         >
           https://sattamatka-dpboss.in
-          <img src="/red-dot.svg" alt="" width={12} height={12} className="rounded-full cpf-blink-dot" />
+          <span className="cpf-live-dot" aria-hidden />
         </a>
       </div>
     </div>
