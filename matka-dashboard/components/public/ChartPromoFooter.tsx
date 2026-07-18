@@ -71,7 +71,7 @@ export function ChartPromoFooter() {
           className="flex items-center justify-center gap-1 text-sm sm:text-base italic text-black mt-1 hover:underline"
         >
           https://sattamatka-dpboss.in
-          <img src="https://sattamatkadpboss.mobi/icon/137.gif" alt="" width={16} height={16} />
+          <img src="/red-dot.svg" alt="" width={12} height={12} className="rounded-full" />
         </a>
       </div>
     </div>
