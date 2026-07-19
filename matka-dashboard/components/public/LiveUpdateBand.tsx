@@ -31,6 +31,24 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
               row.resultValue
             )}
           </span>
+          <button
+            onClick={() => window.location.reload()}
+            className="font-bold"
+            style={{
+              background: "linear-gradient(to right, #000, #4b1a74)",
+              border: "1px solid #000",
+              boxShadow: "0 0 15px gold",
+              fontSize: "13px",
+              padding: ".25rem .75rem",
+              color: "#fff",
+              borderRadius: "1rem",
+              marginTop: ".25rem",
+              cursor: "pointer",
+              display: "inline-block",
+            }}
+          >
+            Refresh
+          </button>
         </div>
       ))}
     </div>
