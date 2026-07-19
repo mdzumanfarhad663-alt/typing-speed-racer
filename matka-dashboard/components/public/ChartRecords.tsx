@@ -9,7 +9,7 @@ const LINK_COLORS = ["#00f", "#8b0000", "#0000aa", "#cc6600", "#00008b", "#b8860
 
 function ChartSection({ heading, links, headerStyle }: { heading: string; links: ChartLink[]; headerStyle: CSSProperties }) {
   return (
-    <div className="my-4">
+    <div className="my-[18px]">
       <div className="px-3 py-1" style={headerStyle}>
         <span className="font-bold text-sm sm:text-base">{heading}</span>
       </div>

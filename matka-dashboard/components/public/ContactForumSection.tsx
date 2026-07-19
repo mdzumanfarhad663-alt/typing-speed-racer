@@ -32,7 +32,7 @@ export function ContactForumSection({ resolve }: { resolve: SectionResolver }) {
   return (
     <>
       {/* Contact section */}
-      <div className="my-4" style={{ border: "1px solid #ddd", borderRadius: 6, overflow: "hidden" }}>
+      <div className="my-[18px]" style={{ border: "1px solid #ddd", borderRadius: 6, overflow: "hidden" }}>
         <div className="text-center py-3 px-4" style={toCss(styles.contactHeader)}>
           <span className="font-bold text-lg sm:text-xl">{content.contactHeading}</span>
         </div>
@@ -51,7 +51,7 @@ export function ContactForumSection({ resolve }: { resolve: SectionResolver }) {
       </div>
 
       {/* Member's Forum section */}
-      <div className="my-4" style={{ overflow: "hidden", borderRadius: 4 }}>
+      <div className="my-[18px]" style={{ overflow: "hidden", borderRadius: 4 }}>
         <div className="text-center py-3 px-4" style={toCss(styles.forumHeader)}>
           <span className="font-bold text-lg sm:text-xl">{content.forumHeading}</span>
         </div>

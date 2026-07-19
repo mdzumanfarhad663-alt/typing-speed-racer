@@ -19,7 +19,7 @@ export function LuckyBand({ ankData, resolve }: { items: Row[]; ankData: AnkData
   const outerBorder = { borderColor: borderColor ?? "orange", borderWidth: borderWidth ?? "3px", borderStyle: borderStyle ?? "solid" };
 
   return (
-    <section className="my-4 overflow-hidden rounded" style={outerBorder}>
+    <section className="my-[18px] overflow-hidden rounded" style={outerBorder}>
       <div className="lucky-band-title" style={{ ...titleInner, border: "none", borderBottom: `${borderWidth ?? "3px"} ${borderStyle ?? "solid"} ${borderColor ?? "orange"}` }}>
         <h2>{content.heading}</h2>
       </div>
