@@ -31,7 +31,7 @@ export function SattaMatkaInfo({ resolve, marketTimings }: { resolve: SectionRes
     : DEFAULT_MARKET_TIMINGS;
   return (
     <div
-      className="my-[5px] p-3 sm:p-4"
+      className="my-[7px] p-3 sm:p-4"
       style={{
         fontFamily: "Arial, sans-serif",
         fontStyle: "normal",

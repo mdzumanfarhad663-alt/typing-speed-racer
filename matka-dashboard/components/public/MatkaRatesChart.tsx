@@ -85,7 +85,7 @@ export function MatkaRatesChart({ rateRows = DEFAULT_MATKA_RATE_ROWS }: { rateRo
     return [game, r.rate, t.payout(rateAmount(r.rate)) + (isHalfSangam ? t.halfSangamSuffix : "")] as const;
   });
   return (
-    <section className="header-box my-[5px]">
+    <section className="header-box my-[7px]">
       <div className="py-4 px-2 sm:px-6 text-center">
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <h2 className="text-xl sm:text-2xl font-bold" style={{ color: "#0000ff" }}>

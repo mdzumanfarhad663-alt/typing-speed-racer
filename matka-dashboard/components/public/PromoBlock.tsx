@@ -6,7 +6,7 @@ import { toCss } from "@/lib/resolveStyle";
 export function PromoBlock({ resolve }: { resolve: SectionResolver }) {
   const { styles, content } = resolve("promo_block");
   return (
-    <div className="my-[5px] py-5 px-4 text-center rounded" style={{ borderBottom: "3px solid #6ba8f2", ...toCss(styles.panel) }}>
+    <div className="my-[7px] py-5 px-4 text-center rounded" style={{ borderBottom: "3px solid #6ba8f2", ...toCss(styles.panel) }}>
       {/* Hindi text */}
       <div
         className="text-base sm:text-lg font-bold mb-4 leading-relaxed italic"
