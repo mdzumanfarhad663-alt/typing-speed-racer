@@ -12,7 +12,7 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
   const { styles, content } = resolve("live_update_band");
 
   return (
-    <div className="live-update-box">
+    <div className="live-update-box" style={{ marginTop: 0 }}>
       <div className="live-result" style={toCss(styles.header)}>
         <span className="text-black font-bold">{content.heading}</span>
         <img src={NEW_BADGE_GIF} alt="New" width={38} height={17} className="inline-block ml-2 align-middle" />
