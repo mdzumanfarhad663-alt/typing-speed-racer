@@ -64,12 +64,12 @@ export function FaqSection({ resolve }: { resolve: SectionResolver }) {
   return (
     <>
       {/* Section 1 — simple bullet accordion */}
-      <div className="my-[18px]" style={{ border: "1px solid #dc1f44", background: "#fff" }}>
+      <div className="my-[1px]" style={{ border: "1px solid #dc1f44", background: "#fff" }}>
         <Accordion items={faq1} bulletStyle />
       </div>
 
       {/* Section 2 — colored header + Q1-Q8 */}
-      <div className="my-[18px]">
+      <div className="my-[1px]">
         <div
           className="text-center py-3 px-2.5 sm:px-4"
           style={{ borderTop: "1px solid #000", borderBottom: "1px solid #000", ...toCss(styles.header) }}
@@ -84,13 +84,13 @@ export function FaqSection({ resolve }: { resolve: SectionResolver }) {
       </div>
 
       {/* Section 3 — second bullet accordion */}
-      <div className="my-[18px]" style={{ border: "1px solid #dc1f44", background: "#fff" }}>
+      <div className="my-[1px]" style={{ border: "1px solid #dc1f44", background: "#fff" }}>
         <Accordion items={faq3} bulletStyle />
       </div>
 
       {/* Section 4 — plain text + nav links */}
       <div
-        className="my-[18px] px-3 sm:px-4 py-4 text-sm sm:text-base"
+        className="my-[1px] px-3 sm:px-4 py-4 text-sm sm:text-base"
         style={{ background: "#fff", color: "#000", lineHeight: 1.8 }}
       >
         <p className="font-bold mb-3 text-center whitespace-pre-wrap" style={{ color: "#00008b" }}>

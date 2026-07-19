@@ -20,7 +20,7 @@ const FAST_RESULT = [
 export function TopGuessers({ resolve }: { resolve: SectionResolver }) {
   const { styles, content } = resolve("top_guessers");
   return (
-    <div className="my-[18px]" style={{ border: "2px solid #ff0000", overflow: "hidden" }}>
+    <div className="my-[1px]" style={{ border: "2px solid #ff0000", overflow: "hidden" }}>
       {/* Top bar */}
       <div className="px-3 py-1" style={toCss(styles.topBar)}>
         <span className="font-bold text-xs sm:text-sm">{content.topBarLabel}</span>
