@@ -24,7 +24,7 @@ export function HeroHeader({ resolve }: { resolve: SectionResolver }) {
   const { styles, content } = resolve("hero_header");
   return (
     <>
-      <section className="header-box mt-1 mb-[1px]">
+      <section className="header-box mt-1 mb-[5px]">
         <div className="text-center py-4 px-4" style={toCss(styles.box1)}>
           <div className="text-base sm:text-lg">{content.line1}</div>
           <div className="text-base sm:text-lg">{content.line2}</div>
@@ -34,7 +34,7 @@ export function HeroHeader({ resolve }: { resolve: SectionResolver }) {
         </div>
       </section>
 
-      <section className="header-box my-[1px]">
+      <section className="header-box my-[5px]">
         <div className="py-4 px-4 sm:px-6 text-center text-xs sm:text-sm leading-relaxed" style={toCss(styles.box2)}>
           {boldenPhrases(content.seoParagraph, SEO_BOLD_PHRASES)}
         </div>

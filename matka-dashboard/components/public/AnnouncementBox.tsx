@@ -7,7 +7,7 @@ export function AnnouncementBox({ resolve }: { resolve: SectionResolver }) {
   const text = (content.text || "").trim();
   if (!text) return null;
   return (
-    <section className="my-[1px]">
+    <section className="my-[5px]">
       <div className="whitespace-pre-line" style={toCss(styles.box)}>{text}</div>
     </section>
   );
