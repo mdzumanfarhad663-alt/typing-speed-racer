@@ -47,6 +47,7 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
               display: "inline-block",
               fontStyle: "italic",
               fontWeight: "bold",
+              ...toCss(styles.refreshButton),
             }}
           >
             Refresh

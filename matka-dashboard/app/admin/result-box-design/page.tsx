@@ -21,6 +21,7 @@ const SECTIONS: { key: string; title: string; cells: CellDef[] }[] = [
       { slotKey: "nameText", label: "Name" },
       { slotKey: "resultText", label: "Result" },
       { slotKey: "timeText", label: "Time" },
+      { slotKey: "refreshButton", label: "Refresh Button" },
     ],
   },
   {

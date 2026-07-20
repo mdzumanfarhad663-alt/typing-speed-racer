@@ -152,6 +152,7 @@ export const SECTION_CONFIG: SectionConfigEntry[] = [
       { key: "nameText", label: "Name", default: { textColor: "#dc2626" } },
       { key: "resultText", label: "Result", default: { textColor: "#1d4ed8" } },
       { key: "timeText", label: "Time", default: { textColor: "#ef4444" } },
+      { key: "refreshButton", label: "Refresh button", default: { textColor: "#ffffff", fontWeight: "700", fontStyle: "italic" } },
     ],
     contentFields: [{ key: "heading", label: "Heading", type: "text", default: "📡 LIVE UPDATE" }],
   },
