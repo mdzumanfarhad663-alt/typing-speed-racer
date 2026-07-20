@@ -45,6 +45,8 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
               marginTop: ".25rem",
               cursor: "pointer",
               display: "inline-block",
+              fontStyle: "italic",
+              fontWeight: "bold",
             }}
           >
             Refresh
