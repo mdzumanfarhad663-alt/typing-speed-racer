@@ -156,7 +156,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen px-2 sm:px-4" style={{ background: "#000000" }}>
+    <main className="min-h-screen px-2 sm:px-4 pt-px" style={{ background: "#000000" }}>
       {error && (
         <div className="bg-yellow-100 border-y border-yellow-400 text-center py-2 text-sm">
           {error === "db_unavailable" ? "Database not configured yet." : "Network error"}
