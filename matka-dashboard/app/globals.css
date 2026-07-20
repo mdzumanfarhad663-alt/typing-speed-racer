@@ -20,7 +20,7 @@ html {
 }
 .header-box {
   background: #ffffff;
-  border: 3px inset #ff00ff;
+  border: 3px solid #ff00ff;
 }
 .live-update-box {
   background-color: #f5fffa;
