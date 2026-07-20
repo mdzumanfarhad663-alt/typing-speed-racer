@@ -20,7 +20,7 @@ export function LiveResultList({ items, resolve }: { items: Row[]; resolve: Sect
       </div>
 
       {/* Result cells — separate rounded box */}
-      <section className="section-card rounded-lg overflow-hidden mt-[7px]" style={{ border: "solid 3px #f39c12" }}>
+      <section className="section-card rounded-lg overflow-hidden mt-[4px]" style={{ border: "solid 3px #f39c12" }}>
         <div className="bg-white">
           {items.length === 0 && <div className="py-6 text-center text-gray-500">No results yet</div>}
           {items.map((r) => <ResultCard key={r.id} row={r} resolve={resolve} />)}
