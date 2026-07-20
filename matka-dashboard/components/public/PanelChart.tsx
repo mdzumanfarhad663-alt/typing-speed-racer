@@ -69,7 +69,14 @@ function GameHeader({
     </div>
   );
   const jumpPill = (
-    <div className="bg-black text-center" style={{ padding: "10px 0", ...(jumpFirst ? { marginTop: "-10px" } : { marginBottom: "-10px" }) }}>
+    <div
+      className="bg-black text-center"
+      style={
+        jumpFirst
+          ? { paddingTop: "10px", paddingBottom: "10px", marginTop: "-10px" }
+          : { paddingTop: "3px", paddingBottom: "10px", marginBottom: "-10px" }
+      }
+    >
       <JumpLink
         targetId={jumpHref.replace(/^#/, "")}
         className="inline-block font-bold"
