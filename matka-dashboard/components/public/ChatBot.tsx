@@ -217,7 +217,7 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
         }}
         className="font-bold"
       >
-        {open ? "✕ Close" : "💬 Chat"}
+        {open ? "Close" : "Live Chat"}
       </button>
 
       {open && (
