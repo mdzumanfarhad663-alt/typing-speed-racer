@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import type { Row } from "@/lib/types";
 import { LoadingResult } from "@/components/public/LoadingResult";
 import { normalizeResult } from "@/lib/pannaFix";
-import { EasyTimePicker } from "@/components/admin/EasyTimePicker";
 
 // Admin-only display: show the value with spaces around the dashes
 // (e.g. "568 - 97 - 340"). The stored value / result box stays "568-97-340".
@@ -79,40 +78,6 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
-  async function saveSchedule(row: Row, slot: "liveUpdateTime" | "liveUpdateTime2", value: string) {
-    setSavingId(row.id);
-    const res = await fetch(`/api/admin/rows/${row.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [slot]: value || null }),
-    });
-    if (res.ok) {
-      const { row: updated } = await res.json();
-      setGames((gs) =>
-        gs.map((g) =>
-          g.id === row.id
-            ? { ...g, liveUpdateTime: updated.liveUpdateTime, liveUpdateTime2: updated.liveUpdateTime2, section: updated.section, position: updated.position }
-            : g
-        )
-      );
-    }
-    setSavingId(null);
-  }
-
-  async function saveDuration(row: Row, minutes: string) {
-    setSavingId(row.id);
-    const res = await fetch(`/api/admin/rows/${row.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ liveUpdateDurationMinutes: minutes ? Number(minutes) : null }),
-    });
-    if (res.ok) {
-      const { row: updated } = await res.json();
-      setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, liveUpdateDurationMinutes: updated.liveUpdateDurationMinutes } : g)));
-    }
-    setSavingId(null);
-  }
-
   async function saveResult(row: Row, value: string) {
     if (value === (row.resultValue ?? "")) return;
     setSavingId(row.id);
@@ -125,49 +90,6 @@ export function LiveUpdateToggles() {
       setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, resultValue: value } : g)));
     }
     setSavingId(null);
-  }
-
-  function ScheduleRow({
-    game,
-    busy,
-    onSave,
-  }: {
-    game: Row;
-    busy: boolean;
-    onSave: (slot: "liveUpdateTime" | "liveUpdateTime2", v: string) => void;
-  }) {
-    return (
-      <div className="space-y-1">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-          <span className="text-xs font-semibold text-gray-600">⏰ Auto-on times:</span>
-          <EasyTimePicker label="Open" value={game.liveUpdateTime ?? ""} disabled={busy} onChange={(v) => onSave("liveUpdateTime", v)} />
-          <EasyTimePicker label="Close" value={game.liveUpdateTime2 ?? ""} disabled={busy} onChange={(v) => onSave("liveUpdateTime2", v)} />
-        </div>
-        <div className="text-[10px] text-gray-400 pl-[calc(1rem+4px)]">
-          Bangladesh Standard Time — Time zone in Balia (GMT+6)
-        </div>
-      </div>
-    );
-  }
-
-  function DurationBox({ game, busy, onSave }: { game: Row; busy: boolean; onSave: (v: string) => void }) {
-    const [value, setValue] = useState(game.liveUpdateDurationMinutes ? String(game.liveUpdateDurationMinutes) : "");
-    return (
-      <label className="flex items-center gap-1.5 text-xs">
-        <span className="font-semibold text-gray-600 shrink-0">⏳ Auto-off after</span>
-        <input
-          type="number"
-          min={1}
-          value={value}
-          disabled={busy}
-          placeholder="e.g. 30"
-          className="w-20 border border-gray-300 rounded-md px-2 py-1 text-sm"
-          onChange={(e) => setValue(e.target.value)}
-          onBlur={(e) => onSave(e.target.value)}
-        />
-        <span className="text-gray-500">minutes</span>
-      </label>
-    );
   }
 
   function Switch({ on, busy, onToggle }: { on: boolean; busy: boolean; onToggle: () => void }) {
@@ -224,8 +146,6 @@ export function LiveUpdateToggles() {
                     </div>
                     <Switch on={on} busy={busy} onToggle={() => toggle(g, !on)} />
                   </div>
-                  <ScheduleRow game={g} busy={busy} onSave={(slot, v) => saveSchedule(g, slot, v)} />
-                  <DurationBox game={g} busy={busy} onSave={(v) => saveDuration(g, v)} />
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                     <label className="flex items-center gap-1.5 cursor-pointer">
                       <input
