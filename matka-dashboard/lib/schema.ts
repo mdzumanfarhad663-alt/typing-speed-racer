@@ -20,6 +20,11 @@ export const rows = pgTable("rows", {
   // Null = no schedule for that slot (manual toggle only).
   liveUpdateTime: text("live_update_time"),
   liveUpdateTime2: text("live_update_time_2"),
+  // A second independent Open/Close pair — lets a game auto-show in Live
+  // Update twice a day (e.g. a morning and an evening window) instead of once.
+  // Same rules as the first pair: "HH:MM" 24h Asia/Dhaka, null = no schedule.
+  liveUpdateTime3: text("live_update_time_3"),
+  liveUpdateTime4: text("live_update_time_4"),
   // Minutes to stay visible in Live Update before auto-hiding. Null = stays
   // on until manually turned off. liveUpdateShownAt is stamped whenever the
   // game switches into live_update (manually or via the schedule above), so
@@ -32,6 +37,8 @@ export const rows = pgTable("rows", {
   // again and again for the rest of the day.
   liveUpdateTime1FiredOn: text("live_update_time1_fired_on"),
   liveUpdateTime2FiredOn: text("live_update_time2_fired_on"),
+  liveUpdateTime3FiredOn: text("live_update_time3_fired_on"),
+  liveUpdateTime4FiredOn: text("live_update_time4_fired_on"),
   position: integer("position").notNull().default(0),
   source: text("source").notNull().default("manual"), // "manual" | "scraped"
   sourceKey: text("source_key"), // stable slug for upsert, e.g. "KALYAN_MORNING"

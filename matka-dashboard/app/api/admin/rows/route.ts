@@ -53,6 +53,8 @@ export async function POST(req: Request) {
   const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
   const liveUpdateTime = typeof body.liveUpdateTime === "string" && HHMM.test(body.liveUpdateTime) ? body.liveUpdateTime : null;
   const liveUpdateTime2 = typeof body.liveUpdateTime2 === "string" && HHMM.test(body.liveUpdateTime2) ? body.liveUpdateTime2 : null;
+  const liveUpdateTime3 = typeof body.liveUpdateTime3 === "string" && HHMM.test(body.liveUpdateTime3) ? body.liveUpdateTime3 : null;
+  const liveUpdateTime4 = typeof body.liveUpdateTime4 === "string" && HHMM.test(body.liveUpdateTime4) ? body.liveUpdateTime4 : null;
   const durationNum = Number(body.liveUpdateDurationMinutes);
   const liveUpdateDurationMinutes = Number.isFinite(durationNum) && durationNum > 0 ? Math.round(durationNum) : null;
 
@@ -71,6 +73,8 @@ export async function POST(req: Request) {
       highlight: Boolean(body.highlight),
       liveUpdateTime,
       liveUpdateTime2,
+      liveUpdateTime3,
+      liveUpdateTime4,
       liveUpdateDurationMinutes,
       position,
     })

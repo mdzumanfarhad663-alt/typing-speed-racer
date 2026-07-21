@@ -2,15 +2,27 @@ import { and, eq, or, isNotNull, max, ne } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rows } from "@/lib/schema";
 
-// Auto-switches a manual game into Live Update once either of its two
+// Auto-switches a manual game into Live Update once any of its four
 // scheduled daily times (HH:MM, Asia/Dhaka — the site operator's timezone)
 // has passed today, and auto-hides it again after its configured duration.
+// The four slots are two independent Open/Close pairs, letting a game show
+// twice a day (e.g. a morning window and an evening window).
 // Each schedule slot fires at most once per calendar day (tracked via
-// liveUpdateTime{1,2}FiredOn) so an auto-off doesn't immediately re-trigger
-// the same still-due slot again. Idempotent — safe to call on every page load.
+// liveUpdateTime{1,2,3,4}FiredOn) so an auto-off doesn't immediately
+// re-trigger the same still-due slot again. Idempotent — safe to call on
+// every page load.
 let lastRun = 0;
 const THROTTLE_MS = 15_000;
 const SCHEDULE_TIMEZONE = "Asia/Dhaka";
+
+type FiredField = "liveUpdateTime1FiredOn" | "liveUpdateTime2FiredOn" | "liveUpdateTime3FiredOn" | "liveUpdateTime4FiredOn";
+
+const SLOTS: { timeField: "liveUpdateTime" | "liveUpdateTime2" | "liveUpdateTime3" | "liveUpdateTime4"; firedField: FiredField }[] = [
+  { timeField: "liveUpdateTime", firedField: "liveUpdateTime1FiredOn" },
+  { timeField: "liveUpdateTime2", firedField: "liveUpdateTime2FiredOn" },
+  { timeField: "liveUpdateTime3", firedField: "liveUpdateTime3FiredOn" },
+  { timeField: "liveUpdateTime4", firedField: "liveUpdateTime4FiredOn" },
+];
 
 function currentParts(): { hhmm: string; ymd: string } {
   const parts = new Intl.DateTimeFormat("en-CA", {
@@ -26,7 +38,7 @@ function currentParts(): { hhmm: string; ymd: string } {
   return { hhmm: `${get("hour")}:${get("minute")}`, ymd: `${get("year")}-${get("month")}-${get("day")}` };
 }
 
-async function switchOn(updates: { id: string; firedField: "liveUpdateTime1FiredOn" | "liveUpdateTime2FiredOn"; today: string }[]) {
+async function switchOn(updates: { id: string; firedField: FiredField; today: string }[]) {
   if (updates.length === 0) return;
   const [{ value: maxPos }] = await db.select({ value: max(rows.position) }).from(rows).where(eq(rows.section, "live_update"));
   let nextPos = (maxPos ?? -1) + 1;
@@ -64,26 +76,34 @@ export async function applyScheduledLiveUpdates(): Promise<void> {
         id: rows.id,
         liveUpdateTime: rows.liveUpdateTime,
         liveUpdateTime2: rows.liveUpdateTime2,
+        liveUpdateTime3: rows.liveUpdateTime3,
+        liveUpdateTime4: rows.liveUpdateTime4,
         liveUpdateTime1FiredOn: rows.liveUpdateTime1FiredOn,
         liveUpdateTime2FiredOn: rows.liveUpdateTime2FiredOn,
+        liveUpdateTime3FiredOn: rows.liveUpdateTime3FiredOn,
+        liveUpdateTime4FiredOn: rows.liveUpdateTime4FiredOn,
       })
       .from(rows)
       .where(
         and(
           eq(rows.section, "live_result"),
           ne(rows.source, "scraped"),
-          or(isNotNull(rows.liveUpdateTime), isNotNull(rows.liveUpdateTime2))
+          or(isNotNull(rows.liveUpdateTime), isNotNull(rows.liveUpdateTime2), isNotNull(rows.liveUpdateTime3), isNotNull(rows.liveUpdateTime4))
         )
       );
 
-    const toTurnOn: { id: string; firedField: "liveUpdateTime1FiredOn" | "liveUpdateTime2FiredOn"; today: string }[] = [];
+    const toTurnOn: { id: string; firedField: FiredField; today: string }[] = [];
     for (const r of due) {
-      const slot1Due = r.liveUpdateTime && r.liveUpdateTime <= nowHHMM && r.liveUpdateTime1FiredOn !== today;
-      const slot2Due = r.liveUpdateTime2 && r.liveUpdateTime2 <= nowHHMM && r.liveUpdateTime2FiredOn !== today;
-      // Prefer whichever slot is actually due; if both are, slot 1 wins and
-      // slot 2 will pick up on the next sweep once slot 1 is marked fired.
-      if (slot1Due) toTurnOn.push({ id: r.id, firedField: "liveUpdateTime1FiredOn", today });
-      else if (slot2Due) toTurnOn.push({ id: r.id, firedField: "liveUpdateTime2FiredOn", today });
+      // Prefer whichever slot is actually due; if several are, the earliest
+      // slot wins and the rest pick up on the next sweep once it's fired.
+      for (const slot of SLOTS) {
+        const time = r[slot.timeField];
+        const firedOn = r[slot.firedField];
+        if (time && time <= nowHHMM && firedOn !== today) {
+          toTurnOn.push({ id: r.id, firedField: slot.firedField, today });
+          break;
+        }
+      }
     }
     await switchOn(toTurnOn);
 

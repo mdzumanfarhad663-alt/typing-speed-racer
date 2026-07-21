@@ -26,6 +26,8 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
   const [showInLiveUpdate, setShowInLiveUpdate] = useState((initial?.section ?? section) === "live_update");
   const [liveUpdateTime, setLiveUpdateTime] = useState(initial?.liveUpdateTime ?? "");
   const [liveUpdateTime2, setLiveUpdateTime2] = useState(initial?.liveUpdateTime2 ?? "");
+  const [liveUpdateTime3, setLiveUpdateTime3] = useState(initial?.liveUpdateTime3 ?? "");
+  const [liveUpdateTime4, setLiveUpdateTime4] = useState(initial?.liveUpdateTime4 ?? "");
   const [liveUpdateDurationMinutes, setLiveUpdateDurationMinutes] = useState(
     initial?.liveUpdateDurationMinutes ? String(initial.liveUpdateDurationMinutes) : ""
   );
@@ -54,6 +56,8 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
       extraLines: isFreeZone ? extraLines.filter(Boolean) : null,
       liveUpdateTime: isGame ? liveUpdateTime || null : null,
       liveUpdateTime2: isGame ? liveUpdateTime2 || null : null,
+      liveUpdateTime3: isGame ? liveUpdateTime3 || null : null,
+      liveUpdateTime4: isGame ? liveUpdateTime4 || null : null,
       liveUpdateDurationMinutes: isGame && liveUpdateDurationMinutes ? Number(liveUpdateDurationMinutes) : null,
     };
     const url = initial?.id ? `/api/admin/rows/${initial.id}` : "/api/admin/rows";
@@ -147,9 +151,25 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
                   </div>
                 </div>
               </div>
+              <div className="border-t border-indigo-100 pt-3">
+                <div className="text-xs font-bold text-indigo-700 uppercase tracking-wide mb-2">
+                  Second Open/Close (optional)
+                </div>
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-6">
+                  <div className="space-y-1">
+                    <div className="text-xs font-semibold text-gray-600">Open 2</div>
+                    <EasyTimePicker value={liveUpdateTime3} onChange={setLiveUpdateTime3} />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-xs font-semibold text-gray-600">Close 2</div>
+                    <EasyTimePicker value={liveUpdateTime4} onChange={setLiveUpdateTime4} />
+                  </div>
+                </div>
+              </div>
               <p className="text-[10px] text-gray-500">
-                Open/Close times auto-switch this game into Live Update (Bangladesh time, GMT+6). Leave blank for
-                manual-only control. Auto-off hides it again after the set minutes.
+                Open/Close times auto-switch this game into Live Update (Bangladesh time, GMT+6). Add a second
+                Open/Close pair to show it a second time the same day. Leave blank for manual-only control.
+                Auto-off hides it again after the set minutes (applies to either window).
               </p>
             </div>
           </>
