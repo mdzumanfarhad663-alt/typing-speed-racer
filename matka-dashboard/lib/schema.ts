@@ -26,6 +26,12 @@ export const rows = pgTable("rows", {
   // the timer restarts each time it's turned on.
   liveUpdateDurationMinutes: integer("live_update_duration_minutes"),
   liveUpdateShownAt: timestamp("live_update_shown_at", { withTimezone: true }),
+  // "YYYY-MM-DD" (Asia/Dhaka) of the last calendar day each schedule slot
+  // fired, so a slot only auto-switches on once per day — without this, an
+  // auto-off after N minutes would immediately re-trigger the same slot
+  // again and again for the rest of the day.
+  liveUpdateTime1FiredOn: text("live_update_time1_fired_on"),
+  liveUpdateTime2FiredOn: text("live_update_time2_fired_on"),
   position: integer("position").notNull().default(0),
   source: text("source").notNull().default("manual"), // "manual" | "scraped"
   sourceKey: text("source_key"), // stable slug for upsert, e.g. "KALYAN_MORNING"
