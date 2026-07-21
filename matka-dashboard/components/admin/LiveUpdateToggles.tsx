@@ -79,9 +79,7 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
-  type ScheduleSlot = "liveUpdateTime" | "liveUpdateTime2" | "liveUpdateTime3" | "liveUpdateTime4";
-
-  async function saveSchedule(row: Row, slot: ScheduleSlot, value: string) {
+  async function saveSchedule(row: Row, slot: "liveUpdateTime" | "liveUpdateTime2", value: string) {
     setSavingId(row.id);
     const res = await fetch(`/api/admin/rows/${row.id}`, {
       method: "PATCH",
@@ -93,15 +91,7 @@ export function LiveUpdateToggles() {
       setGames((gs) =>
         gs.map((g) =>
           g.id === row.id
-            ? {
-                ...g,
-                liveUpdateTime: updated.liveUpdateTime,
-                liveUpdateTime2: updated.liveUpdateTime2,
-                liveUpdateTime3: updated.liveUpdateTime3,
-                liveUpdateTime4: updated.liveUpdateTime4,
-                section: updated.section,
-                position: updated.position,
-              }
+            ? { ...g, liveUpdateTime: updated.liveUpdateTime, liveUpdateTime2: updated.liveUpdateTime2, section: updated.section, position: updated.position }
             : g
         )
       );
@@ -144,19 +134,14 @@ export function LiveUpdateToggles() {
   }: {
     game: Row;
     busy: boolean;
-    onSave: (slot: ScheduleSlot, v: string) => void;
+    onSave: (slot: "liveUpdateTime" | "liveUpdateTime2", v: string) => void;
   }) {
     return (
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
           <span className="text-xs font-semibold text-gray-600">⏰ Auto-on times:</span>
           <EasyTimePicker label="Open" value={game.liveUpdateTime ?? ""} disabled={busy} onChange={(v) => onSave("liveUpdateTime", v)} />
           <EasyTimePicker label="Close" value={game.liveUpdateTime2 ?? ""} disabled={busy} onChange={(v) => onSave("liveUpdateTime2", v)} />
-        </div>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-          <span className="text-xs font-semibold text-gray-600">⏰ Auto-on times 2:</span>
-          <EasyTimePicker label="Open 2" value={game.liveUpdateTime3 ?? ""} disabled={busy} onChange={(v) => onSave("liveUpdateTime3", v)} />
-          <EasyTimePicker label="Close 2" value={game.liveUpdateTime4 ?? ""} disabled={busy} onChange={(v) => onSave("liveUpdateTime4", v)} />
         </div>
         <div className="text-[10px] text-gray-400 pl-[calc(1rem+4px)]">
           Bangladesh Standard Time — Time zone in Balia (GMT+6)

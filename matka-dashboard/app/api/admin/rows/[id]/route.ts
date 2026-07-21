@@ -45,16 +45,6 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     patch.liveUpdateTime2 = typeof v === "string" && HHMM.test(v) ? v : null;
     patch.liveUpdateTime2FiredOn = null;
   }
-  if ("liveUpdateTime3" in body) {
-    const v = body.liveUpdateTime3;
-    patch.liveUpdateTime3 = typeof v === "string" && HHMM.test(v) ? v : null;
-    patch.liveUpdateTime3FiredOn = null;
-  }
-  if ("liveUpdateTime4" in body) {
-    const v = body.liveUpdateTime4;
-    patch.liveUpdateTime4 = typeof v === "string" && HHMM.test(v) ? v : null;
-    patch.liveUpdateTime4FiredOn = null;
-  }
   if ("liveUpdateDurationMinutes" in body) {
     const v = Number(body.liveUpdateDurationMinutes);
     patch.liveUpdateDurationMinutes = Number.isFinite(v) && v > 0 ? Math.round(v) : null;
