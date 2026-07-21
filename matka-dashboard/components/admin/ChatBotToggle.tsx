@@ -107,6 +107,14 @@ export function ChatBotToggle() {
         ) : (
           <div className="space-y-3">
             <ToggleRow
+              icon="🔄"
+              title="Refresh Button"
+              desc="Hidden from home page"
+              on={refreshEnabled}
+              busy={saving === "refresh"}
+              onToggle={() => save({ refreshEnabled: !refreshEnabled }, "refresh")}
+            />
+            <ToggleRow
               icon="💬"
               title="Live Chat Bot"
               desc="Hidden from home page"
@@ -118,14 +126,6 @@ export function ChatBotToggle() {
                 // turning one on always turns the other off.
                 save({ enabled: next, ...(next ? { matkaPlayEnabled: false } : {}) }, "chat");
               }}
-            />
-            <ToggleRow
-              icon="🔄"
-              title="Refresh Button"
-              desc="Hidden from home page"
-              on={refreshEnabled}
-              busy={saving === "refresh"}
-              onToggle={() => save({ refreshEnabled: !refreshEnabled }, "refresh")}
             />
             <ToggleRow
               icon="🎲"
