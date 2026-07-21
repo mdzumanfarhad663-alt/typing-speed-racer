@@ -162,22 +162,24 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
         >
           ALL RIGHTS RESERVED (2012-2026)
         </div>
-        <div className="text-xs font-semibold mb-1" style={{ color: "#555" }}>
-          SITE OWNER:-
+        <div className="owner-info" style={{ margin: "10px 0", borderTop: "1px solid #eee", paddingTop: "8px" }}>
+          <div className="text-xs font-semibold mb-1" style={{ color: "#555" }}>
+            SITE OWNER:-
+          </div>
+          <div className="font-bold text-base sm:text-lg mb-1" style={{ color: "#1a237e" }}>
+            {content.ownerName}
+          </div>
+          <div className="font-bold text-base sm:text-lg mb-3" style={{ color: "#1a237e" }}>
+            SURYA BHAI
+          </div>
+          <a
+            href={`tel:${content.phone}`}
+            className="font-bold text-2xl sm:text-3xl"
+            style={{ color: "#0000cd", textDecoration: "none" }}
+          >
+            {content.phone}
+          </a>
         </div>
-        <div className="font-bold text-base sm:text-lg mb-1" style={{ color: "#1a237e" }}>
-          {content.ownerName}
-        </div>
-        <div className="font-bold text-base sm:text-lg mb-3" style={{ color: "#1a237e" }}>
-          SURYA BHAI
-        </div>
-        <a
-          href={`tel:${content.phone}`}
-          className="font-bold text-2xl sm:text-3xl"
-          style={{ color: "#0000cd", textDecoration: "none" }}
-        >
-          {content.phone}
-        </a>
       </div>
 
     </div>
