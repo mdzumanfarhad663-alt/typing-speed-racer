@@ -62,6 +62,7 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
           background: "#432004",
           borderRadius: 8,
           border: "1px solid #9a4a09",
+          borderTop: "1px solid rgba(255, 255, 255, .1)",
         }}
       >
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-3">
