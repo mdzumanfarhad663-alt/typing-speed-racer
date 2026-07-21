@@ -36,10 +36,14 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   if ("liveUpdateTime" in body) {
     const v = body.liveUpdateTime;
     patch.liveUpdateTime = typeof v === "string" && HHMM.test(v) ? v : null;
+    // Editing the time re-arms it — otherwise a slot already fired today
+    // would silently refuse to fire again today for the new time.
+    patch.liveUpdateTime1FiredOn = null;
   }
   if ("liveUpdateTime2" in body) {
     const v = body.liveUpdateTime2;
     patch.liveUpdateTime2 = typeof v === "string" && HHMM.test(v) ? v : null;
+    patch.liveUpdateTime2FiredOn = null;
   }
   if ("liveUpdateDurationMinutes" in body) {
     const v = Number(body.liveUpdateDurationMinutes);
