@@ -43,8 +43,8 @@ export function SattaMatkaInfo({ resolve, marketTimings }: { resolve: SectionRes
       <style>{`
         .ansh-h2 { text-align:center; font-style:normal; margin-top:15px; margin-bottom:10px; color:#00f; font-size:1.1rem; font-weight:700; }
         .ansh-p { text-align:justify; font-style:normal; line-height:1.6; margin-bottom:12px; }
-        .ansh-ul { text-align:left; padding-left:20px; margin-bottom:12px; }
-        .ansh-li { font-style:normal; margin-bottom:5px; }
+        .ansh-ul { text-align:left; padding-left:20px; margin-bottom:12px; list-style-type:disc; }
+        .ansh-li { font-style:normal; margin-bottom:5px; display:list-item; }
         .ansh-hr { border:none; border-top:1px solid #ccc; margin:12px 0; }
         .ansh-table { margin:15px auto; text-align:center; width:100%; max-width:600px; border-collapse:collapse; font-size:small; }
         .ansh-table th, .ansh-table td { border:1px solid #999; padding:4px 8px; }
