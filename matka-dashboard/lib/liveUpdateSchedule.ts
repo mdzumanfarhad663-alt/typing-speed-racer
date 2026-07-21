@@ -1,10 +1,11 @@
-import { and, eq, isNotNull, max, ne } from "drizzle-orm";
+import { and, eq, or, isNotNull, max, ne } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rows } from "@/lib/schema";
 
-// Auto-switches a manual game into Live Update once its scheduled daily time
-// (HH:MM, Asia/Kolkata) has passed today. Idempotent — a game already in
-// live_update is skipped, so this is safe to call on every page load.
+// Auto-switches a manual game into Live Update once either of its two
+// scheduled daily times (HH:MM, Asia/Kolkata — typically open and close)
+// has passed today. Idempotent — a game already in live_update is skipped,
+// so this is safe to call on every page load.
 let lastRun = 0;
 const THROTTLE_MS = 15_000;
 
@@ -25,11 +26,19 @@ export async function applyScheduledLiveUpdates(): Promise<void> {
   try {
     const nowHHMM = currentHHMM();
     const due = await db
-      .select({ id: rows.id, liveUpdateTime: rows.liveUpdateTime })
+      .select({ id: rows.id, liveUpdateTime: rows.liveUpdateTime, liveUpdateTime2: rows.liveUpdateTime2 })
       .from(rows)
-      .where(and(eq(rows.section, "live_result"), ne(rows.source, "scraped"), isNotNull(rows.liveUpdateTime)));
+      .where(
+        and(
+          eq(rows.section, "live_result"),
+          ne(rows.source, "scraped"),
+          or(isNotNull(rows.liveUpdateTime), isNotNull(rows.liveUpdateTime2))
+        )
+      );
 
-    const toFlip = due.filter((r) => r.liveUpdateTime && r.liveUpdateTime <= nowHHMM);
+    const toFlip = due.filter(
+      (r) => (r.liveUpdateTime && r.liveUpdateTime <= nowHHMM) || (r.liveUpdateTime2 && r.liveUpdateTime2 <= nowHHMM)
+    );
     if (toFlip.length === 0) return;
 
     const [{ value: maxPos }] = await db.select({ value: max(rows.position) }).from(rows).where(eq(rows.section, "live_update"));

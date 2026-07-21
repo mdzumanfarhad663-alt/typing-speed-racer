@@ -78,16 +78,22 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
-  async function saveSchedule(row: Row, value: string) {
+  async function saveSchedule(row: Row, slot: "liveUpdateTime" | "liveUpdateTime2", value: string) {
     setSavingId(row.id);
     const res = await fetch(`/api/admin/rows/${row.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ liveUpdateTime: value || null }),
+      body: JSON.stringify({ [slot]: value || null }),
     });
     if (res.ok) {
       const { row: updated } = await res.json();
-      setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, liveUpdateTime: updated.liveUpdateTime, section: updated.section, position: updated.position } : g)));
+      setGames((gs) =>
+        gs.map((g) =>
+          g.id === row.id
+            ? { ...g, liveUpdateTime: updated.liveUpdateTime, liveUpdateTime2: updated.liveUpdateTime2, section: updated.section, position: updated.position }
+            : g
+        )
+      );
     }
     setSavingId(null);
   }
@@ -106,11 +112,21 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
-  function ScheduleRow({ game, busy, onSave }: { game: Row; busy: boolean; onSave: (v: string) => void }) {
-    const [value, setValue] = useState(game.liveUpdateTime ?? "");
+  function TimeBox({
+    label,
+    initial,
+    busy,
+    onSave,
+  }: {
+    label: string;
+    initial: string;
+    busy: boolean;
+    onSave: (v: string) => void;
+  }) {
+    const [value, setValue] = useState(initial);
     return (
-      <label className="flex items-center gap-2 text-xs">
-        <span className="font-semibold text-gray-600 shrink-0">⏰ Auto-on time (IST)</span>
+      <label className="flex items-center gap-1.5 text-xs">
+        <span className="font-semibold text-gray-600 shrink-0">{label}</span>
         <input
           type="time"
           value={value}
@@ -124,12 +140,30 @@ export function LiveUpdateToggles() {
             type="button"
             onClick={() => { setValue(""); onSave(""); }}
             className="text-gray-400 hover:text-red-600 font-bold"
-            title="Clear schedule"
+            title="Clear"
           >
             ✕
           </button>
         )}
       </label>
+    );
+  }
+
+  function ScheduleRow({
+    game,
+    busy,
+    onSave,
+  }: {
+    game: Row;
+    busy: boolean;
+    onSave: (slot: "liveUpdateTime" | "liveUpdateTime2", v: string) => void;
+  }) {
+    return (
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+        <span className="text-xs font-semibold text-gray-600">⏰ Auto-on times (IST):</span>
+        <TimeBox label="Open" initial={game.liveUpdateTime ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime", v)} />
+        <TimeBox label="Close" initial={game.liveUpdateTime2 ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime2", v)} />
+      </div>
     );
   }
 
@@ -187,7 +221,7 @@ export function LiveUpdateToggles() {
                     </div>
                     <Switch on={on} busy={busy} onToggle={() => toggle(g, !on)} />
                   </div>
-                  <ScheduleRow game={g} busy={busy} onSave={(v) => saveSchedule(g, v)} />
+                  <ScheduleRow game={g} busy={busy} onSave={(slot, v) => saveSchedule(g, slot, v)} />
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                     <label className="flex items-center gap-1.5 cursor-pointer">
                       <input
