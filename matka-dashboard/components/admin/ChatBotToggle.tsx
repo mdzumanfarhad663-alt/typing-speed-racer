@@ -112,7 +112,12 @@ export function ChatBotToggle() {
               desc="Hidden from home page"
               on={enabled}
               busy={saving === "chat"}
-              onToggle={() => save({ enabled: !enabled }, "chat")}
+              onToggle={() => {
+                const next = !enabled;
+                // Live Chat and Matka Play share the same bottom-left spot —
+                // turning one on always turns the other off.
+                save({ enabled: next, ...(next ? { matkaPlayEnabled: false } : {}) }, "chat");
+              }}
             />
             <ToggleRow
               icon="🔄"
@@ -128,7 +133,10 @@ export function ChatBotToggle() {
               desc="Hidden from home page"
               on={matkaPlayEnabled}
               busy={saving === "matkaPlay"}
-              onToggle={() => save({ matkaPlayEnabled: !matkaPlayEnabled }, "matkaPlay")}
+              onToggle={() => {
+                const next = !matkaPlayEnabled;
+                save({ matkaPlayEnabled: next, ...(next ? { enabled: false } : {}) }, "matkaPlay");
+              }}
             />
           </div>
         )}

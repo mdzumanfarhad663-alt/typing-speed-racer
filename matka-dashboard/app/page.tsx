@@ -149,7 +149,9 @@ export default function Home() {
   // Admin toggles (💬 Live Chat Bot card): hidden only when explicitly turned off.
   const chatEnabled = settings["chatbot"]?.content?.enabled !== "false";
   const refreshEnabled = settings["chatbot"]?.content?.refreshEnabled !== "false";
-  const matkaPlayEnabled = settings["chatbot"]?.content?.matkaPlayEnabled !== "false";
+  // Live Chat and Matka Play share the same bottom-left spot, so Matka Play
+  // never shows while Live Chat is on — even if old saved data has both true.
+  const matkaPlayEnabled = settings["chatbot"]?.content?.matkaPlayEnabled !== "false" && !chatEnabled;
 
   // Hold the first paint until the design is known (snapshot or server) so a
   // reload never flashes the default look — just the plain page background.

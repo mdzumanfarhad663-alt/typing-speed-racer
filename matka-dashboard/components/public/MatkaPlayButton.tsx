@@ -9,7 +9,7 @@ export function MatkaPlayButton() {
       style={{
         position: "fixed",
         bottom: "20px",
-        left: "90px",
+        left: "5px",
         zIndex: 60,
         padding: "5px 8px",
         fontSize: "14px",
