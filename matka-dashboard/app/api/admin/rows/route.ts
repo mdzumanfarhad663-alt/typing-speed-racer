@@ -50,6 +50,12 @@ export async function POST(req: Request) {
     .where(and(eq(rows.section, body.section), eq(rows.source, "manual")));
   const position = Math.min((maxManualPos ?? -1) + 1, 9999);
 
+  const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
+  const liveUpdateTime = typeof body.liveUpdateTime === "string" && HHMM.test(body.liveUpdateTime) ? body.liveUpdateTime : null;
+  const liveUpdateTime2 = typeof body.liveUpdateTime2 === "string" && HHMM.test(body.liveUpdateTime2) ? body.liveUpdateTime2 : null;
+  const durationNum = Number(body.liveUpdateDurationMinutes);
+  const liveUpdateDurationMinutes = Number.isFinite(durationNum) && durationNum > 0 ? Math.round(durationNum) : null;
+
   const [inserted] = await db
     .insert(rows)
     .values({
@@ -63,6 +69,9 @@ export async function POST(req: Request) {
       extraLines: Array.isArray(body.extraLines) ? body.extraLines.map(String) : null,
       dateLabel: body.dateLabel ?? null,
       highlight: Boolean(body.highlight),
+      liveUpdateTime,
+      liveUpdateTime2,
+      liveUpdateDurationMinutes,
       position,
     })
     .returning();

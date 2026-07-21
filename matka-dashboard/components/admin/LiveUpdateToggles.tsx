@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import type { Row } from "@/lib/types";
 import { LoadingResult } from "@/components/public/LoadingResult";
 import { normalizeResult } from "@/lib/pannaFix";
+import { EasyTimePicker } from "@/components/admin/EasyTimePicker";
 
 // Admin-only display: show the value with spaces around the dashes
 // (e.g. "568 - 97 - 340"). The stored value / result box stays "568-97-340".
@@ -126,86 +127,6 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
-  // "HH:MM" (24h) <-> simple 12h Hour / Minute / AM-PM parts, so admins pick
-  // from three short dropdowns instead of fighting a native time-wheel input.
-  function to12h(hhmm: string): { hour: string; minute: string; ampm: "AM" | "PM" } {
-    if (!hhmm) return { hour: "", minute: "", ampm: "AM" };
-    const [h, m] = hhmm.split(":").map(Number);
-    const ampm = h >= 12 ? "PM" : "AM";
-    let hour12 = h % 12;
-    if (hour12 === 0) hour12 = 12;
-    return { hour: String(hour12), minute: String(m).padStart(2, "0"), ampm };
-  }
-  function to24h(hour: string, minute: string, ampm: "AM" | "PM"): string {
-    if (!hour || !minute) return "";
-    let h = Number(hour) % 12;
-    if (ampm === "PM") h += 12;
-    return `${String(h).padStart(2, "0")}:${minute}`;
-  }
-
-  const HOURS = Array.from({ length: 12 }, (_, i) => String(i + 1));
-  const MINUTES = Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, "0"));
-
-  function TimeBox({
-    label,
-    initial,
-    busy,
-    onSave,
-  }: {
-    label: string;
-    initial: string;
-    busy: boolean;
-    onSave: (v: string) => void;
-  }) {
-    const parsed = to12h(initial);
-    const [hour, setHour] = useState(parsed.hour);
-    const [minute, setMinute] = useState(parsed.minute);
-    const [ampm, setAmpm] = useState<"AM" | "PM">(parsed.ampm);
-
-    function commit(nextHour: string, nextMinute: string, nextAmpm: "AM" | "PM") {
-      onSave(to24h(nextHour, nextMinute, nextAmpm));
-    }
-
-    return (
-      <div className="flex items-center gap-1.5 text-xs">
-        <span className="font-semibold text-gray-600 shrink-0">{label}</span>
-        <select
-          value={hour}
-          disabled={busy}
-          className="border border-gray-300 rounded-md px-1.5 py-1 text-sm bg-white"
-          onChange={(e) => {
-            setHour(e.target.value);
-            const m = minute || "00";
-            if (!minute) setMinute(m);
-            commit(e.target.value, m, ampm);
-          }}
-        >
-          <option value="">--</option>
-          {HOURS.map((h) => <option key={h} value={h}>{h}</option>)}
-        </select>
-        <span className="text-gray-400">:</span>
-        <select
-          value={minute}
-          disabled={busy}
-          className="border border-gray-300 rounded-md px-1.5 py-1 text-sm bg-white"
-          onChange={(e) => { setMinute(e.target.value); commit(hour, e.target.value, ampm); }}
-        >
-          <option value="">--</option>
-          {MINUTES.map((m) => <option key={m} value={m}>{m}</option>)}
-        </select>
-        <select
-          value={ampm}
-          disabled={busy}
-          className="border border-gray-300 rounded-md px-1.5 py-1 text-sm bg-white font-semibold"
-          onChange={(e) => { const v = e.target.value as "AM" | "PM"; setAmpm(v); commit(hour, minute, v); }}
-        >
-          <option value="AM">AM</option>
-          <option value="PM">PM</option>
-        </select>
-      </div>
-    );
-  }
-
   function ScheduleRow({
     game,
     busy,
@@ -219,8 +140,8 @@ export function LiveUpdateToggles() {
       <div className="space-y-1">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
           <span className="text-xs font-semibold text-gray-600">⏰ Auto-on times:</span>
-          <TimeBox label="Open" initial={game.liveUpdateTime ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime", v)} />
-          <TimeBox label="Close" initial={game.liveUpdateTime2 ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime2", v)} />
+          <EasyTimePicker label="Open" value={game.liveUpdateTime ?? ""} disabled={busy} onChange={(v) => onSave("liveUpdateTime", v)} />
+          <EasyTimePicker label="Close" value={game.liveUpdateTime2 ?? ""} disabled={busy} onChange={(v) => onSave("liveUpdateTime2", v)} />
         </div>
         <div className="text-[10px] text-gray-400 pl-[calc(1rem+4px)]">
           Bangladesh Standard Time — Time zone in Balia (GMT+6)

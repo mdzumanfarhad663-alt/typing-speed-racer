@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { Row, Section } from "@/lib/types";
+import { EasyTimePicker } from "@/components/admin/EasyTimePicker";
 
 type Props = {
   section: Section;
@@ -23,6 +24,11 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
   const [color, setColor] = useState(initial?.color || "#0066cc");
   const [highlight, setHighlight] = useState(Boolean(initial?.highlight));
   const [showInLiveUpdate, setShowInLiveUpdate] = useState((initial?.section ?? section) === "live_update");
+  const [liveUpdateTime, setLiveUpdateTime] = useState(initial?.liveUpdateTime ?? "");
+  const [liveUpdateTime2, setLiveUpdateTime2] = useState(initial?.liveUpdateTime2 ?? "");
+  const [liveUpdateDurationMinutes, setLiveUpdateDurationMinutes] = useState(
+    initial?.liveUpdateDurationMinutes ? String(initial.liveUpdateDurationMinutes) : ""
+  );
   const [dateLabel, setDateLabel] = useState(initial?.dateLabel || "");
   const [extraLines, setExtraLines] = useState<string[]>(initial?.extraLines || []);
   const [busy, setBusy] = useState(false);
@@ -46,6 +52,9 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
       highlight,
       dateLabel: isFreeZone ? dateLabel || null : null,
       extraLines: isFreeZone ? extraLines.filter(Boolean) : null,
+      liveUpdateTime: isGame ? liveUpdateTime || null : null,
+      liveUpdateTime2: isGame ? liveUpdateTime2 || null : null,
+      liveUpdateDurationMinutes: isGame && liveUpdateDurationMinutes ? Number(liveUpdateDurationMinutes) : null,
     };
     const url = initial?.id ? `/api/admin/rows/${initial.id}` : "/api/admin/rows";
     const method = initial?.id ? "PATCH" : "POST";
@@ -109,6 +118,40 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
               <input type="checkbox" checked={showInLiveUpdate} onChange={(e) => setShowInLiveUpdate(e.target.checked)} />
               <span className="text-sm">Show in 📡 Live Update list (always shows in Live Matka Result)</span>
             </label>
+
+            <div className="md:col-span-2 rounded-lg border border-indigo-100 bg-indigo-50/50 p-3 space-y-3">
+              <div className="text-xs font-bold text-indigo-700 uppercase tracking-wide">
+                ⏰ Auto Schedule (Live Update)
+              </div>
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-6">
+                <div className="space-y-1">
+                  <div className="text-xs font-semibold text-gray-600">Open</div>
+                  <EasyTimePicker value={liveUpdateTime} onChange={setLiveUpdateTime} />
+                </div>
+                <div className="space-y-1">
+                  <div className="text-xs font-semibold text-gray-600">Close</div>
+                  <EasyTimePicker value={liveUpdateTime2} onChange={setLiveUpdateTime2} />
+                </div>
+                <div className="space-y-1">
+                  <div className="text-xs font-semibold text-gray-600">Auto-off after</div>
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      type="number"
+                      min={1}
+                      value={liveUpdateDurationMinutes}
+                      onChange={(e) => setLiveUpdateDurationMinutes(e.target.value)}
+                      placeholder="e.g. 30"
+                      className="w-20 border border-gray-300 rounded-md px-2 py-1 text-sm bg-white"
+                    />
+                    <span className="text-sm text-gray-500">minutes</span>
+                  </div>
+                </div>
+              </div>
+              <p className="text-[10px] text-gray-500">
+                Open/Close times auto-switch this game into Live Update (Bangladesh time, GMT+6). Leave blank for
+                manual-only control. Auto-off hides it again after the set minutes.
+              </p>
+            </div>
           </>
         )}
         {isFreeZone && (
