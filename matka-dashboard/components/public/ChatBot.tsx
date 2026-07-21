@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Row } from "@/lib/types";
 import type { MarketTiming } from "@/lib/schema";
+import { findTopic, formatTopicAnswer } from "@/lib/chatKnowledge";
 
 type Msg = { from: "bot" | "user"; text: string };
 type Lang = "en" | "hi" | "bn";
@@ -141,6 +142,14 @@ export function ChatBot({ games, timings, ank }: { games: Row[]; timings: Market
 
     if (/contact|admin|owner|guess|যোগাযোগ|संपर्क/.test(t)) return s.contact;
     if (/^(hi|hello|hey|salam|namaste|নমস্কার|হ্যালো|नमस्ते)\b/.test(t)) return s.hello;
+
+    // Site pages, links and forum topics (footer nav + forum section), with a
+    // fuzzy "did you mean" fallback when the question doesn't match exactly.
+    const topic = findTopic(t);
+    if (topic) {
+      const exact = [topic.title.toLowerCase(), ...topic.keywords].some((kw) => t.includes(kw.toLowerCase()));
+      return formatTopicAnswer(topic, exact);
+    }
 
     return s.fallback;
   }
