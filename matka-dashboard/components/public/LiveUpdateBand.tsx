@@ -10,9 +10,6 @@ const NEW_BADGE_GIF =
 export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: SectionResolver }) {
   if (!items || items.length === 0) return null;
   const { styles, content } = resolve("live_update_band");
-  // Games currently showing "Loading…" surface at the top so visitors see
-  // what's updating right now, without reordering the rest of the list.
-  const sorted = [...items].sort((a, b) => Number(b.resultLoading) - Number(a.resultLoading));
 
   return (
     <div className="live-update-box">
@@ -20,7 +17,7 @@ export function LiveUpdateBand({ items, resolve }: { items: Row[]; resolve: Sect
         <span className="text-black font-bold">{content.heading}</span>
         <img src={NEW_BADGE_GIF} alt="New" width={38} height={17} className="inline-block ml-2 align-middle" />
       </div>
-      {sorted.map((row, i) => (
+      {items.map((row, i) => (
         <div
           key={row.id}
           className="flex flex-col items-center py-2.5 bg-white"
