@@ -44,7 +44,9 @@ export function LiveUpdateToggles() {
     const res = await fetch(`/api/admin/rows/${row.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ section: nextSection }),
+      // keepPosition: this dashboard switch shouldn't reorder the list —
+      // only the section changes, the row stays where it already was.
+      body: JSON.stringify({ section: nextSection, keepPosition: true }),
     });
     if (res.ok) {
       setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, section: nextSection } : g)));

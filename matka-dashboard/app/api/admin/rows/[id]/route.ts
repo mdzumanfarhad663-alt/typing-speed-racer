@@ -53,16 +53,20 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   if ("extraLines" in body) patch.extraLines = Array.isArray(body.extraLines) ? body.extraLines.map(String) : null;
 
   // Allow moving a game between Live Result and Live Update (checkbox toggle).
-  // When the section changes, give it a fresh manual position in the target section.
+  // When the section changes, give it a fresh manual position in the target
+  // section — unless the caller passes keepPosition (the dashboard's on/off
+  // switch), which just flips the section without reordering the list.
   if ("section" in body && VALID_SECTIONS.includes(body.section)) {
     const [existing] = await db.select({ section: rows.section }).from(rows).where(eq(rows.id, params.id)).limit(1);
     if (existing && existing.section !== body.section) {
       patch.section = body.section;
-      const [{ value: maxPos }] = await db
-        .select({ value: max(rows.position) })
-        .from(rows)
-        .where(and(eq(rows.section, body.section), eq(rows.source, "manual")));
-      patch.position = Math.min((maxPos ?? -1) + 1, 9999);
+      if (!body.keepPosition) {
+        const [{ value: maxPos }] = await db
+          .select({ value: max(rows.position) })
+          .from(rows)
+          .where(and(eq(rows.section, body.section), eq(rows.source, "manual")));
+        patch.position = Math.min((maxPos ?? -1) + 1, 9999);
+      }
       // Manually switching into Live Update also (re)starts the auto-off timer.
       if (body.section === "live_update") patch.liveUpdateShownAt = new Date();
     }
