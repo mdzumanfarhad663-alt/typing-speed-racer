@@ -125,13 +125,13 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
               </div>
               <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-6">
                 <div className="space-y-1">
-                  <div className={`text-xs font-semibold ${showInLiveUpdate ? "text-green-600 font-bold" : "text-gray-600"}`}>
+                  <div className={`text-xs font-semibold ${liveUpdateTime ? "text-green-600 font-bold" : "text-gray-600"}`}>
                     Open
                   </div>
                   <EasyTimePicker value={liveUpdateTime} onChange={setLiveUpdateTime} />
                 </div>
                 <div className="space-y-1">
-                  <div className={`text-xs font-semibold ${!showInLiveUpdate ? "text-red-600 font-bold" : "text-gray-600"}`}>
+                  <div className={`text-xs font-semibold ${liveUpdateTime2 ? "text-green-600 font-bold" : "text-gray-600"}`}>
                     Close
                   </div>
                   <EasyTimePicker value={liveUpdateTime2} onChange={setLiveUpdateTime2} />

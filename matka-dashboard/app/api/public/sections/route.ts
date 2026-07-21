@@ -45,6 +45,17 @@ export async function GET() {
       }
     }
 
+    // Manual games always sort above auto-scraped ones within a section,
+    // regardless of their stored position value.
+    const manualFirst = (a: (typeof grouped.live_result)[number], b: (typeof grouped.live_result)[number]) => {
+      const aScraped = a.source === "scraped" ? 1 : 0;
+      const bScraped = b.source === "scraped" ? 1 : 0;
+      if (aScraped !== bScraped) return aScraped - bScraped;
+      return a.position - b.position;
+    };
+    grouped.live_result.sort(manualFirst);
+    grouped.live_update.sort(manualFirst);
+
     return NextResponse.json(grouped, {
       headers: { "Cache-Control": "no-store, max-age=0" },
     });
