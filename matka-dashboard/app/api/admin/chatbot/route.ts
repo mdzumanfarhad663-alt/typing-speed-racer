@@ -27,6 +27,7 @@ export async function GET() {
   return NextResponse.json({
     enabled: content?.enabled !== "false",
     refreshEnabled: content?.refreshEnabled !== "false",
+    matkaPlayEnabled: content?.matkaPlayEnabled !== "false",
   });
 }
 
@@ -34,12 +35,16 @@ export async function PATCH(req: Request) {
   const denied = await guard();
   if (denied) return denied;
   const body = await req.json().catch(() => null);
-  if (!body || (typeof body.enabled !== "boolean" && typeof body.refreshEnabled !== "boolean")) {
+  if (
+    !body ||
+    (typeof body.enabled !== "boolean" && typeof body.refreshEnabled !== "boolean" && typeof body.matkaPlayEnabled !== "boolean")
+  ) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
   const content: Record<string, string> = {};
   if (typeof body.enabled === "boolean") content.enabled = String(body.enabled);
   if (typeof body.refreshEnabled === "boolean") content.refreshEnabled = String(body.refreshEnabled);
+  if (typeof body.matkaPlayEnabled === "boolean") content.matkaPlayEnabled = String(body.matkaPlayEnabled);
   const [existing] = await db.select().from(sectionSettings).where(eq(sectionSettings.sectionKey, KEY)).limit(1);
   const merged = { ...((existing?.content as Record<string, string>) ?? {}), ...content };
   if (existing) {
@@ -53,5 +58,6 @@ export async function PATCH(req: Request) {
   return NextResponse.json({
     enabled: merged.enabled !== "false",
     refreshEnabled: merged.refreshEnabled !== "false",
+    matkaPlayEnabled: merged.matkaPlayEnabled !== "false",
   });
 }

@@ -16,6 +16,7 @@ import { MainFooter } from "@/components/public/MainFooter";
 import { LiveResultList } from "@/components/public/LiveResultList";
 import { HomeRefreshButton } from "@/components/public/HomeRefreshButton";
 import { ChatBot } from "@/components/public/ChatBot";
+import { MatkaPlayButton } from "@/components/public/MatkaPlayButton";
 import type { PublicSectionsResponse } from "@/lib/types";
 import { makeResolver, type SectionSettingsMap } from "@/lib/resolveStyle";
 import type { MarketTiming } from "@/lib/schema";
@@ -148,6 +149,7 @@ export default function Home() {
   // Admin toggles (💬 Live Chat Bot card): hidden only when explicitly turned off.
   const chatEnabled = settings["chatbot"]?.content?.enabled !== "false";
   const refreshEnabled = settings["chatbot"]?.content?.refreshEnabled !== "false";
+  const matkaPlayEnabled = settings["chatbot"]?.content?.matkaPlayEnabled !== "false";
 
   // Hold the first paint until the design is known (snapshot or server) so a
   // reload never flashes the default look — just the plain page background.
@@ -176,6 +178,7 @@ export default function Home() {
       <FaqSection resolve={resolve} />
       <MainFooter resolve={resolve} />
       {refreshEnabled && <HomeRefreshButton />}
+      {matkaPlayEnabled && <MatkaPlayButton />}
       {chatEnabled && <ChatBot games={[...data.live_result, ...data.live_update]} timings={marketTimings} ank={ankData} />}
     </main>
   );

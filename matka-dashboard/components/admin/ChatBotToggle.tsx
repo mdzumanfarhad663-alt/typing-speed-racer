@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 export function ChatBotToggle() {
   const [enabled, setEnabled] = useState<boolean | null>(null);
   const [refreshEnabled, setRefreshEnabled] = useState<boolean>(true);
-  const [saving, setSaving] = useState<"chat" | "refresh" | null>(null);
+  const [matkaPlayEnabled, setMatkaPlayEnabled] = useState<boolean>(true);
+  const [saving, setSaving] = useState<"chat" | "refresh" | "matkaPlay" | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -16,12 +17,13 @@ export function ChatBotToggle() {
           const j = await res.json();
           setEnabled(j.enabled);
           setRefreshEnabled(j.refreshEnabled);
+          setMatkaPlayEnabled(j.matkaPlayEnabled);
         }
       } catch { /* leave loading */ }
     })();
   }, []);
 
-  async function save(patch: { enabled?: boolean; refreshEnabled?: boolean }, which: "chat" | "refresh") {
+  async function save(patch: { enabled?: boolean; refreshEnabled?: boolean; matkaPlayEnabled?: boolean }, which: "chat" | "refresh" | "matkaPlay") {
     setSaving(which);
     try {
       const res = await fetch("/api/admin/chatbot", {
@@ -33,6 +35,7 @@ export function ChatBotToggle() {
         const j = await res.json();
         setEnabled(j.enabled);
         setRefreshEnabled(j.refreshEnabled);
+        setMatkaPlayEnabled(j.matkaPlayEnabled);
       }
     } finally {
       setSaving(null);
@@ -118,6 +121,14 @@ export function ChatBotToggle() {
               on={refreshEnabled}
               busy={saving === "refresh"}
               onToggle={() => save({ refreshEnabled: !refreshEnabled }, "refresh")}
+            />
+            <ToggleRow
+              icon="🎲"
+              title="Matka Play Button"
+              desc="Hidden from home page"
+              on={matkaPlayEnabled}
+              busy={saving === "matkaPlay"}
+              onToggle={() => save({ matkaPlayEnabled: !matkaPlayEnabled }, "matkaPlay")}
             />
           </div>
         )}
