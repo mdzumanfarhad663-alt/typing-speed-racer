@@ -15,6 +15,10 @@ export function LiveUpdateToggles() {
   const [games, setGames] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
+  // Per-game captured value, staged for sending to that game's panel chart.
+  const [captured, setCaptured] = useState<Record<string, string>>({});
+  const [sendingId, setSendingId] = useState<string | null>(null);
+  const [sentMsg, setSentMsg] = useState<Record<string, string>>({});
 
   async function load(silent = false) {
     if (!silent) setLoading(true);
@@ -92,6 +96,50 @@ export function LiveUpdateToggles() {
       setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, resultValue: value } : g)));
     }
     setSavingId(null);
+  }
+
+  function capture(row: Row) {
+    setCaptured((c) => ({ ...c, [row.id]: row.resultValue ?? "" }));
+    setSentMsg((m) => ({ ...m, [row.id]: "" }));
+  }
+
+  function cancelCapture(row: Row) {
+    setCaptured((c) => {
+      const next = { ...c };
+      delete next[row.id];
+      return next;
+    });
+  }
+
+  async function sendToChart(row: Row) {
+    const value = captured[row.id];
+    if (!value) return;
+    const ok = window.confirm(
+      `Send ${spaced(value)} to ${row.title}'s panel chart for today?\n\nThis adds (or overwrites) today's box — creating this week's chart row first if it doesn't exist yet.`
+    );
+    if (!ok) return;
+    setSendingId(row.id);
+    try {
+      const res = await fetch("/api/admin/panel/capture", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rowId: row.id, resultValue: value }),
+      });
+      if (res.ok) {
+        setSentMsg((m) => ({ ...m, [row.id]: "✓ Sent to chart" }));
+        setCaptured((c) => {
+          const next = { ...c };
+          delete next[row.id];
+          return next;
+        });
+      } else {
+        const j = await res.json().catch(() => ({}));
+        setSentMsg((m) => ({ ...m, [row.id]: j.error ? `✗ ${j.error}` : "✗ Failed to send" }));
+      }
+    } catch {
+      setSentMsg((m) => ({ ...m, [row.id]: "✗ Network error" }));
+    }
+    setSendingId(null);
   }
 
   function Switch({ on, busy, onToggle }: { on: boolean; busy: boolean; onToggle: () => void }) {
@@ -172,20 +220,60 @@ export function LiveUpdateToggles() {
                   </div>
                   {/* The dashboard always shows the editable real value, even when
                       Loading is on — only the public result cell shows the animation. */}
-                  <input
-                    type="text"
-                    defaultValue={spaced(g.resultValue ?? "")}
-                    placeholder="000 - 00 - 000"
-                    disabled={busy}
-                    className="w-full border border-gray-300 bg-white rounded-lg px-3 py-2 text-lg text-center font-bold tracking-wide focus:outline-none focus:ring-2 focus:ring-indigo-300"
-                    onBlur={(e) => {
-                      // Panna auto-correction (matches the server): 321-00-871 → 123-66-178
-                      const raw = normalizeResult(unspaced(e.target.value));
-                      e.target.value = spaced(raw);
-                      saveResult(g, raw);
-                    }}
-                    onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
-                  />
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      defaultValue={spaced(g.resultValue ?? "")}
+                      placeholder="000 - 00 - 000"
+                      disabled={busy}
+                      className="flex-1 min-w-0 border border-gray-300 bg-white rounded-lg px-3 py-2 text-lg text-center font-bold tracking-wide focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                      onBlur={(e) => {
+                        // Panna auto-correction (matches the server): 321-00-871 → 123-66-178
+                        const raw = normalizeResult(unspaced(e.target.value));
+                        e.target.value = spaced(raw);
+                        saveResult(g, raw);
+                      }}
+                      onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => capture(g)}
+                      disabled={busy || !g.resultValue}
+                      className="shrink-0 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold px-3 py-2 rounded-lg"
+                    >
+                      Capture
+                    </button>
+                  </div>
+
+                  {captured[g.id] !== undefined && (
+                    <div className="flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2">
+                      <span className="flex-1 min-w-0 font-bold text-center text-indigo-900 truncate">
+                        ( {spaced(captured[g.id]) || "—"} )
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => sendToChart(g)}
+                        disabled={sendingId === g.id}
+                        className="shrink-0 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white text-xs font-semibold px-3 py-2 rounded-lg"
+                      >
+                        {sendingId === g.id ? "Sending…" : "Send to Chart"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => cancelCapture(g)}
+                        disabled={sendingId === g.id}
+                        className="shrink-0 text-indigo-400 hover:text-indigo-700 text-xs font-semibold px-1"
+                        aria-label="Cancel capture"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                  {sentMsg[g.id] && (
+                    <div className={`text-xs font-semibold ${sentMsg[g.id].startsWith("✓") ? "text-green-700" : "text-red-600"}`}>
+                      {sentMsg[g.id]}
+                    </div>
+                  )}
                 </li>
               );
             })}
