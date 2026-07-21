@@ -65,7 +65,10 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
           borderTop: "1px solid rgba(255, 255, 255, .1)",
         }}
       >
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-3">
+        <div
+          className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-3 pb-3"
+          style={{ borderBottom: "1px solid rgba(255, 255, 255, .1)" }}
+        >
           {[
             { label: "SATTA MATKA CHART", href: "https://sattamatkadpboss.mobi/satta-matka-chart.php" },
             { label: "TARA MATKA", href: "https://sattamatkadpboss.mobi/tara-matka-mumbai.php" },
@@ -78,7 +81,7 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
               target="_blank"
               rel="noopener noreferrer"
               className="font-bold text-sm sm:text-base hover:underline"
-              style={{ color: "#ffd700", textDecoration: "none" }}
+              style={{ color: "#ffffff", textDecoration: "none" }}
             >
               {link.label}
             </a>
@@ -97,7 +100,7 @@ export function MainFooter({ resolve }: { resolve: SectionResolver }) {
               target="_blank"
               rel="noopener noreferrer"
               className="font-bold text-sm sm:text-base hover:underline"
-              style={{ color: "#ffd700", textDecoration: "none" }}
+              style={{ color: "#ffffff", textDecoration: "none" }}
             >
               {link.label}
             </a>
