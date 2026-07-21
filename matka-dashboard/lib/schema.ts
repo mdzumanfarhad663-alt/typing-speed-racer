@@ -15,11 +15,17 @@ export const rows = pgTable("rows", {
   dateLabel: text("date_label"),
   highlight: boolean("highlight").notNull().default(false),
   resultLoading: boolean("result_loading").notNull().default(false),
-  // Daily "HH:MM" (24h, Asia/Kolkata) times at which this game auto-switches
+  // Daily "HH:MM" (24h, Asia/Dhaka) times at which this game auto-switches
   // into Live Update — typically the market's open and close times.
   // Null = no schedule for that slot (manual toggle only).
   liveUpdateTime: text("live_update_time"),
   liveUpdateTime2: text("live_update_time_2"),
+  // Minutes to stay visible in Live Update before auto-hiding. Null = stays
+  // on until manually turned off. liveUpdateShownAt is stamped whenever the
+  // game switches into live_update (manually or via the schedule above), so
+  // the timer restarts each time it's turned on.
+  liveUpdateDurationMinutes: integer("live_update_duration_minutes"),
+  liveUpdateShownAt: timestamp("live_update_shown_at", { withTimezone: true }),
   position: integer("position").notNull().default(0),
   source: text("source").notNull().default("manual"), // "manual" | "scraped"
   sourceKey: text("source_key"), // stable slug for upsert, e.g. "KALYAN_MORNING"

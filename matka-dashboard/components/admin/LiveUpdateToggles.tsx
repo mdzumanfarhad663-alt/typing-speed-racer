@@ -98,6 +98,20 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
+  async function saveDuration(row: Row, minutes: string) {
+    setSavingId(row.id);
+    const res = await fetch(`/api/admin/rows/${row.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ liveUpdateDurationMinutes: minutes ? Number(minutes) : null }),
+    });
+    if (res.ok) {
+      const { row: updated } = await res.json();
+      setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, liveUpdateDurationMinutes: updated.liveUpdateDurationMinutes } : g)));
+    }
+    setSavingId(null);
+  }
+
   async function saveResult(row: Row, value: string) {
     if (value === (row.resultValue ?? "")) return;
     setSavingId(row.id);
@@ -167,6 +181,36 @@ export function LiveUpdateToggles() {
     );
   }
 
+  function DurationBox({ game, busy, onSave }: { game: Row; busy: boolean; onSave: (v: string) => void }) {
+    const [value, setValue] = useState(game.liveUpdateDurationMinutes ? String(game.liveUpdateDurationMinutes) : "");
+    return (
+      <label className="flex items-center gap-1.5 text-xs">
+        <span className="font-semibold text-gray-600 shrink-0">⏳ Auto-off after</span>
+        <input
+          type="number"
+          min={1}
+          value={value}
+          disabled={busy}
+          placeholder="e.g. 30"
+          className="w-20 border border-gray-300 rounded-md px-2 py-1 text-sm"
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={(e) => onSave(e.target.value)}
+        />
+        <span className="text-gray-500">minutes</span>
+        {value && (
+          <button
+            type="button"
+            onClick={() => { setValue(""); onSave(""); }}
+            className="text-gray-400 hover:text-red-600 font-bold"
+            title="Clear"
+          >
+            ✕
+          </button>
+        )}
+      </label>
+    );
+  }
+
   function Switch({ on, busy, onToggle }: { on: boolean; busy: boolean; onToggle: () => void }) {
     return (
       <button
@@ -222,6 +266,7 @@ export function LiveUpdateToggles() {
                     <Switch on={on} busy={busy} onToggle={() => toggle(g, !on)} />
                   </div>
                   <ScheduleRow game={g} busy={busy} onSave={(slot, v) => saveSchedule(g, slot, v)} />
+                  <DurationBox game={g} busy={busy} onSave={(v) => saveDuration(g, v)} />
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                     <label className="flex items-center gap-1.5 cursor-pointer">
                       <input

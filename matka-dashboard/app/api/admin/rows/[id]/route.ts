@@ -41,6 +41,10 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     const v = body.liveUpdateTime2;
     patch.liveUpdateTime2 = typeof v === "string" && HHMM.test(v) ? v : null;
   }
+  if ("liveUpdateDurationMinutes" in body) {
+    const v = Number(body.liveUpdateDurationMinutes);
+    patch.liveUpdateDurationMinutes = Number.isFinite(v) && v > 0 ? Math.round(v) : null;
+  }
   if ("position" in body) patch.position = Number(body.position) || 0;
   if ("extraLines" in body) patch.extraLines = Array.isArray(body.extraLines) ? body.extraLines.map(String) : null;
 
@@ -55,6 +59,8 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         .from(rows)
         .where(and(eq(rows.section, body.section), eq(rows.source, "manual")));
       patch.position = Math.min((maxPos ?? -1) + 1, 9999);
+      // Manually switching into Live Update also (re)starts the auto-off timer.
+      if (body.section === "live_update") patch.liveUpdateShownAt = new Date();
     }
   }
 

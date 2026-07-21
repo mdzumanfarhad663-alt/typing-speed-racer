@@ -11,6 +11,8 @@ export async function ensureRowsColumns(): Promise<void> {
     await db.execute(sql`ALTER TABLE rows ADD COLUMN IF NOT EXISTS result_loading boolean NOT NULL DEFAULT false`);
     await db.execute(sql`ALTER TABLE rows ADD COLUMN IF NOT EXISTS live_update_time text`);
     await db.execute(sql`ALTER TABLE rows ADD COLUMN IF NOT EXISTS live_update_time_2 text`);
+    await db.execute(sql`ALTER TABLE rows ADD COLUMN IF NOT EXISTS live_update_duration_minutes integer`);
+    await db.execute(sql`ALTER TABLE rows ADD COLUMN IF NOT EXISTS live_update_shown_at timestamptz`);
     ensured = true;
   } catch (err) {
     console.error("[ensureRowsColumns] failed", err);
