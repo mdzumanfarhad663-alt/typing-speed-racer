@@ -1,4 +1,5 @@
-// Redeploy trigger: fixes a stuck /admin edge middleware build.
+// Redeploy trigger: several commits in a row weren't reflected on the live
+// site (footer divider, Matka Play button) — forcing a fresh build.
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
