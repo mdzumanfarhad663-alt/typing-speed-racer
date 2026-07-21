@@ -61,7 +61,7 @@ export function ChartPromoFooter() {
         <div className="font-bold text-xl sm:text-2xl" style={{ color: "#d0021b" }}>SattaMatka-Dpboss.In</div>
         <div className="font-bold text-xl sm:text-2xl" style={{ color: "#d0021b" }}>SattaMatkaDpboss.Mobi</div>
         <div className="font-bold text-base sm:text-lg text-black mt-1">ALL RIGHTS RESERVED (2012-2026)</div>
-        <div className="mx-auto mt-3 pt-3 max-w-xs" style={{ borderTop: "1px solid rgba(0, 0, 0, .15)" }}>
+        <div className="mx-auto mt-3 pt-3 max-w-xs" style={{ borderTop: "1px solid #000000" }}>
           <div className="font-bold text-base sm:text-lg text-black">SITE OWNER:-</div>
         </div>
         <div className="font-bold text-base sm:text-lg underline text-black">PRO. BIG BOSS SIR</div>
