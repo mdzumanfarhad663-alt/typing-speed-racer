@@ -3,7 +3,7 @@
 export function MatkaPlayButton() {
   return (
     <a
-      href="https://sattamatkadpboss.mobi/matka-play.php"
+      href="https://sattamatkadpboss.mobi/app-apna-release.apk"
       target="_blank"
       rel="noopener noreferrer"
       style={{

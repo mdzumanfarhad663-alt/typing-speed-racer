@@ -15,9 +15,9 @@ export function PromoBlock({ resolve }: { resolve: SectionResolver }) {
         {content.hindiText}
       </div>
 
-      {/* Play Online Matka button — scrolls to top */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      {/* Play Online Matka button — downloads the app */}
+      <a
+        href="https://sattamatkadpboss.mobi/app-apna-release.apk"
         className="font-bold italic"
         style={{
           ...toCss(styles.button),
@@ -37,7 +37,7 @@ export function PromoBlock({ resolve }: { resolve: SectionResolver }) {
         }}
       >
         {content.buttonLabel}
-      </button>
+      </a>
 
       {/* India's Biggest & Most Trusted */}
       <div
