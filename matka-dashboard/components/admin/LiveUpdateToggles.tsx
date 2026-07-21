@@ -149,16 +149,6 @@ export function LiveUpdateToggles() {
           onChange={(e) => setValue(e.target.value)}
           onBlur={(e) => onSave(e.target.value)}
         />
-        {value && (
-          <button
-            type="button"
-            onClick={() => { setValue(""); onSave(""); }}
-            className="text-gray-400 hover:text-red-600 font-bold"
-            title="Clear"
-          >
-            ✕
-          </button>
-        )}
       </label>
     );
   }
@@ -173,10 +163,15 @@ export function LiveUpdateToggles() {
     onSave: (slot: "liveUpdateTime" | "liveUpdateTime2", v: string) => void;
   }) {
     return (
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-        <span className="text-xs font-semibold text-gray-600">⏰ Auto-on times (Bangladesh time):</span>
-        <TimeBox label="Open" initial={game.liveUpdateTime ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime", v)} />
-        <TimeBox label="Close" initial={game.liveUpdateTime2 ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime2", v)} />
+      <div className="space-y-1">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+          <span className="text-xs font-semibold text-gray-600">⏰ Auto-on times:</span>
+          <TimeBox label="Open" initial={game.liveUpdateTime ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime", v)} />
+          <TimeBox label="Close" initial={game.liveUpdateTime2 ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime2", v)} />
+        </div>
+        <div className="text-[10px] text-gray-400 pl-[calc(1rem+4px)]">
+          Bangladesh Standard Time — Time zone in Balia (GMT+6)
+        </div>
       </div>
     );
   }
@@ -197,16 +192,6 @@ export function LiveUpdateToggles() {
           onBlur={(e) => onSave(e.target.value)}
         />
         <span className="text-gray-500">minutes</span>
-        {value && (
-          <button
-            type="button"
-            onClick={() => { setValue(""); onSave(""); }}
-            className="text-gray-400 hover:text-red-600 font-bold"
-            title="Clear"
-          >
-            ✕
-          </button>
-        )}
       </label>
     );
   }
