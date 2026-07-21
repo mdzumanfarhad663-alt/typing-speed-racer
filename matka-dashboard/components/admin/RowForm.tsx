@@ -125,11 +125,15 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
               </div>
               <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-6">
                 <div className="space-y-1">
-                  <div className="text-xs font-semibold text-gray-600">Open</div>
+                  <div className={`text-xs font-semibold ${showInLiveUpdate ? "text-green-600 font-bold" : "text-gray-600"}`}>
+                    Open
+                  </div>
                   <EasyTimePicker value={liveUpdateTime} onChange={setLiveUpdateTime} />
                 </div>
                 <div className="space-y-1">
-                  <div className="text-xs font-semibold text-gray-600">Close</div>
+                  <div className={`text-xs font-semibold ${!showInLiveUpdate ? "text-red-600 font-bold" : "text-gray-600"}`}>
+                    Close
+                  </div>
                   <EasyTimePicker value={liveUpdateTime2} onChange={setLiveUpdateTime2} />
                 </div>
                 <div className="space-y-1">
@@ -148,8 +152,8 @@ export function RowForm({ section, initial, onSaved, onCancel }: Props) {
                 </div>
               </div>
               <p className="text-[10px] text-gray-500">
-                Open/Close times auto-switch this game into Live Update (Bangladesh time, GMT+6). Leave blank for
-                manual-only control. Auto-off hides it again after the set minutes.
+                Open/Close times auto-switch this game into Live Update (Time zone: Asia/Dhaka, GMT+6). Leave blank
+                for manual-only control. Auto-off hides it again after the set minutes.
               </p>
             </div>
           </>
