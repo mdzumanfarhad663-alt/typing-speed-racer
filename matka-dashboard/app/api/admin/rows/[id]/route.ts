@@ -32,6 +32,10 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   if (typeof patch.resultValue === "string") patch.resultValue = normalizeResult(patch.resultValue);
   if ("highlight" in body) patch.highlight = Boolean(body.highlight);
   if ("resultLoading" in body) patch.resultLoading = Boolean(body.resultLoading);
+  if ("liveUpdateTime" in body) {
+    const v = body.liveUpdateTime;
+    patch.liveUpdateTime = typeof v === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(v) ? v : null;
+  }
   if ("position" in body) patch.position = Number(body.position) || 0;
   if ("extraLines" in body) patch.extraLines = Array.isArray(body.extraLines) ? body.extraLines.map(String) : null;
 

@@ -9,6 +9,7 @@ export async function ensureRowsColumns(): Promise<void> {
   if (ensured) return;
   try {
     await db.execute(sql`ALTER TABLE rows ADD COLUMN IF NOT EXISTS result_loading boolean NOT NULL DEFAULT false`);
+    await db.execute(sql`ALTER TABLE rows ADD COLUMN IF NOT EXISTS live_update_time text`);
     ensured = true;
   } catch (err) {
     console.error("[ensureRowsColumns] failed", err);

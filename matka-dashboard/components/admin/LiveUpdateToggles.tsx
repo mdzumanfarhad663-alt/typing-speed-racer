@@ -16,8 +16,8 @@ export function LiveUpdateToggles() {
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
 
-  async function load() {
-    setLoading(true);
+  async function load(silent = false) {
+    if (!silent) setLoading(true);
     const res = await fetch("/api/admin/rows", { cache: "no-store" });
     if (res.ok) {
       const { rows } = await res.json();
@@ -27,10 +27,16 @@ export function LiveUpdateToggles() {
         )
       );
     }
-    setLoading(false);
+    if (!silent) setLoading(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    // Poll (silently) so a scheduled auto-switch (see liveUpdateTime) shows
+    // up here without needing a manual refresh.
+    const t = setInterval(() => load(true), 20_000);
+    return () => clearInterval(t);
+  }, []);
 
   async function toggle(row: Row, checked: boolean) {
     setSavingId(row.id);
@@ -72,6 +78,20 @@ export function LiveUpdateToggles() {
     setSavingId(null);
   }
 
+  async function saveSchedule(row: Row, value: string) {
+    setSavingId(row.id);
+    const res = await fetch(`/api/admin/rows/${row.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ liveUpdateTime: value || null }),
+    });
+    if (res.ok) {
+      const { row: updated } = await res.json();
+      setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, liveUpdateTime: updated.liveUpdateTime, section: updated.section, position: updated.position } : g)));
+    }
+    setSavingId(null);
+  }
+
   async function saveResult(row: Row, value: string) {
     if (value === (row.resultValue ?? "")) return;
     setSavingId(row.id);
@@ -84,6 +104,33 @@ export function LiveUpdateToggles() {
       setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, resultValue: value } : g)));
     }
     setSavingId(null);
+  }
+
+  function ScheduleRow({ game, busy, onSave }: { game: Row; busy: boolean; onSave: (v: string) => void }) {
+    const [value, setValue] = useState(game.liveUpdateTime ?? "");
+    return (
+      <label className="flex items-center gap-2 text-xs">
+        <span className="font-semibold text-gray-600 shrink-0">⏰ Auto-on time (IST)</span>
+        <input
+          type="time"
+          value={value}
+          disabled={busy}
+          className="border border-gray-300 rounded-md px-2 py-1 text-sm"
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={(e) => onSave(e.target.value)}
+        />
+        {value && (
+          <button
+            type="button"
+            onClick={() => { setValue(""); onSave(""); }}
+            className="text-gray-400 hover:text-red-600 font-bold"
+            title="Clear schedule"
+          >
+            ✕
+          </button>
+        )}
+      </label>
+    );
   }
 
   function Switch({ on, busy, onToggle }: { on: boolean; busy: boolean; onToggle: () => void }) {
@@ -140,6 +187,7 @@ export function LiveUpdateToggles() {
                     </div>
                     <Switch on={on} busy={busy} onToggle={() => toggle(g, !on)} />
                   </div>
+                  <ScheduleRow game={g} busy={busy} onSave={(v) => saveSchedule(g, v)} />
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                     <label className="flex items-center gap-1.5 cursor-pointer">
                       <input
