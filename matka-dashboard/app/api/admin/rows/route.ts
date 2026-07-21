@@ -5,6 +5,7 @@ import { rows, type Section } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
 import { ensureRowsColumns } from "@/lib/ensureSchema";
 import { normalizeResult } from "@/lib/pannaFix";
+import { applyScheduledLiveUpdates } from "@/lib/liveUpdateSchedule";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,6 +22,7 @@ export async function GET(req: Request) {
   const denied = await guard();
   if (denied) return denied;
   await ensureRowsColumns();
+  await applyScheduledLiveUpdates();
   const url = new URL(req.url);
   const section = url.searchParams.get("section") as Section | null;
   const query = db.select().from(rows).orderBy(asc(rows.position), asc(rows.createdAt));
