@@ -51,7 +51,7 @@ export function ContactForumSection({ resolve }: { resolve: SectionResolver }) {
       </div>
 
       {/* Member's Forum section */}
-      <div className="my-[7px]" style={{ overflow: "hidden", borderRadius: 4 }}>
+      <div className="my-[7px]" style={{ overflow: "hidden", borderRadius: 4, fontFamily: "'Open Sans', sans-serif" }}>
         <div className="text-center py-3 px-4" style={toCss(styles.forumHeader)}>
           <span className="font-bold text-lg sm:text-xl">{content.forumHeading}</span>
         </div>
