@@ -3,15 +3,16 @@ import { db } from "@/lib/db";
 import { rows } from "@/lib/schema";
 
 // Auto-switches a manual game into Live Update once either of its two
-// scheduled daily times (HH:MM, Asia/Kolkata — typically open and close)
+// scheduled daily times (HH:MM, Asia/Dhaka — the site operator's timezone)
 // has passed today. Idempotent — a game already in live_update is skipped,
 // so this is safe to call on every page load.
 let lastRun = 0;
 const THROTTLE_MS = 15_000;
+const SCHEDULE_TIMEZONE = "Asia/Dhaka";
 
 function currentHHMM(): string {
   return new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Asia/Kolkata",
+    timeZone: SCHEDULE_TIMEZONE,
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,

@@ -160,7 +160,7 @@ export function LiveUpdateToggles() {
   }) {
     return (
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-        <span className="text-xs font-semibold text-gray-600">⏰ Auto-on times (IST):</span>
+        <span className="text-xs font-semibold text-gray-600">⏰ Auto-on times (Bangladesh time):</span>
         <TimeBox label="Open" initial={game.liveUpdateTime ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime", v)} />
         <TimeBox label="Close" initial={game.liveUpdateTime2 ?? ""} busy={busy} onSave={(v) => onSave("liveUpdateTime2", v)} />
       </div>
