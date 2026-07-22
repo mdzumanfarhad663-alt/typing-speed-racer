@@ -25,11 +25,14 @@ export function LiveUpdateToggles() {
     const res = await fetch("/api/admin/rows", { cache: "no-store" });
     if (res.ok) {
       const { rows } = await res.json();
-      setGames(
-        (rows as Row[]).filter(
-          (r) => r.source !== "scraped" && (r.section === "live_result" || r.section === "live_update")
-        )
+      const manualGames = (rows as Row[]).filter(
+        (r) => r.source !== "scraped" && (r.section === "live_result" || r.section === "live_update")
       );
+      // Stable order for this panel only — sort by creation time, never by
+      // `position` (which is reassigned per-section and would otherwise make
+      // a game jump around here whenever its Live Update switch flips).
+      manualGames.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      setGames(manualGames);
     }
     if (!silent) setLoading(false);
   }
