@@ -1,13 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 
-// Dashboard card: on/off switches that hide or show the live chat bot and
-// the Refresh button on the public home page.
+// Dashboard card: on/off switches for widgets on the public home page.
 export function ChatBotToggle() {
-  const [enabled, setEnabled] = useState<boolean | null>(null);
-  const [refreshEnabled, setRefreshEnabled] = useState<boolean>(true);
+  const [refreshEnabled, setRefreshEnabled] = useState<boolean | null>(null);
   const [matkaPlayEnabled, setMatkaPlayEnabled] = useState<boolean>(true);
-  const [saving, setSaving] = useState<"chat" | "refresh" | "matkaPlay" | null>(null);
+  const [saving, setSaving] = useState<"refresh" | "matkaPlay" | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -15,7 +13,6 @@ export function ChatBotToggle() {
         const res = await fetch("/api/admin/chatbot", { cache: "no-store" });
         if (res.ok) {
           const j = await res.json();
-          setEnabled(j.enabled);
           setRefreshEnabled(j.refreshEnabled);
           setMatkaPlayEnabled(j.matkaPlayEnabled);
         }
@@ -23,7 +20,7 @@ export function ChatBotToggle() {
     })();
   }, []);
 
-  async function save(patch: { enabled?: boolean; refreshEnabled?: boolean; matkaPlayEnabled?: boolean }, which: "chat" | "refresh" | "matkaPlay") {
+  async function save(patch: { refreshEnabled?: boolean; matkaPlayEnabled?: boolean }, which: "refresh" | "matkaPlay") {
     setSaving(which);
     try {
       const res = await fetch("/api/admin/chatbot", {
@@ -33,7 +30,6 @@ export function ChatBotToggle() {
       });
       if (res.ok) {
         const j = await res.json();
-        setEnabled(j.enabled);
         setRefreshEnabled(j.refreshEnabled);
         setMatkaPlayEnabled(j.matkaPlayEnabled);
       }
@@ -102,7 +98,7 @@ export function ChatBotToggle() {
         <p className="text-[11px] text-blue-100">Show or hide widgets on the public home page</p>
       </div>
       <div className="p-4">
-        {enabled === null ? (
+        {refreshEnabled === null ? (
           <div className="text-gray-500 text-sm py-4 text-center">Loading…</div>
         ) : (
           <div className="space-y-3">
@@ -115,28 +111,12 @@ export function ChatBotToggle() {
               onToggle={() => save({ refreshEnabled: !refreshEnabled }, "refresh")}
             />
             <ToggleRow
-              icon="💬"
-              title="Live Chat Bot"
-              desc="Hidden from home page"
-              on={enabled}
-              busy={saving === "chat"}
-              onToggle={() => {
-                const next = !enabled;
-                // Live Chat and Matka Play share the same bottom-left spot —
-                // turning one on always turns the other off.
-                save({ enabled: next, ...(next ? { matkaPlayEnabled: false } : {}) }, "chat");
-              }}
-            />
-            <ToggleRow
               icon="🎲"
               title="Matka Play Button"
               desc="Hidden from home page"
               on={matkaPlayEnabled}
               busy={saving === "matkaPlay"}
-              onToggle={() => {
-                const next = !matkaPlayEnabled;
-                save({ matkaPlayEnabled: next, ...(next ? { enabled: false } : {}) }, "matkaPlay");
-              }}
+              onToggle={() => save({ matkaPlayEnabled: !matkaPlayEnabled }, "matkaPlay")}
             />
           </div>
         )}
