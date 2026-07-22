@@ -33,7 +33,7 @@ async function switchOn(updates: { id: string; firedField: "liveUpdateTime1Fired
   for (const u of updates) {
     await db
       .update(rows)
-      .set({ section: "live_update", position: nextPos, liveUpdateShownAt: new Date(), [u.firedField]: u.today, updatedAt: new Date() })
+      .set({ section: "live_update", position: nextPos, highlight: true, liveUpdateShownAt: new Date(), [u.firedField]: u.today, updatedAt: new Date() })
       .where(eq(rows.id, u.id));
     nextPos++;
   }
@@ -44,7 +44,7 @@ async function switchOff(ids: string[]) {
   const [{ value: maxPos }] = await db.select({ value: max(rows.position) }).from(rows).where(eq(rows.section, "live_result"));
   let nextPos = (maxPos ?? -1) + 1;
   for (const id of ids) {
-    await db.update(rows).set({ section: "live_result", position: nextPos, updatedAt: new Date() }).where(eq(rows.id, id));
+    await db.update(rows).set({ section: "live_result", position: nextPos, highlight: false, updatedAt: new Date() }).where(eq(rows.id, id));
     nextPos++;
   }
 }
