@@ -55,7 +55,7 @@ export function ResultCard({ row, resolve }: { row: Row; resolve: SectionResolve
         )}
       </div>
       <div className="flex-1 text-center">
-        <div className="font-bold text-xl" style={{ color: row.color, ...toCss(styles.nameText) }}>
+        <div className="font-bold text-xl" style={{ color: row.highlight ? "#0000ff" : row.color, ...toCss(styles.nameText) }}>
           {row.title}
         </div>
         <div className="text-xl font-bold tracking-wide" style={toCss(styles.resultText)}>
