@@ -239,33 +239,41 @@ export function LiveUpdateToggles() {
                       type="button"
                       onClick={() => capture(g)}
                       disabled={busy || !g.resultValue}
-                      className="shrink-0 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold px-3 py-2 rounded-lg"
+                      title="Capture result"
+                      aria-label="Capture result"
+                      className="shrink-0 grid place-items-center h-10 w-10 rounded-lg bg-gradient-to-b from-indigo-500 to-indigo-700 hover:from-indigo-400 hover:to-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed text-white shadow-sm shadow-indigo-900/30 transition"
                     >
-                      Capture
+                      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2M20 8V6a2 2 0 0 0-2-2h-2M20 16v2a2 2 0 0 1-2 2h-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        <circle cx="12" cy="12" r="3.5" stroke="currentColor" strokeWidth="2" />
+                      </svg>
                     </button>
                   </div>
 
                   {captured[g.id] !== undefined && (
-                    <div className="flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2">
-                      <span className="flex-1 min-w-0 font-bold text-center text-indigo-900 truncate">
+                    <div className="rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-white p-3 space-y-2 shadow-sm">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-wide">Captured result</span>
+                        <button
+                          type="button"
+                          onClick={() => cancelCapture(g)}
+                          disabled={sendingId === g.id}
+                          className="shrink-0 text-indigo-400 hover:text-indigo-700 text-xs font-semibold leading-none px-1"
+                          aria-label="Cancel capture"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                      <div className="w-full break-words whitespace-normal font-bold text-center text-lg sm:text-xl text-indigo-900 tracking-wide">
                         ( {spaced(captured[g.id]) || "—"} )
-                      </span>
+                      </div>
                       <button
                         type="button"
                         onClick={() => sendToChart(g)}
                         disabled={sendingId === g.id}
-                        className="shrink-0 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white text-xs font-semibold px-3 py-2 rounded-lg"
+                        className="w-full bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 disabled:opacity-50 text-white text-sm font-semibold py-2 rounded-lg shadow-sm shadow-green-900/30 transition"
                       >
-                        {sendingId === g.id ? "Sending…" : "Send to Chart"}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => cancelCapture(g)}
-                        disabled={sendingId === g.id}
-                        className="shrink-0 text-indigo-400 hover:text-indigo-700 text-xs font-semibold px-1"
-                        aria-label="Cancel capture"
-                      >
-                        ✕
+                        {sendingId === g.id ? "Sending…" : "📊 Send to Chart"}
                       </button>
                     </div>
                   )}
