@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { panelEntries, type PanelDay } from "@/lib/schema";
+import { panelEntries, jodiEntries, type PanelDay } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
 import { syncJodiFromPanel } from "@/lib/syncJodi";
 import { computePanelJodi, normalizeResult } from "@/lib/pannaFix";
@@ -51,6 +51,20 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
   const denied = await guard();
   if (denied) return denied;
+  const [existing] = await db.select().from(panelEntries).where(eq(panelEntries.id, params.id)).limit(1);
   await db.delete(panelEntries).where(eq(panelEntries.id, params.id));
+  // Deleting a panel week also removes the matching jodi week — same rowId
+  // and week range — so the jodi chart never keeps a stale row behind.
+  if (existing) {
+    await db
+      .delete(jodiEntries)
+      .where(
+        and(
+          eq(jodiEntries.rowId, existing.rowId),
+          eq(jodiEntries.weekStart, existing.weekStart),
+          eq(jodiEntries.weekEnd, existing.weekEnd)
+        )
+      );
+  }
   return NextResponse.json({ ok: true });
 }

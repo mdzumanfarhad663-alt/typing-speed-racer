@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { asc, eq, max } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { panelEntries, type PanelDay } from "@/lib/schema";
+import { panelEntries, jodiEntries, type PanelDay } from "@/lib/schema";
 import { getSession } from "@/lib/auth";
 import { syncJodiFromPanel } from "@/lib/syncJodi";
 import { computePanelJodi, normalizeResult } from "@/lib/pannaFix";
@@ -100,6 +100,9 @@ export async function PUT(req: Request) {
     }));
 
   await db.delete(panelEntries).where(eq(panelEntries.rowId, body.rowId));
+  // Wipe the jodi side too so a week removed by this restore (e.g. undoing
+  // an "add week") doesn't leave a stale jodi row behind.
+  await db.delete(jodiEntries).where(eq(jodiEntries.rowId, body.rowId));
   if (values.length > 0) {
     const inserted = await db.insert(panelEntries).values(values).returning();
     for (const en of inserted) {
@@ -121,5 +124,7 @@ export async function DELETE(req: Request) {
   if (!ok) return NextResponse.json({ error: "wrong_password" }, { status: 403 });
 
   await db.delete(panelEntries).where(eq(panelEntries.rowId, body.rowId));
+  // Wiping the whole panel chart also wipes the jodi chart it feeds.
+  await db.delete(jodiEntries).where(eq(jodiEntries.rowId, body.rowId));
   return NextResponse.json({ ok: true });
 }
