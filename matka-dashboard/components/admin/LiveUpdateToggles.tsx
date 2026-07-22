@@ -119,9 +119,7 @@ export function LiveUpdateToggles() {
   async function sendToChart(row: Row) {
     const value = captured[row.id];
     if (!value) return;
-    const ok = window.confirm(
-      `Send ${spaced(value)} to ${row.title}'s panel chart for today?\n\nThis adds (or overwrites) today's box — creating this week's chart row first if it doesn't exist yet.`
-    );
+    const ok = window.confirm("Are you sure you want to add this to the chart?");
     if (!ok) return;
     setSendingId(row.id);
     try {
@@ -276,9 +274,22 @@ export function LiveUpdateToggles() {
                         type="button"
                         onClick={() => sendToChart(g)}
                         disabled={sendingId === g.id}
-                        className="w-full bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 disabled:opacity-50 text-white text-sm font-semibold py-2 rounded-lg shadow-sm shadow-green-900/30 transition"
+                        title="Send to Chart"
+                        aria-label="Send to Chart"
+                        className="w-full flex items-center justify-center bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 disabled:opacity-50 text-white py-2.5 rounded-lg shadow-sm shadow-green-900/30 transition"
                       >
-                        {sendingId === g.id ? "Sending…" : "📊 Send to Chart"}
+                        {sendingId === g.id ? (
+                          <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 animate-spin" xmlns="http://www.w3.org/2000/svg">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                          </svg>
+                        ) : (
+                          <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="13" width="3.5" height="7" rx="1" fill="currentColor" className="animate-bounce" style={{ animationDelay: "0ms", animationDuration: "1s" }} />
+                            <rect x="10.25" y="9" width="3.5" height="11" rx="1" fill="currentColor" className="animate-bounce" style={{ animationDelay: "150ms", animationDuration: "1s" }} />
+                            <rect x="16.5" y="4" width="3.5" height="16" rx="1" fill="currentColor" className="animate-bounce" style={{ animationDelay: "300ms", animationDuration: "1s" }} />
+                          </svg>
+                        )}
                       </button>
                     </div>
                   )}
