@@ -50,10 +50,12 @@ export function LiveUpdateToggles() {
       headers: { "Content-Type": "application/json" },
       // keepPosition: this dashboard switch shouldn't reorder the list —
       // only the section changes, the row stays where it already was.
-      body: JSON.stringify({ section: nextSection, keepPosition: true }),
+      // Highlight (yellow band) follows the switch: on when shown in Live
+      // Update, off when it isn't.
+      body: JSON.stringify({ section: nextSection, highlight: checked, keepPosition: true }),
     });
     if (res.ok) {
-      setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, section: nextSection } : g)));
+      setGames((gs) => gs.map((g) => (g.id === row.id ? { ...g, section: nextSection, highlight: checked } : g)));
     }
     setSavingId(null);
   }
