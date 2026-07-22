@@ -286,26 +286,33 @@ export function LiveUpdateToggles() {
                         aria-label="Send to Chart"
                         className="relative w-full h-11 overflow-hidden flex items-center justify-between px-4 bg-gradient-to-b from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 disabled:opacity-60 text-white rounded-lg shadow-sm shadow-green-900/30 transition"
                       >
-                        {/* Source dot */}
-                        <span className="h-2 w-2 rounded-full bg-white/70 shrink-0" />
-                        {/* Dashed transfer path */}
-                        <span className="flex-1 mx-2 border-t-2 border-dashed border-white/40" />
-                        {/* Flying document — only animates while actually sending; idle = static/off */}
-                        {sendingId === g.id && (
-                          <svg
-                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            className="absolute left-4 h-4 w-4 text-white animate-[transferFly_1.6s_ease-in-out_infinite]"
-                          >
-                            <path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" fill="currentColor" fillOpacity="0.9" />
-                            <path d="M15 2v5h5" fill="none" stroke="#15803d" strokeWidth="1.2" />
+                        {sendingId === g.id ? (
+                          <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 animate-spin mx-auto" xmlns="http://www.w3.org/2000/svg">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                           </svg>
+                        ) : (
+                          <>
+                            {/* Source dot */}
+                            <span className="h-2 w-2 rounded-full bg-white/70 shrink-0" />
+                            {/* Dashed transfer path */}
+                            <span className="flex-1 mx-2 border-t-2 border-dashed border-white/40" />
+                            {/* Flying document, looping left -> right into the chart icon */}
+                            <svg
+                              viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                              className="absolute left-4 h-4 w-4 text-white animate-[transferFly_1.6s_ease-in-out_infinite]"
+                            >
+                              <path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" fill="currentColor" fillOpacity="0.9" />
+                              <path d="M15 2v5h5" fill="none" stroke="#15803d" strokeWidth="1.2" />
+                            </svg>
+                            {/* Destination chart icon */}
+                            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 shrink-0" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="4" y="13" width="3.5" height="7" rx="1" fill="currentColor" />
+                              <rect x="10.25" y="9" width="3.5" height="11" rx="1" fill="currentColor" />
+                              <rect x="16.5" y="4" width="3.5" height="16" rx="1" fill="currentColor" />
+                            </svg>
+                          </>
                         )}
-                        {/* Destination chart icon */}
-                        <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 shrink-0" xmlns="http://www.w3.org/2000/svg">
-                          <rect x="4" y="13" width="3.5" height="7" rx="1" fill="currentColor" />
-                          <rect x="10.25" y="9" width="3.5" height="11" rx="1" fill="currentColor" />
-                          <rect x="16.5" y="4" width="3.5" height="16" rx="1" fill="currentColor" />
-                        </svg>
                       </button>
                     </div>
                   )}
